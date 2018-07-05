@@ -29,17 +29,10 @@ public:
 private:
 	void InitObjects();
 	
-private:
-	DirectionalLight mDirLights[3];
-	
+private:	
 //	RenderOptions mRenderOptions;
 	
-// 	float mTheta;
-// 	float mPhi;
-// 	float mRadius;
-
 	POINT mLastMousePos;
-
 	// get eye, view, proj
 	Camera* m_Camera;
 
