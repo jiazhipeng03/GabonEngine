@@ -48,6 +48,9 @@
     <ClCompile Include="MathHelper.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="MathHelper.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -157,6 +157,7 @@
     <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="ModelObject.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="TextureShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="ModelObject.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="TextureShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
