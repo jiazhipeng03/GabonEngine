@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "Light.h"
 #include "Camera.h"
+#include "TextureShader.h"
 class MainApp : public D3DApp
 {
 public:
@@ -36,6 +37,7 @@ private:
 	// get eye, view, proj
 	Camera* m_Camera;
 
-	std::vector<Object*> ModelList;
+	TextureShader* m_TextureShader;
+	std::vector<Object*> m_ModelList;
 };
 
