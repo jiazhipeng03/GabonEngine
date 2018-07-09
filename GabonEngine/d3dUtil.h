@@ -24,7 +24,7 @@
 #include <vector>
 //#include "MathHelper.h"
 //#include "LightHelper.h"
-
+//#pragma comment ( lib, "D3D11.lib")
 //---------------------------------------------------------------------------------------
 // Simple d3d error checker for book demos.
 //---------------------------------------------------------------------------------------

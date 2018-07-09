@@ -21,8 +21,9 @@ bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd, std::string vsFi
 {
 	bool result;
 	wchar_t vsBuf[256], psBuf[256];
-	mbstowcs(vsBuf, vsFileName.c_str(), 256);
-	mbstowcs(psBuf, psFileName.c_str(), 256);
+	size_t outNum;
+	mbstowcs_s(&outNum, vsBuf, vsFileName.c_str(), 256);
+	mbstowcs_s(&outNum, psBuf, psFileName.c_str(), 256);
 	// Initialize the vertex and pixel shaders.
 	result = InitializeShader(device, hwnd, vsBuf, psBuf);// L"../Engine/texture.vs", L"../Engine/texture.ps");
 	if (!result)
@@ -81,7 +82,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	pixelShaderBuffer = 0;
 
 	// Compile the vertex shader code.
-	result = D3DCompileFromFile(vsFilename, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "TextureVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+	result = D3DCompileFromFile(vsFilename, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "TextureVertexShader", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0,
 		&vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
@@ -296,9 +297,12 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Dire
 
 
 	// Transpose the matrices to prepare them for the shader.
-	worldMatrix.Transpose();
-	viewMatrix.Transpose();
-	projectionMatrix.Transpose();
+	worldMatrix = XMMatrixTranspose(worldMatrix);
+	viewMatrix = XMMatrixTranspose(viewMatrix);
+	projectionMatrix = XMMatrixTranspose(projectionMatrix);
+// 	worldMatrix.Transpose();
+// 	viewMatrix.Transpose();
+// 	projectionMatrix.Transpose();
 	//MatrixTranspose(&worldMatrix, &worldMatrix);
 	//MatrixTranspose(&viewMatrix, &viewMatrix);
 	//MatrixTranspose(&projectionMatrix, &projectionMatrix);

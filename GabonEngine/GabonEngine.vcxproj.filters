@@ -15,6 +15,12 @@
     <Filter Include="App">
       <UniqueIdentifier>{0b226f25-ff10-4738-b39e-3ac77bcf656c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="XMLParser">
+      <UniqueIdentifier>{dc4b22b3-d5da-487a-9823-2881efa9a9ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{16c91991-80b7-446a-8200-19f1dee25a71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -51,6 +57,27 @@
     <ClCompile Include="TextureShader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Math\OgreMath.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\OgreMatrix3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\OgreMatrix4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\OgreVector2.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\OgreVector3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\OgreVector4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\OgreQuaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -85,6 +112,33 @@
     </ClInclude>
     <ClInclude Include="TextureShader.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLParser\rapidxml.hpp">
+      <Filter>XMLParser</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgreMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgreMatrix3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgreMatrix4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgreVector2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgreVector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgreVector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgreQuaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OgrePrerequisites.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

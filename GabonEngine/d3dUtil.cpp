@@ -3,7 +3,7 @@
 //***************************************************************************************
 
 #include "d3dUtil.h"
-
+#define _XM_NO_INTRINSICS_
 /*
 ID3D11ShaderResourceView* d3dHelper::CreateTexture2DArraySRV(
 		ID3D11Device* device, ID3D11DeviceContext* context,
@@ -116,6 +116,7 @@ ID3D11ShaderResourceView* d3dHelper::CreateTexture2DArraySRV(
 	return texArraySRV;
 }*/
 
+/*
 ID3D11ShaderResourceView* d3dHelper::CreateRandomTexture1DSRV(ID3D11Device* device)
 {
 	// 
@@ -167,9 +168,10 @@ ID3D11ShaderResourceView* d3dHelper::CreateRandomTexture1DSRV(ID3D11Device* devi
 	ReleaseCOM(randomTex);
 
 	return randomTexSRV;
-}
+}*/
 
-void ExtractFrustumPlanes(XMFLOAT4 planes[6], CXMMATRIX M)
+/*
+void ExtractFrustumPlanes(DirectX::XMFLOAT4 planes[6], DirectX::CXMMATRIX M)
 {
 	//
 	// Left
@@ -222,7 +224,7 @@ void ExtractFrustumPlanes(XMFLOAT4 planes[6], CXMMATRIX M)
 	// Normalize the plane equations.
 	for(int i = 0; i < 6; ++i)
 	{
-		XMVECTOR v = XMPlaneNormalize(XMLoadFloat4(&planes[i]));
+		DirectX::XMVECTOR v = DirectX::XMPlaneNormalize(XMLoadFloat4(&planes[i]));
 		XMStoreFloat4(&planes[i], v);
 	}
-}
+}*/

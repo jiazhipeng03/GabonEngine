@@ -8,6 +8,12 @@
 */
 class TextureShader
 {
+	struct MatrixBufferType
+	{
+		DirectX::XMMATRIX world;
+		DirectX::XMMATRIX view;
+		DirectX::XMMATRIX projection;
+	};
 public:
 	TextureShader();
 	~TextureShader();

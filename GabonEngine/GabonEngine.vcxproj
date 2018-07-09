@@ -93,6 +93,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>DXGI.lib;d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -107,6 +108,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>DXGI.lib;d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,6 +157,13 @@
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathHelper.cpp" />
+    <ClCompile Include="Math\OgreMath.cpp" />
+    <ClCompile Include="Math\OgreMatrix3.cpp" />
+    <ClCompile Include="Math\OgreMatrix4.cpp" />
+    <ClCompile Include="Math\OgreQuaternion.cpp" />
+    <ClCompile Include="Math\OgreVector2.cpp" />
+    <ClCompile Include="Math\OgreVector3.cpp" />
+    <ClCompile Include="Math\OgreVector4.cpp" />
     <ClCompile Include="ModelObject.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="TextureShader.cpp" />
@@ -168,9 +177,18 @@
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MathHelper.h" />
+    <ClInclude Include="Math\OgreMath.h" />
+    <ClInclude Include="Math\OgreMatrix3.h" />
+    <ClInclude Include="Math\OgreMatrix4.h" />
+    <ClInclude Include="Math\OgrePrerequisites.h" />
+    <ClInclude Include="Math\OgreQuaternion.h" />
+    <ClInclude Include="Math\OgreVector2.h" />
+    <ClInclude Include="Math\OgreVector3.h" />
+    <ClInclude Include="Math\OgreVector4.h" />
     <ClInclude Include="ModelObject.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="TextureShader.h" />
+    <ClInclude Include="XMLParser\rapidxml.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

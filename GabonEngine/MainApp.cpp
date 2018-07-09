@@ -20,4 +20,40 @@ bool MainApp::Init()
 		return false;
 
 	InitObjects();
+	return true;
+}
+
+void MainApp::OnResize()
+{
+
+}
+
+void MainApp::UpdateScene(float dt)
+{
+
+}
+
+void MainApp::DrawScene()
+{
+
+}
+
+void MainApp::OnMouseDown(WPARAM btnState, int x, int y)
+{
+
+}
+
+void MainApp::OnMouseUp(WPARAM btnState, int x, int y)
+{
+
+}
+
+void MainApp::OnMouseMove(WPARAM btnState, int x, int y)
+{
+
+}
+
+void MainApp::InitObjects()
+{
+
 }
