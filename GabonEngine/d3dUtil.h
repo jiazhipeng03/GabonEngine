@@ -22,6 +22,8 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+
+#include "Math/OgreMath.h"
 //#include "MathHelper.h"
 //#include "LightHelper.h"
 //#pragma comment ( lib, "D3D11.lib")
@@ -99,7 +101,7 @@ public:
 };
 
 // Order: left, right, bottom, top, near, far.
-void ExtractFrustumPlanes(DirectX::XMFLOAT4 planes[6], DirectX::CXMMATRIX M);
+//void ExtractFrustumPlanes(Ogre::Vector4 planes[6], DirectX::CXMMATRIX M);
 
 
 // #define XMGLOBALCONST extern CONST __declspec(selectany)
@@ -143,12 +145,12 @@ public:
 	///<summary>
 	/// Converts XMVECTOR to XMFLOAT4, where XMVECTOR represents a color.
 	///</summary>
-	static  DirectX::XMFLOAT4 ToXmFloat4(DirectX::FXMVECTOR v)
-	{
-		DirectX::XMFLOAT4 dest;
-		DirectX::XMStoreFloat4(&dest, v);
-		return dest;
-	}
+// 	static  Ogre::Vector4 ToXmFloat4(DirectX::FXMVECTOR v)
+// 	{
+// 		Ogre::Vector4 dest;
+// 		DirectX::XMStoreFloat4(&dest, v);
+// 		return dest;
+// 	}
 
 	static  UINT ArgbToAbgr(UINT argb)
 	{

@@ -29,22 +29,10 @@ THE SOFTWARE.
 #define __Math_H__
 
 #define _OgreExport
- #include "OgrePrerequisites.h"
+#include "OgrePrerequisites.h"
 // #include "OgreHeaderPrefix.h"
-
 namespace Ogre
 {
-	class Vector2;
-	class Vector3;
-	class Vector4;
-// 	class Ray;
-// 	class Plane;
-// 	class Sphere;
-// 	class AxisAlignedBox;
-// 	class Quaternion;
-// 	class Affine3;
-// 	class Radian;
-// 	class Degree;
     class _OgreExport Math 
     {
 	public:
@@ -243,7 +231,8 @@ namespace Ogre
 		static T Clamp(T val, T minval, T maxval)
 		{
 			assert(minval <= maxval && "Invalid clamp range");
-			return std::max(std::min(val, maxval), minval);
+			T temp = val < maxval ? val : maxval;// std::min(val, maxval);
+			return std::max(temp, minval);
 		}
 		
 		static const float POS_INFINITY;

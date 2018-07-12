@@ -12,7 +12,7 @@
 #define CAMERA_H
 
 #include "d3dUtil.h"
-
+#include "Math/OgreMatrix4.h"
 class Camera
 {
 public:
@@ -54,9 +54,9 @@ public:
 	void LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up);
 
 	// Get View/Proj matrices.
-	DirectX::XMMATRIX View()const;
-	DirectX::XMMATRIX Proj()const;
-	DirectX::XMMATRIX ViewProj()const;
+	Ogre::Matrix4 View()const;
+	Ogre::Matrix4 Proj()const;
+	Ogre::Matrix4 ViewProj()const;
 
 	// Strafe/Walk the camera a distance d.
 	void Strafe(float d);
@@ -86,8 +86,8 @@ private:
 	float mFarWindowHeight;
 
 	// Cache View/Proj matrices.
-	DirectX::XMFLOAT4X4 mView;
-	DirectX::XMFLOAT4X4 mProj;
+	Ogre::Matrix4 mView;
+	Ogre::Matrix4 mProj;
 };
 
 #endif // CAMERA_H

@@ -140,5 +140,8 @@
     <ClInclude Include="Math\OgrePrerequisites.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

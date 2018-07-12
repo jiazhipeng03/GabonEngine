@@ -36,8 +36,8 @@ THE SOFTWARE.
 #ifndef __Quaternion_H__
 #define __Quaternion_H__
 //#include "OgreMatrix3.h"
-#include "OgrePrerequisites.h"
 #include "OgreMath.h"
+#include "OgrePrerequisites.h"
 namespace Ogre {
 
     /** \addtogroup Core

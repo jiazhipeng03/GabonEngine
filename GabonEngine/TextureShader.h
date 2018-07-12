@@ -1,7 +1,7 @@
 #pragma once
 #include "d3dUtil.h"
 #include <d3dcompiler.h>
-
+#include "Math/OgreMatrix4.h"
 /* TO-DO
 	1. vs，ps，samplestate的组合情况，通过xml指定使用的组合
 	2. 设置shaderparam
@@ -10,9 +10,9 @@ class TextureShader
 {
 	struct MatrixBufferType
 	{
-		DirectX::XMMATRIX world;
-		DirectX::XMMATRIX view;
-		DirectX::XMMATRIX projection;
+		Ogre::Matrix4 world;
+		Ogre::Matrix4 view;
+		Ogre::Matrix4 projection;
 	};
 public:
 	TextureShader();
@@ -20,14 +20,14 @@ public:
 
 	bool Initialize(ID3D11Device*, HWND, std::string, std::string);
 	void Shutdown();
-	bool Render(ID3D11DeviceContext*, int, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*);
+	bool Render(ID3D11DeviceContext*, int, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, ID3D11ShaderResourceView*);
 
 private:
 	bool InitializeShader(ID3D11Device*, HWND, WCHAR*, WCHAR*);
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3DBlob*, HWND, WCHAR*);
 
-	bool SetShaderParameters(ID3D11DeviceContext*, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*);
+	bool SetShaderParameters(ID3D11DeviceContext*, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, ID3D11ShaderResourceView*);
 	void RenderShader(ID3D11DeviceContext*, int);
 
 private:

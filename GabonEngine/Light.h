@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include "Object.h"
+#include "Math/OgreVector4.h"
 class Light :
 	public Object
 {
@@ -8,9 +9,9 @@ public:
 	Light();
 	~Light();
 protected:
-	DirectX::XMFLOAT4 Ambient;
-	DirectX::XMFLOAT4 Diffuse;
-	DirectX::XMFLOAT4 Specular;
+	Ogre::Vector4 Ambient;
+	Ogre::Vector4 Diffuse;
+	Ogre::Vector4 Specular;
 };
 
 class DirectionalLight : public Light

@@ -13,10 +13,11 @@ namespace Ogre
 	class Matrix4;
 	class Quaternion;
 }
- #include "OgreMath.h"
+// #include "OgreMath.h"
+// 
+// #include "OgreQuaternion.h"
 // #include "OgreVector2.h"
 // #include "OgreVector3.h"
 // #include "OgreVector4.h"
 // #include "OgreMatrix3.h"
 // #include "OgreMatrix4.h"
-// #include "OgreQuaternion.h"

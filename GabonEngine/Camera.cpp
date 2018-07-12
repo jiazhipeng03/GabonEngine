@@ -125,8 +125,14 @@ void Camera::SetLens(float fovY, float aspect, float zn, float zf)
 	mNearWindowHeight = 2.0f * mNearZ * tanf( 0.5f*mFovY );
 	mFarWindowHeight  = 2.0f * mFarZ * tanf( 0.5f*mFovY );
 
-	DirectX::XMMATRIX P = XMMatrixPerspectiveFovLH(mFovY, mAspect, mNearZ, mFarZ);
-	XMStoreFloat4x4(&mProj, P);
+	mProj = Ogre::Matrix4::ZERO;
+	mProj[0][0] = 1 / (tan(fovY * 0.5f) *aspect);
+	mProj[1][1] = 1 / tan(fovY * 0.5f);
+	mProj[2][2] = zf / (zf - zn);
+	mProj[2][3] = 1.0f;
+	mProj[3][2] = (zn * zf) / (zn - zf);
+// 	Ogre::Matrix4 P = XMMatrixPerspectiveFovLH(mFovY, mAspect, mNearZ, mFarZ);
+// 	XMStoreFloat4x4(&mProj, P);
 }
 
 void Camera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp)
@@ -150,19 +156,19 @@ void Camera::LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& targe
 	LookAt(P, T, U);
 }
 
-DirectX::XMMATRIX Camera::View()const
+Ogre::Matrix4 Camera::View()const
 {
-	return XMLoadFloat4x4(&mView);
+	return mView;
 }
 
-DirectX::XMMATRIX Camera::Proj()const
+Ogre::Matrix4 Camera::Proj()const
 {
-	return XMLoadFloat4x4(&mProj);
+	return mProj;
 }
 
-DirectX::XMMATRIX Camera::ViewProj()const
+Ogre::Matrix4 Camera::ViewProj()const
 {
-	return XMMatrixMultiply(View(), Proj());
+	return mView * mProj;
 }
 
 void Camera::Strafe(float d)
@@ -227,25 +233,25 @@ void Camera::UpdateViewMatrix()
 	XMStoreFloat3(&mUp, U);
 	XMStoreFloat3(&mLook, L);
 
-	mView(0,0) = mRight.x; 
-	mView(1,0) = mRight.y; 
-	mView(2,0) = mRight.z; 
-	mView(3,0) = x;   
+	mView[0][0] = mRight.x; 
+	mView[1][0] = mRight.y; 
+	mView[2][0] = mRight.z; 
+	mView[3][0] = x;   
 
-	mView(0,1) = mUp.x;
-	mView(1,1) = mUp.y;
-	mView(2,1) = mUp.z;
-	mView(3,1) = y;  
+	mView[0][1] = mUp.x;
+	mView[1][1] = mUp.y;
+	mView[2][1] = mUp.z;
+	mView[3][1] = y;  
 
-	mView(0,2) = mLook.x; 
-	mView(1,2) = mLook.y; 
-	mView(2,2) = mLook.z; 
-	mView(3,2) = z;   
+	mView[0][2] = mLook.x; 
+	mView[1][2] = mLook.y; 
+	mView[2][2] = mLook.z; 
+	mView[3][2] = z;   
 
-	mView(0,3) = 0.0f;
-	mView(1,3) = 0.0f;
-	mView(2,3) = 0.0f;
-	mView(3,3) = 1.0f;
+	mView[0][3] = 0.0f;
+	mView[1][3] = 0.0f;
+	mView[2][3] = 0.0f;
+	mView[3][3] = 1.0f;
 }
 
 

@@ -171,7 +171,7 @@ ID3D11ShaderResourceView* d3dHelper::CreateRandomTexture1DSRV(ID3D11Device* devi
 }*/
 
 /*
-void ExtractFrustumPlanes(DirectX::XMFLOAT4 planes[6], DirectX::CXMMATRIX M)
+void ExtractFrustumPlanes(Ogre::Vector4 planes[6], DirectX::CXMMATRIX M)
 {
 	//
 	// Left
