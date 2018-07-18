@@ -10,20 +10,26 @@ Camera::Camera()
 	  mRight(1.0f, 0.0f, 0.0f),
 	  mUp(0.0f, 1.0f, 0.0f),
 	  mLook(0.0f, 0.0f, 1.0f)
-{
+{	
 	SetLens(0.25f*MathHelper::Pi, 1.0f, 1.0f, 1000.0f);
+	XMVECTOR pos = XMVectorSet(0, 0, 1, 1.0f);
+	XMVECTOR target = XMVectorZero();
+	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	LookAt(pos, target, up);
+	UpdateViewMatrix();
 }
 
 Camera::~Camera()
 {
 }
 
-DirectX::XMVECTOR Camera::GetPositionXM()const
+Ogre::Vector3 Camera::GetPositionXM()const
 {
-	return XMLoadFloat3(&mPosition);
+	return mPosition;
+	//return XMLoadFloat3(&mPosition);
 }
 
-DirectX::XMFLOAT3 Camera::GetPosition()const
+Ogre::Vector3 Camera::GetPosition()const
 {
 	return mPosition;
 }
@@ -33,37 +39,37 @@ void Camera::SetPosition(float x, float y, float z)
 	mPosition = XMFLOAT3(x, y, z);
 }
 
-void Camera::SetPosition(const DirectX::XMFLOAT3& v)
+void Camera::SetPosition(const Ogre::Vector3& v)
 {
 	mPosition = v;
 }
 
-DirectX::XMVECTOR Camera::GetRightXM()const
+Ogre::Vector3 Camera::GetRightXM()const
 {
 	return XMLoadFloat3(&mRight);
 }
 
-DirectX::XMFLOAT3 Camera::GetRight()const
+Ogre::Vector3 Camera::GetRight()const
 {
 	return mRight;
 }
 
-DirectX::XMVECTOR Camera::GetUpXM()const
+Ogre::Vector3 Camera::GetUpXM()const
 {
 	return XMLoadFloat3(&mUp);
 }
 
-DirectX::XMFLOAT3 Camera::GetUp()const
+Ogre::Vector3 Camera::GetUp()const
 {
 	return mUp;
 }
 
-DirectX::XMVECTOR Camera::GetLookXM()const
+Ogre::Vector3 Camera::GetLookXM()const
 {
 	return XMLoadFloat3(&mLook);
 }
 
-DirectX::XMFLOAT3 Camera::GetLook()const
+Ogre::Vector3 Camera::GetLook()const
 {
 	return mLook;
 }
@@ -137,23 +143,23 @@ void Camera::SetLens(float fovY, float aspect, float zn, float zf)
 
 void Camera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp)
 {
-	DirectX::XMVECTOR L = XMVector3Normalize(XMVectorSubtract(target, pos));
-	DirectX::XMVECTOR R = XMVector3Normalize(XMVector3Cross(worldUp, L));
-	DirectX::XMVECTOR U = XMVector3Cross(L, R);
-
-	XMStoreFloat3(&mPosition, pos);
-	XMStoreFloat3(&mLook, L);
-	XMStoreFloat3(&mRight, R);
-	XMStoreFloat3(&mUp, U);
+// 	Ogre::Vector3 L = XMVector3Normalize(XMVectorSubtract(target, pos));
+// 	Ogre::Vector3 R = XMVector3Normalize(XMVector3Cross(worldUp, L));
+// 	Ogre::Vector3 U = XMVector3Cross(L, R);
+// 
+// 	XMStoreFloat3(&mPosition, pos);
+// 	XMStoreFloat3(&mLook, L);
+// 	XMStoreFloat3(&mRight, R);
+// 	XMStoreFloat3(&mUp, U);
 }
 
-void Camera::LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up)
+void Camera::LookAt(const Ogre::Vector3& pos, const Ogre::Vector3& target, const Ogre::Vector3& up)
 {
-	DirectX::XMVECTOR P = XMLoadFloat3(&pos);
-	DirectX::XMVECTOR T = XMLoadFloat3(&target);
-	DirectX::XMVECTOR U = XMLoadFloat3(&up);
-
-	LookAt(P, T, U);
+// 	Ogre::Vector3 P = XMLoadFloat3(&pos);
+// 	Ogre::Vector3 T = XMLoadFloat3(&target);
+// 	Ogre::Vector3 U = XMLoadFloat3(&up);
+// 
+// 	LookAt(P, T, U);
 }
 
 Ogre::Matrix4 Camera::View()const
@@ -174,84 +180,86 @@ Ogre::Matrix4 Camera::ViewProj()const
 void Camera::Strafe(float d)
 {
 	// mPosition += d*mRight
-	DirectX::XMVECTOR s = XMVectorReplicate(d);
-	DirectX::XMVECTOR r = XMLoadFloat3(&mRight);
-	DirectX::XMVECTOR p = XMLoadFloat3(&mPosition);
+	Ogre::Vector3 s = XMVectorReplicate(d);
+	Ogre::Vector3 r = XMLoadFloat3(&mRight);
+	Ogre::Vector3 p = XMLoadFloat3(&mPosition);
 	XMStoreFloat3(&mPosition, XMVectorMultiplyAdd(s, r, p));
 }
 
 void Camera::Walk(float d)
 {
-	// mPosition += d*mLook
-	XMVECTOR s = XMVectorReplicate(d);
-	XMVECTOR l = XMLoadFloat3(&mLook);
-	XMVECTOR p = XMLoadFloat3(&mPosition);
-	XMStoreFloat3(&mPosition, XMVectorMultiplyAdd(s, l, p));
+// 	// mPosition += d*mLook
+// 	XMVECTOR s = XMVectorReplicate(d);
+// 	XMVECTOR l = XMLoadFloat3(&mLook);
+// 	XMVECTOR p = XMLoadFloat3(&mPosition);
+// 	XMStoreFloat3(&mPosition, XMVectorMultiplyAdd(s, l, p));
 }
 
 void Camera::Pitch(float angle)
 {
-	// Rotate up and look vector about the right vector.
-
-	XMMATRIX R = XMMatrixRotationAxis(XMLoadFloat3(&mRight), angle);
-
-	XMStoreFloat3(&mUp,   XMVector3TransformNormal(XMLoadFloat3(&mUp), R));
-	XMStoreFloat3(&mLook, XMVector3TransformNormal(XMLoadFloat3(&mLook), R));
+// 	// Rotate up and look vector about the right vector.
+// 
+// 	XMMATRIX R = XMMatrixRotationAxis(XMLoadFloat3(&mRight), angle);
+// 
+// 	XMStoreFloat3(&mUp,   XMVector3TransformNormal(XMLoadFloat3(&mUp), R));
+// 	XMStoreFloat3(&mLook, XMVector3TransformNormal(XMLoadFloat3(&mLook), R));
 }
 
 void Camera::RotateY(float angle)
 {
-	// Rotate the basis vectors about the world y-axis.
-
-	XMMATRIX R = XMMatrixRotationY(angle);
-
-	XMStoreFloat3(&mRight,   XMVector3TransformNormal(XMLoadFloat3(&mRight), R));
-	XMStoreFloat3(&mUp, XMVector3TransformNormal(XMLoadFloat3(&mUp), R));
-	XMStoreFloat3(&mLook, XMVector3TransformNormal(XMLoadFloat3(&mLook), R));
+// 	// Rotate the basis vectors about the world y-axis.
+// 
+// 	XMMATRIX R = XMMatrixRotationY(angle);
+// 
+// 	XMStoreFloat3(&mRight,   XMVector3TransformNormal(XMLoadFloat3(&mRight), R));
+// 	XMStoreFloat3(&mUp, XMVector3TransformNormal(XMLoadFloat3(&mUp), R));
+// 	XMStoreFloat3(&mLook, XMVector3TransformNormal(XMLoadFloat3(&mLook), R));
 }
 
 void Camera::UpdateViewMatrix()
 {
-	XMVECTOR R = XMLoadFloat3(&mRight);
-	XMVECTOR U = XMLoadFloat3(&mUp);
-	XMVECTOR L = XMLoadFloat3(&mLook);
-	XMVECTOR P = XMLoadFloat3(&mPosition);
-
-	// Keep camera's axes orthogonal to each other and of unit length.
-	L = XMVector3Normalize(L);
-	U = XMVector3Normalize(XMVector3Cross(L, R));
-
-	// U, L already ortho-normal, so no need to normalize cross product.
-	R = XMVector3Cross(U, L); 
-
-	// Fill in the view matrix entries.
-	float x = -XMVectorGetX(XMVector3Dot(P, R));
-	float y = -XMVectorGetX(XMVector3Dot(P, U));
-	float z = -XMVectorGetX(XMVector3Dot(P, L));
-
-	XMStoreFloat3(&mRight, R);
-	XMStoreFloat3(&mUp, U);
-	XMStoreFloat3(&mLook, L);
-
-	mView[0][0] = mRight.x; 
-	mView[1][0] = mRight.y; 
-	mView[2][0] = mRight.z; 
-	mView[3][0] = x;   
-
-	mView[0][1] = mUp.x;
-	mView[1][1] = mUp.y;
-	mView[2][1] = mUp.z;
-	mView[3][1] = y;  
-
-	mView[0][2] = mLook.x; 
-	mView[1][2] = mLook.y; 
-	mView[2][2] = mLook.z; 
-	mView[3][2] = z;   
-
-	mView[0][3] = 0.0f;
-	mView[1][3] = 0.0f;
-	mView[2][3] = 0.0f;
-	mView[3][3] = 1.0f;
+	using namespace Ogre;
+	Vector3 z((mPosition - mLook)
+// 	XMVECTOR R = XMLoadFloat3(&mRight);
+// 	XMVECTOR U = XMLoadFloat3(&mUp);
+// 	XMVECTOR L = XMLoadFloat3(&mLook);
+// 	XMVECTOR P = XMLoadFloat3(&mPosition);
+// 
+// 	// Keep camera's axes orthogonal to each other and of unit length.
+// 	L = XMVector3Normalize(L);
+// 	U = XMVector3Normalize(XMVector3Cross(L, R));
+// 
+// 	// U, L already ortho-normal, so no need to normalize cross product.
+// 	R = XMVector3Cross(U, L); 
+// 
+// 	// Fill in the view matrix entries.
+// 	float x = -XMVectorGetX(XMVector3Dot(P, R));
+// 	float y = -XMVectorGetX(XMVector3Dot(P, U));
+// 	float z = -XMVectorGetX(XMVector3Dot(P, L));
+// 
+// 	XMStoreFloat3(&mRight, R);
+// 	XMStoreFloat3(&mUp, U);
+// 	XMStoreFloat3(&mLook, L);
+// 
+// 	mView[0][0] = mRight.x; 
+// 	mView[1][0] = mRight.y; 
+// 	mView[2][0] = mRight.z; 
+// 	mView[3][0] = x;   
+// 
+// 	mView[0][1] = mUp.x;
+// 	mView[1][1] = mUp.y;
+// 	mView[2][1] = mUp.z;
+// 	mView[3][1] = y;  
+// 
+// 	mView[0][2] = mLook.x; 
+// 	mView[1][2] = mLook.y; 
+// 	mView[2][2] = mLook.z; 
+// 	mView[3][2] = z;   
+// 
+// 	mView[0][3] = 0.0f;
+// 	mView[1][3] = 0.0f;
+// 	mView[2][3] = 0.0f;
+// 	mView[3][3] = 1.0f;
 }
 
 

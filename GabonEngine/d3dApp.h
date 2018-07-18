@@ -40,7 +40,9 @@ public:
 	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
 	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
-
+	ID3D11Device* GetDevice() { return md3dDevice; }
+	HWND GetWindowHandle() { return mhMainWnd; }
+	ID3D11DeviceContext* GetDeviceContext() { return md3dImmediateContext; }
 protected:
 	bool InitMainWindow();
 	bool InitDirect3D();

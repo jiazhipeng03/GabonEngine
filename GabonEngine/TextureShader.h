@@ -18,17 +18,19 @@ public:
 	TextureShader();
 	~TextureShader();
 
-	bool Initialize(ID3D11Device*, HWND, std::string, std::string);
+	bool Initialize(ID3D11Device*, HWND, std::string vsFileName, std::string psFileName);
 	void Shutdown();
-	bool Render(ID3D11DeviceContext*, int, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, ID3D11ShaderResourceView*);
-
+	bool Render(ID3D11DeviceContext*, int vertexCount, int startVertexIndex, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, ID3D11ShaderResourceView*);
+	//bool Render(ID3D11DeviceContext*, int IndexCount, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, ID3D11ShaderResourceView*);
 private:
+	// PS, VS, input layout, buffer param, sampler state
 	bool InitializeShader(ID3D11Device*, HWND, WCHAR*, WCHAR*);
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3DBlob*, HWND, WCHAR*);
 
 	bool SetShaderParameters(ID3D11DeviceContext*, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, ID3D11ShaderResourceView*);
-	void RenderShader(ID3D11DeviceContext*, int);
+	void RenderShader(ID3D11DeviceContext*, int VertexCount, int StartVertexLocation);
+	//void RenderShader(ID3D11DeviceContext*, int IndexCount);
 
 private:
 	ID3D11VertexShader* m_vertexShader;

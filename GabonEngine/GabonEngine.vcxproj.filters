@@ -21,6 +21,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{16c91991-80b7-446a-8200-19f1dee25a71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{d6e2a190-dad3-40a6-8874-655a5f0937f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -77,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="Math\OgreQuaternion.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,5 +152,19 @@
     <ClInclude Include="MathHeader.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="texture.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="texture.vs">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #endif
 
 	MainApp theApp(hInstance);
-
+	g_App = &theApp;
 	if (!theApp.Init())
 		return 0;
 

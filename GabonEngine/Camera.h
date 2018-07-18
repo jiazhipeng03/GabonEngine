@@ -20,18 +20,18 @@ public:
 	~Camera();
 
 	// Get/Set world camera position.
-	DirectX::XMVECTOR GetPositionXM()const;
-	DirectX::XMFLOAT3 GetPosition()const;
+	Ogre::Vector3 GetPositionXM()const;
+	Ogre::Vector3 GetPosition()const;
 	void SetPosition(float x, float y, float z);
-	void SetPosition(const DirectX::XMFLOAT3& v);
+	void SetPosition(const Ogre::Vector3& v);
 	
 	// Get camera basis vectors.
-	DirectX::XMVECTOR GetRightXM()const;
-	DirectX::XMFLOAT3 GetRight()const;
-	DirectX::XMVECTOR GetUpXM()const;
-	DirectX::XMFLOAT3 GetUp()const;
-	DirectX::XMVECTOR GetLookXM()const;
-	DirectX::XMFLOAT3 GetLook()const;
+	Ogre::Vector3 GetRightXM()const;
+	Ogre::Vector3 GetRight()const;
+	Ogre::Vector3 GetUpXM()const;
+	Ogre::Vector3 GetUp()const;
+	Ogre::Vector3 GetLookXM()const;
+	Ogre::Vector3 GetLook()const;
 
 	// Get frustum properties.
 	float GetNearZ()const;
@@ -51,7 +51,7 @@ public:
 
 	// Define camera space via LookAt parameters.
 	void LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp);
-	void LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up);
+	void LookAt(const Ogre::Vector3& pos, const Ogre::Vector3& target, const Ogre::Vector3& up);
 
 	// Get View/Proj matrices.
 	Ogre::Matrix4 View()const;
@@ -72,10 +72,10 @@ public:
 private:
 
 	// Camera coordinate system with coordinates relative to world space.
-	DirectX::XMFLOAT3 mPosition;
-	DirectX::XMFLOAT3 mRight;
-	DirectX::XMFLOAT3 mUp;
-	DirectX::XMFLOAT3 mLook;
+	Ogre::Vector3 mPosition;
+	Ogre::Vector3 mRight;
+	Ogre::Vector3 mUp;
+	Ogre::Vector3 mLook;
 
 	// Cache frustum properties.
 	float mNearZ;
