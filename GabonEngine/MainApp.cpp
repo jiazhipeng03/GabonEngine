@@ -10,16 +10,15 @@ MainApp::MainApp(HINSTANCE hInstance)
 	mLastMousePos.y = 0;
 
 	m_ShaderMan = new ShaderManager;
+	m_ModelMan = new ModelManager;
 	m_Camera = new Camera;
 }
 
 MainApp::~MainApp()
 {
 	SafeDelete(m_ShaderMan);
-	for (auto m : m_ModelList)
-	{
-		SafeDelete(m);
-	}
+	SafeDelete(m_ModelMan);
+	
 	SafeDelete(m_Camera);
 }
 
@@ -36,7 +35,7 @@ bool MainApp::Init()
 	{
 		return false;
 	}
-	if (!InitObjects())
+	if (!m_ModelMan->Init())
 	{
 		return false;
 	}
@@ -51,7 +50,7 @@ void MainApp::OnResize()
 
 void MainApp::UpdateScene(float dt)
 {
-	// move camera
+	// Update
 }
 
 void MainApp::DrawScene()
@@ -59,13 +58,9 @@ void MainApp::DrawScene()
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	for (auto m : m_ModelList)
-	{
-		m->Render();
-		m_ShaderMan->GetShader("default")->Render(md3dImmediateContext, m->GetVertexCount(), 0,
-			m->GetWorldMatrix(), m_Camera->View(), m_Camera->Proj(), m->GetDiffuseSRV());
-	}
-	
+	// 以后需要将model按shader分类
+	// 暂时先按Model来绘制
+	m_ModelMan->Render();	
 
 	HR(mSwapChain->Present(0, 0));
 }
@@ -83,16 +78,4 @@ void MainApp::OnMouseUp(WPARAM btnState, int x, int y)
 void MainApp::OnMouseMove(WPARAM btnState, int x, int y)
 {
 
-}
-
-bool MainApp::InitObjects()
-{
-	// obj name, shader, buffer, material
-	std::string name = "square";
-	std::string shadername = "default";
-	TextureShader* shader = m_ShaderMan->GetShader(shadername);
-	ModelObject* obj = new ModelObject;
-	obj->Init(name, shader);	
-	m_ModelList.push_back(obj);
-	return true;
 }

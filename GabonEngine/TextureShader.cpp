@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "TextureShader.h"
 #include <atlconv.h>
+#include "MainApp.h"
 TextureShader::TextureShader()
 {
 	m_vertexShader = 0;
@@ -44,12 +45,12 @@ void TextureShader::Shutdown()
 }
 
 
-bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& viewMatrix,
-	Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
+bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, ID3D11ShaderResourceView* texture)
 {
 	bool result;
 
-
+	Ogre::Matrix4 viewMatrix = g_App->GetCamera()->View();
+	Ogre::Matrix4 projectionMatrix = g_App->GetCamera()->Proj();
 	// Set the shader parameters that it will use for rendering.
 	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture);
 	if (!result)

@@ -87,6 +87,9 @@
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

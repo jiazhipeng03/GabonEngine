@@ -52,7 +52,7 @@ void ModelObject::Render()
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	g_App->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	
 	return;
 }
 

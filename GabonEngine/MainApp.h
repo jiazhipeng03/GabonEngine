@@ -5,8 +5,9 @@
 #include "Light.h"
 #include "Camera.h"
 #include "ShaderManager.h"
-#include "ModelObject.h"
+//#include "ModelObject.h"
 #include "DDSTextureLoader.h"
+#include "ModelManager.h"
 
 class MainApp : public D3DApp
 {
@@ -31,8 +32,7 @@ public:
 	void OnMouseMove(WPARAM btnState, int x, int y);
 
 	ShaderManager* GetShaderMan() { return m_ShaderMan; }
-private:
-	bool InitObjects();
+	Camera* GetCamera() { return m_Camera; }
 	
 private:	
 	
@@ -42,7 +42,7 @@ private:
 	// get eye, view, proj
 	Camera* m_Camera;
 
-	std::vector<ModelObject*> m_ModelList;
+	ModelManager* m_ModelMan;
 	ShaderManager* m_ShaderMan;
 };
 

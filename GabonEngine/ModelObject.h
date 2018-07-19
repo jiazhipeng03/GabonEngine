@@ -26,7 +26,7 @@ public:
 	
 	Ogre::Matrix4 GetWorldMatrix();
 	ID3D11ShaderResourceView* GetDiffuseSRV() { return m_DiffuseSRV; }
-
+	TextureShader* GetShader() { return m_Shader; }
 	
 	int GetVertexCount();
 	int GetIndexCount();

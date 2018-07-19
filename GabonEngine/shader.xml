@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<shader_root>
+	<shader name = "default">
+		<vs value = "texture.vs"/>
+		<ps value = "texture.ps"/>
+	</shader>
+</shader_root>
