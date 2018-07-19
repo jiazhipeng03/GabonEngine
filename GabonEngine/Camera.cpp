@@ -12,9 +12,10 @@ Camera::Camera()
 	  mLook(0.0f, 0.0f, 1.0f)
 {	
 	SetLens(0.25f*MathHelper::Pi, 1.0f, 1.0f, 1000.0f);
-	XMVECTOR pos = XMVectorSet(0, 0, 1, 1.0f);
-	XMVECTOR target = XMVectorZero();
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+// 	XMVECTOR pos = XMVectorSet(0, 0, 1, 1.0f);
+// 	XMVECTOR target = XMVectorZero();
+// 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	Ogre::Vector3 pos(0, 0, 1), target(0,0,0), up(0,1,0);
 	LookAt(pos, target, up);
 	UpdateViewMatrix();
 }
@@ -36,7 +37,7 @@ Ogre::Vector3 Camera::GetPosition()const
 
 void Camera::SetPosition(float x, float y, float z)
 {
-	mPosition = XMFLOAT3(x, y, z);
+	mPosition = Ogre::Vector3(x, y, z);
 }
 
 void Camera::SetPosition(const Ogre::Vector3& v)
@@ -46,7 +47,8 @@ void Camera::SetPosition(const Ogre::Vector3& v)
 
 Ogre::Vector3 Camera::GetRightXM()const
 {
-	return XMLoadFloat3(&mRight);
+	return mRight;
+//	return XMLoadFloat3(&mRight);
 }
 
 Ogre::Vector3 Camera::GetRight()const
@@ -56,7 +58,8 @@ Ogre::Vector3 Camera::GetRight()const
 
 Ogre::Vector3 Camera::GetUpXM()const
 {
-	return XMLoadFloat3(&mUp);
+	return mUp;
+//	return XMLoadFloat3(&mUp);
 }
 
 Ogre::Vector3 Camera::GetUp()const
@@ -66,7 +69,8 @@ Ogre::Vector3 Camera::GetUp()const
 
 Ogre::Vector3 Camera::GetLookXM()const
 {
-	return XMLoadFloat3(&mLook);
+	return mLook;
+//	return XMLoadFloat3(&mLook);
 }
 
 Ogre::Vector3 Camera::GetLook()const
@@ -155,6 +159,10 @@ void Camera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::
 
 void Camera::LookAt(const Ogre::Vector3& pos, const Ogre::Vector3& target, const Ogre::Vector3& up)
 {
+	mPosition = pos;
+	mLook = (target - pos).normalisedCopy();
+	mRight = (up.crossProduct(mLook)).normalisedCopy();
+	mUp = up;
 // 	Ogre::Vector3 P = XMLoadFloat3(&pos);
 // 	Ogre::Vector3 T = XMLoadFloat3(&target);
 // 	Ogre::Vector3 U = XMLoadFloat3(&up);
@@ -180,10 +188,10 @@ Ogre::Matrix4 Camera::ViewProj()const
 void Camera::Strafe(float d)
 {
 	// mPosition += d*mRight
-	Ogre::Vector3 s = XMVectorReplicate(d);
-	Ogre::Vector3 r = XMLoadFloat3(&mRight);
-	Ogre::Vector3 p = XMLoadFloat3(&mPosition);
-	XMStoreFloat3(&mPosition, XMVectorMultiplyAdd(s, r, p));
+// 	Ogre::Vector3 s = XMVectorReplicate(d);
+// 	Ogre::Vector3 r = XMLoadFloat3(&mRight);
+// 	Ogre::Vector3 p = XMLoadFloat3(&mPosition);
+// 	XMStoreFloat3(&mPosition, XMVectorMultiplyAdd(s, r, p));
 }
 
 void Camera::Walk(float d)
@@ -218,48 +226,58 @@ void Camera::RotateY(float angle)
 
 void Camera::UpdateViewMatrix()
 {
-	using namespace Ogre;
-	Vector3 z((mPosition - mLook)
+ 	using namespace Ogre;
+// 	Vector3 z((mPosition - mLook)
+	Vector3 R = mRight;
+	Vector3 U = mUp;
+	Vector3 L = mLook;
+	Vector3 P = mPosition;
 // 	XMVECTOR R = XMLoadFloat3(&mRight);
 // 	XMVECTOR U = XMLoadFloat3(&mUp);
 // 	XMVECTOR L = XMLoadFloat3(&mLook);
 // 	XMVECTOR P = XMLoadFloat3(&mPosition);
-// 
-// 	// Keep camera's axes orthogonal to each other and of unit length.
+
+	// Keep camera's axes orthogonal to each other and of unit length.
+	L.normalise();
+	U = L.crossProduct(R);
 // 	L = XMVector3Normalize(L);
 // 	U = XMVector3Normalize(XMVector3Cross(L, R));
-// 
-// 	// U, L already ortho-normal, so no need to normalize cross product.
-// 	R = XMVector3Cross(U, L); 
-// 
-// 	// Fill in the view matrix entries.
-// 	float x = -XMVectorGetX(XMVector3Dot(P, R));
-// 	float y = -XMVectorGetX(XMVector3Dot(P, U));
-// 	float z = -XMVectorGetX(XMVector3Dot(P, L));
-// 
+
+	// U, L already ortho-normal, so no need to normalize cross product.
+	R = U.crossProduct(L);
+	//R = XMVector3Cross(U, L); 
+
+	// Fill in the view matrix entries.
+	float x = -(P.dotProduct(R));// -XMVectorGetX(XMVector3Dot(P, R));
+	float y = -(P.dotProduct(U)); //-XMVectorGetX(XMVector3Dot(P, U));
+	float z = -(P.dotProduct(L)); // -XMVectorGetX(XMVector3Dot(P, L));
+
+	mRight = R;
+	mUp = U;
+	mLook = L;
 // 	XMStoreFloat3(&mRight, R);
 // 	XMStoreFloat3(&mUp, U);
 // 	XMStoreFloat3(&mLook, L);
-// 
-// 	mView[0][0] = mRight.x; 
-// 	mView[1][0] = mRight.y; 
-// 	mView[2][0] = mRight.z; 
-// 	mView[3][0] = x;   
-// 
-// 	mView[0][1] = mUp.x;
-// 	mView[1][1] = mUp.y;
-// 	mView[2][1] = mUp.z;
-// 	mView[3][1] = y;  
-// 
-// 	mView[0][2] = mLook.x; 
-// 	mView[1][2] = mLook.y; 
-// 	mView[2][2] = mLook.z; 
-// 	mView[3][2] = z;   
-// 
-// 	mView[0][3] = 0.0f;
-// 	mView[1][3] = 0.0f;
-// 	mView[2][3] = 0.0f;
-// 	mView[3][3] = 1.0f;
+
+	mView[0][0] = mRight.x; 
+	mView[1][0] = mRight.y; 
+	mView[2][0] = mRight.z; 
+	mView[3][0] = x;   
+
+	mView[0][1] = mUp.x;
+	mView[1][1] = mUp.y;
+	mView[2][1] = mUp.z;
+	mView[3][1] = y;  
+
+	mView[0][2] = mLook.x; 
+	mView[1][2] = mLook.y; 
+	mView[2][2] = mLook.z; 
+	mView[3][2] = z;   
+
+	mView[0][3] = 0.0f;
+	mView[1][3] = 0.0f;
+	mView[2][3] = 0.0f;
+	mView[3][3] = 1.0f;
 }
 
 

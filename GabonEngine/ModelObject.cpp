@@ -68,6 +68,9 @@ Ogre::Matrix4 ModelObject::GetWorldMatrix()
 
 void ModelObject::BuildGeometryBuffers()
 {
+	m_VertexCount = 6;
+	m_StartVertexIndex = 0;
+
 	VertexType v[6];
 	v[0] = VertexType(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
 	v[1] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
