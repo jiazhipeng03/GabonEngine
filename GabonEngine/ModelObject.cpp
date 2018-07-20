@@ -18,7 +18,7 @@ ModelObject::ModelObject()
 
 ModelObject::~ModelObject()
 {
-	SafeDelete(m_DiffuseSRV);
+	ReleaseCOM(m_DiffuseSRV);
 }
 
 void ModelObject::Init(std::string name, TextureShader* shader)
@@ -95,6 +95,7 @@ void ModelObject::InitTexture(LPCWSTR texName)
 	ID3D11Resource* texture = nullptr;
 	DirectX::CreateDDSTextureFromFile(g_App->GetDevice(),
 		texName, &texture, &m_DiffuseSRV);
+	ReleaseCOM(texture);
 }
 
 int ModelObject::GetVertexCount()

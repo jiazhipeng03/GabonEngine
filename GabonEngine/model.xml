@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<model_root>
+	<model name = "square">
+		<shader value = "default"/>
+	</model>
+</model_root>

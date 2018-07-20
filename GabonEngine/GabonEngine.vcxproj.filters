@@ -164,6 +164,15 @@
     <ClInclude Include="ModelManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="XMLParser\rapidxml_iterators.hpp">
+      <Filter>XMLParser</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLParser\rapidxml_print.hpp">
+      <Filter>XMLParser</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLParser\rapidxml_utils.hpp">
+      <Filter>XMLParser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="texture.ps">

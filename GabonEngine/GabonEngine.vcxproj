@@ -196,6 +196,9 @@
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="XMLParser\rapidxml.hpp" />
+    <ClInclude Include="XMLParser\rapidxml_iterators.hpp" />
+    <ClInclude Include="XMLParser\rapidxml_print.hpp" />
+    <ClInclude Include="XMLParser\rapidxml_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="texture.ps" />

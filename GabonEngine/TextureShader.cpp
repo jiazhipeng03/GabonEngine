@@ -15,10 +15,15 @@ TextureShader::TextureShader()
 
 TextureShader::~TextureShader()
 {
+	ReleaseCOM(m_vertexShader);
+	ReleaseCOM(m_pixelShader);
+	ReleaseCOM(m_layout);
+	ReleaseCOM(m_matrixBuffer);
+	ReleaseCOM(m_sampleState);
 }
 
 
-bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd, std::string vsFileName, std::string psFileName)
+bool TextureShader::Initialize(/*ID3D11Device* device, HWND hwnd,*/ std::string vsFileName, std::string psFileName)
 {
 	bool result;
 	wchar_t vsBuf[256], psBuf[256];
@@ -26,6 +31,8 @@ bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd, std::string vsFi
 	mbstowcs_s(&outNum, vsBuf, vsFileName.c_str(), 256);
 	mbstowcs_s(&outNum, psBuf, psFileName.c_str(), 256);
 	// Initialize the vertex and pixel shaders.
+	auto device = g_App->GetDevice();
+	auto hwnd = g_App->GetWindowHandle();
 	result = InitializeShader(device, hwnd, vsBuf, psBuf);// L"../Engine/texture.vs", L"../Engine/texture.ps");
 	if (!result)
 	{

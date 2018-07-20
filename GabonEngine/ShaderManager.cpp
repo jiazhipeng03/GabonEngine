@@ -17,21 +17,10 @@ ShaderManager::~ShaderManager()
 	}
 }
 
-bool ShaderManager::Init()
-{	
-	Parse("shader.xml");
-
-// 	TextureShader* shader = new TextureShader;
-// 	shader->Initialize(g_App->GetDevice(), g_App->GetWindowHandle(), "texture.vs", "texture.ps");
-// 	m_mapShader["default"] = shader;
-
-	return true;
-}
-
-void ShaderManager::Parse(std::string filename)
+bool ShaderManager::Init(std::string filename)
 {
 	using namespace rapidxml;
-	file<> file("shader.xml");
+	file<> file(filename.c_str());
 	xml_document<> doc;
 	doc.parse<0>(file.data());
 
@@ -41,5 +30,16 @@ void ShaderManager::Parse(std::string filename)
 	{
 		TextureShader* shader = new TextureShader;
 		std::string shaderName = shaderNode->first_attribute()->value();
+		std::string vsFile = shaderNode->first_node("vs")->first_attribute()->value();
+		std::string psFile = shaderNode->first_node("ps")->first_attribute()->value();
+		if (!shader->Initialize(vsFile, psFile))
+		{
+			assert(0);
+			return false;
+		}
+		m_mapShader["default"] = shader;
+		shaderNode = shaderNode->next_sibling("shader");
 	}
+
+	return true;
 }

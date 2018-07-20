@@ -31,11 +31,11 @@ bool MainApp::Init()
 	m_Camera->LookAt(Vector3(-8.5f, 3.0f, -8.0f), Vector3::ZERO, Vector3::UNIT_Y);
 	m_Camera->UpdateViewMatrix();
 
-	if (!m_ShaderMan->Init())
+	if (!m_ShaderMan->Init("shader.xml"))
 	{
 		return false;
 	}
-	if (!m_ModelMan->Init())
+	if (!m_ModelMan->Init("model.xml"))
 	{
 		return false;
 	}

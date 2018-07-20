@@ -18,7 +18,7 @@ public:
 	TextureShader();
 	~TextureShader();
 
-	bool Initialize(ID3D11Device*, HWND, std::string vsFileName, std::string psFileName);
+	bool Initialize(/*ID3D11Device*, HWND,*/ std::string vsFileName, std::string psFileName);
 	void Shutdown();
 	bool Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, ID3D11ShaderResourceView* texture);
 	//bool Render(ID3D11DeviceContext*, int IndexCount, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, ID3D11ShaderResourceView*);

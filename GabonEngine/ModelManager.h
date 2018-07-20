@@ -5,7 +5,7 @@ class ModelManager
 public:
 	ModelManager();
 	~ModelManager();
-	bool Init();
+	bool Init(std::string fileName);
 	void Render();
 private:
 	std::vector<ModelObject*> m_ModelList;
