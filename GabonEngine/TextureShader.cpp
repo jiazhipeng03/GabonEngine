@@ -97,7 +97,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	ID3D10Blob* errorMessage;
 	ID3D10Blob* vertexShaderBuffer;
 	ID3D10Blob* pixelShaderBuffer;
-	D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
+	std::vector<D3D11_INPUT_ELEMENT_DESC> inputlayout;
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -160,37 +160,74 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 		return false;
 	}
 
+	// reflect
+	ID3D11ShaderReflection* VSReflector = NULL;
+	D3DReflect(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&VSReflector);
+	D3D11_SHADER_DESC VSShaderDesc;
+	VSReflector->GetDesc(&VSShaderDesc);
+	D3D11_SHADER_BUFFER_DESC desc;
+	D3D11_SHADER_VARIABLE_DESC vDesc;
+	D3D11_SIGNATURE_PARAMETER_DESC iDesc;
+	int offset = 0, stride = 0;
+	for (unsigned int i = 0; i < VSShaderDesc.InputParameters; ++i)
+	{
+		VSReflector->GetInputParameterDesc(i, &iDesc);
+		D3D11_INPUT_ELEMENT_DESC inputDesc;
+		inputDesc.SemanticName = iDesc.SemanticName;
+		inputDesc.SemanticIndex = iDesc.SemanticIndex;
+		// get format from Mask(Count) & ComponentType
+		DXGI_FORMAT fmt = GetFormatFromDesc(iDesc, stride);
+		inputDesc.Format = fmt;
+		inputDesc.InputSlot = iDesc.Stream;
+		inputDesc.AlignedByteOffset = offset;
+		inputDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		inputDesc.InstanceDataStepRate = 0;
+		inputlayout.push_back(inputDesc);
+		offset += stride * 4;
+	}
+	for (unsigned int i = 0; i < VSShaderDesc.ConstantBuffers; ++i)
+	{
+		ID3D11ShaderReflectionConstantBuffer* pReflectCB = VSReflector->GetConstantBufferByIndex(i);
+		pReflectCB->GetDesc(&desc);
+		if(desc.Type != D3D_CT_CBUFFER)
+			continue;
+		for (unsigned int j = 0; j < desc.Variables; ++j)
+		{
+			ID3D11ShaderReflectionVariable* pVar = pReflectCB->GetVariableByIndex(j);
+			pVar->GetDesc(&vDesc);
+		}
+	}
 	// Create the vertex input layout description.
 	// This setup needs to match the VertexType stucture in the ModelClass and in the shader.
-	polygonLayout[0].SemanticName = "POSITION";
-	polygonLayout[0].SemanticIndex = 0;
-	polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	polygonLayout[0].InputSlot = 0;
-	polygonLayout[0].AlignedByteOffset = 0;
-	polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	polygonLayout[0].InstanceDataStepRate = 0;
-
-	polygonLayout[1].SemanticName = "NORMAL";
-	polygonLayout[1].SemanticIndex = 0;
-	polygonLayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	polygonLayout[1].InputSlot = 0;
-	polygonLayout[1].AlignedByteOffset = 12;
-	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	polygonLayout[1].InstanceDataStepRate = 0;
-
-	polygonLayout[2].SemanticName = "TEXCOORD";
-	polygonLayout[2].SemanticIndex = 0;
-	polygonLayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
-	polygonLayout[2].InputSlot = 0;
-	polygonLayout[2].AlignedByteOffset = 24;
-	polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	polygonLayout[2].InstanceDataStepRate = 0;
+// 	inputlayout[0].SemanticName = "POSITION";
+// 	inputlayout[0].SemanticIndex = 0;
+// 	inputlayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+// 	inputlayout[0].InputSlot = 0;
+// 	inputlayout[0].AlignedByteOffset = 0;
+// 	inputlayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+// 	inputlayout[0].InstanceDataStepRate = 0;
+// 
+// 	inputlayout[1].SemanticName = "NORMAL";
+// 	inputlayout[1].SemanticIndex = 0;
+// 	inputlayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+// 	inputlayout[1].InputSlot = 0;
+// 	inputlayout[1].AlignedByteOffset = 12;
+// 	inputlayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+// 	inputlayout[1].InstanceDataStepRate = 0;
+// 
+// 	inputlayout[2].SemanticName = "TEXCOORD";
+// 	inputlayout[2].SemanticIndex = 0;
+// 	inputlayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+// 	inputlayout[2].InputSlot = 0;
+// 	inputlayout[2].AlignedByteOffset = 24;
+// 	inputlayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+// 	inputlayout[2].InstanceDataStepRate = 0;
 
 	// Get a count of the elements in the layout.
-	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
+	numElements = (int)inputlayout.size();
 
 	// Create the vertex input layout.
-	result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
+	result = device->CreateInputLayout(&inputlayout[0], numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
 		&m_layout);
 	if (FAILED(result))
 	{
@@ -389,4 +426,40 @@ void TextureShader::RenderShader(ID3D11DeviceContext* deviceContext, int VertexC
 	deviceContext->Draw(VertexCount, StartVertexLocation);
 
 	return;
+}
+
+DXGI_FORMAT TextureShader::GetFormatFromDesc(D3D11_SIGNATURE_PARAMETER_DESC inputDesc, int &OutStride)
+{
+	struct FormatPair
+	{
+		int ComponentNum;
+		D3D_REGISTER_COMPONENT_TYPE ComponentType;
+		FormatPair():ComponentNum(0), ComponentType(D3D_REGISTER_COMPONENT_FLOAT32) {};
+		FormatPair(int cNum, D3D_REGISTER_COMPONENT_TYPE type) :ComponentNum(cNum), ComponentType(type) {};
+		bool operator < (const FormatPair& other) const
+		{
+			if (ComponentNum < other.ComponentNum)
+				return true;
+			else if (ComponentNum == other.ComponentNum)
+			{
+				if (ComponentType < other.ComponentType)
+					return true;
+			}
+			return false;
+		}
+	};
+	std::map<FormatPair, DXGI_FORMAT> mapFormat = {
+		{ FormatPair(2, D3D_REGISTER_COMPONENT_FLOAT32), DXGI_FORMAT_R32G32_FLOAT},
+		{ FormatPair(2, D3D_REGISTER_COMPONENT_UINT32), DXGI_FORMAT_R32G32_UINT },
+		{ FormatPair(3, D3D_REGISTER_COMPONENT_FLOAT32), DXGI_FORMAT_R32G32B32_FLOAT },
+		{ FormatPair(3, D3D_REGISTER_COMPONENT_UINT32), DXGI_FORMAT_R32G32B32_UINT },
+	};
+	int ComponentNum = 0;
+	BYTE Mask = inputDesc.Mask;
+	while (Mask)
+	{
+		ComponentNum++;
+		Mask >>= 1;
+	}
+	return mapFormat[FormatPair(ComponentNum, inputDesc.ComponentType)];
 }

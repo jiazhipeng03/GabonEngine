@@ -21,6 +21,7 @@ public:
 	ModelObject();
 	~ModelObject();
 
+	bool LoadFBX(std::string file, std::vector<VertexType>& OutVertex);
 	virtual void Init(std::string name, TextureShader* shader);
 	void Render();
 	
