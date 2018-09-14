@@ -127,10 +127,10 @@ bool ModelObject::LoadFBX(std::string fileName, std::vector<VertexType>& pOutVer
 	FbxScene* pFbxScene = FbxScene::Create(g_pFbxSdkManager, "");
 
 	bool bSuccess = pImporter->Initialize(fileName.c_str()/*"C:\\MyPath\\MyModel.fbx"*/, -1, g_pFbxSdkManager->GetIOSettings());
-	if (!bSuccess) return E_FAIL;
+	if (!bSuccess) return false;
 
 	bSuccess = pImporter->Import(pFbxScene);
-	if (!bSuccess) return E_FAIL;
+	if (!bSuccess) return false;
 
 	pImporter->Destroy();
 
@@ -173,5 +173,5 @@ bool ModelObject::LoadFBX(std::string fileName, std::vector<VertexType>& pOutVer
 		}
 
 	}
-	return S_OK;
+	return true;
 }
