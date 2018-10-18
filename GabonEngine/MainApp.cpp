@@ -51,6 +51,7 @@ void MainApp::OnResize()
 void MainApp::UpdateScene(float dt)
 {
 	// Update
+	m_Camera->UpdateViewMatrix();
 }
 
 void MainApp::DrawScene()
@@ -78,4 +79,33 @@ void MainApp::OnMouseUp(WPARAM btnState, int x, int y)
 void MainApp::OnMouseMove(WPARAM btnState, int x, int y)
 {
 
+}
+
+void MainApp::OnMouseWheel(UINT key, int zDelta, int x, int y)
+{
+	float speed = 5.f;
+	float delta = zDelta < 0 ? -5.f: 5.f;
+	Ogre::Vector3 dir = m_Camera->GetLook();
+	m_Camera->Move(dir*delta);
+}
+
+void MainApp::OnKeyDown(UINT key)
+{
+	float speed = 0.5f;
+	if (key == 'w' || key == 'W')
+	{		
+		m_Camera->Move(speed * m_Camera->GetLook());
+	}
+	else if (key == 's' || key == 'S')
+	{
+		m_Camera->Move(-speed * m_Camera->GetLook());
+	}
+	else if (key == 'a' || key == 'A')
+	{
+		m_Camera->Move(-speed * m_Camera->GetRight());
+	}
+	else if (key == 'd' || key == 'D')
+	{
+		m_Camera->Move(speed * m_Camera->GetRight());
+	}
 }

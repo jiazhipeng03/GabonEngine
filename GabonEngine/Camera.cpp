@@ -45,32 +45,15 @@ void Camera::SetPosition(const Ogre::Vector3& v)
 	mPosition = v;
 }
 
-Ogre::Vector3 Camera::GetRightXM()const
-{
-	return mRight;
-//	return XMLoadFloat3(&mRight);
-}
-
 Ogre::Vector3 Camera::GetRight()const
 {
 	return mRight;
 }
 
-Ogre::Vector3 Camera::GetUpXM()const
-{
-	return mUp;
-//	return XMLoadFloat3(&mUp);
-}
 
 Ogre::Vector3 Camera::GetUp()const
 {
 	return mUp;
-}
-
-Ogre::Vector3 Camera::GetLookXM()const
-{
-	return mLook;
-//	return XMLoadFloat3(&mLook);
 }
 
 Ogre::Vector3 Camera::GetLook()const
@@ -183,6 +166,11 @@ Ogre::Matrix4 Camera::Proj()const
 Ogre::Matrix4 Camera::ViewProj()const
 {
 	return mView * mProj;
+}
+
+void Camera::Move(const Ogre::Vector3& v)
+{
+	mPosition += v;
 }
 
 void Camera::Strafe(float d)

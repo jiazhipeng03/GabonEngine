@@ -24,15 +24,17 @@ ModelObject::~ModelObject()
 	ReleaseCOM(m_DiffuseSRV);
 }
 
-void ModelObject::Init(std::string name, TextureShader* shader)
+void ModelObject::Init(std::string name, TextureShader* shader, std::string fbxName)
 {
 	m_name = name;
 	m_Shader = shader;
-	if (name == "wall" || name == "floor" || name == "square")
-	{
-		BuildGeometryBuffers();
-		InitTexture(L"Textures/checkboard.dds");
-	}
+	LoadFBX(fbxName);
+	BuildGeometryBuffers();
+// 	if (name == "wall" || name == "floor" || name == "square")
+// 	{
+// 		BuildGeometryBuffers();
+ 		InitTexture(L"Textures/checkboard.dds");
+// 	}
 }
 
 void ModelObject::Render()
@@ -71,34 +73,93 @@ Ogre::Matrix4 ModelObject::GetWorldMatrix()
 
 void ModelObject::BuildGeometryBuffers()
 {
-	m_VertexCount = 6;
-	m_StartVertexIndex = 0;
+// 	m_VertexCount = 6;
+ 	m_StartVertexIndex = 0;
+// 
+// 	VertexType v[6];
+// 	v[0] = VertexType(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
+// 	v[1] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
+// 	v[2] = VertexType(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
+// 	v[3] = VertexType(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
+// 	v[4] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
+// 	v[5] = VertexType(1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f);
 
-	VertexType v[6];
-	v[0] = VertexType(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
-	v[1] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
-	v[2] = VertexType(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
-	v[3] = VertexType(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
-	v[4] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
-	v[5] = VertexType(1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f);
-
+	m_VertexCount = (int)m_Vertex.size();
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(VertexType) * 6;
+	vbd.ByteWidth = sizeof(VertexType) * m_VertexCount;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &v[0];
+	vinitData.pSysMem = &m_Vertex[0];
 	HR(g_App->GetDevice()->CreateBuffer(&vbd, &vinitData, &m_vertexBuffer));
 }
 
 void ModelObject::InitTexture(LPCWSTR texName)
 {
 	ID3D11Resource* texture = nullptr;
-	DirectX::CreateDDSTextureFromFile(g_App->GetDevice(),
-		texName, &texture, &m_DiffuseSRV);
+	
+	DirectX::CreateDDSTextureFromFile(g_App->GetDevice(), texName, &texture, &m_DiffuseSRV);
 	ReleaseCOM(texture);
+}
+
+void ModelObject::LoadMesh(fbxsdk::FbxNode* pFbxRootNode)
+{
+	// temp store
+	Ogre::Vector3 vertex[3];
+	Ogre::Vector4 color[3];
+	Ogre::Vector3 normal[3];
+	Ogre::Vector3 tangent[3];
+	Ogre::Vector2 uv[3][2];
+	int vertexCounter = 0;
+	if (pFbxRootNode)
+	{
+		for (int i = 0; i < pFbxRootNode->GetChildCount(); i++)
+		{
+			fbxsdk::FbxNode* pFbxChildNode = pFbxRootNode->GetChild(i);
+			std::string name = pFbxChildNode->GetName();
+			LoadMesh(pFbxChildNode);			
+			if (pFbxChildNode->GetNodeAttribute() == NULL)
+				continue;
+
+			FbxNodeAttribute::EType AttributeType = pFbxChildNode->GetNodeAttribute()->GetAttributeType();
+
+			if (AttributeType != FbxNodeAttribute::eMesh)
+				continue;
+
+			FbxMesh* pMesh = (FbxMesh*)pFbxChildNode->GetNodeAttribute();
+
+			//FbxVector4* pVertices = pMesh->GetControlPoints();
+			
+			for (int j = 0; j < pMesh->GetPolygonCount(); j++)
+			{
+				int iNumVertices = pMesh->GetPolygonSize(j);
+				assert(iNumVertices == 3);
+				
+				for (int k = 0; k < iNumVertices; k++) 
+				{
+					int iControlPointIndex = pMesh->GetPolygonVertex(j, k);
+
+					ReadVertex(pMesh, iControlPointIndex, &vertex);
+					ReadColor(pMesh, iControlPointIndex, vertexCounter, &color);
+					for (int layer = 0; layer < 2; ++layer)
+					{
+
+						ReadUV()
+					}
+// 					VertexType vertex(0, 0, 0, 0, 0, -1.0, 0.0, 0.0);
+// 					vertex.position[0] = (float)pVertices[iControlPointIndex].mData[0];
+// 					vertex.position[1] = (float)pVertices[iControlPointIndex].mData[1];
+// 					vertex.position[2] = (float)pVertices[iControlPointIndex].mData[2];
+// 					
+// 					m_Vertex.push_back(vertex);
+				}
+			}
+
+		}
+
+	}
 }
 
 int ModelObject::GetVertexCount()
@@ -113,7 +174,7 @@ int ModelObject::GetStartVertexIndex()
 
 FbxManager* g_pFbxSdkManager = nullptr;
 
-bool ModelObject::LoadFBX(std::string fileName, std::vector<VertexType>& pOutVertexVector)
+bool ModelObject::LoadFBX(std::string fileName)
 {
 	if (g_pFbxSdkManager == nullptr)
 	{
@@ -135,43 +196,7 @@ bool ModelObject::LoadFBX(std::string fileName, std::vector<VertexType>& pOutVer
 	pImporter->Destroy();
 
 	FbxNode* pFbxRootNode = pFbxScene->GetRootNode();
-
-	if (pFbxRootNode)
-	{
-		for (int i = 0; i < pFbxRootNode->GetChildCount(); i++)
-		{
-			FbxNode* pFbxChildNode = pFbxRootNode->GetChild(i);
-
-			if (pFbxChildNode->GetNodeAttribute() == NULL)
-				continue;
-
-			FbxNodeAttribute::EType AttributeType = pFbxChildNode->GetNodeAttribute()->GetAttributeType();
-
-			if (AttributeType != FbxNodeAttribute::eMesh)
-				continue;
-
-			FbxMesh* pMesh = (FbxMesh*)pFbxChildNode->GetNodeAttribute();
-
-			FbxVector4* pVertices = pMesh->GetControlPoints();
-
-			for (int j = 0; j < pMesh->GetPolygonCount(); j++)
-			{
-				int iNumVertices = pMesh->GetPolygonSize(j);
-				assert(iNumVertices == 3);
-
-				for (int k = 0; k < iNumVertices; k++) {
-					int iControlPointIndex = pMesh->GetPolygonVertex(j, k);
-
-					VertexType vertex;
-					vertex.position[0] = (float)pVertices[iControlPointIndex].mData[0];
-					vertex.position[1] = (float)pVertices[iControlPointIndex].mData[1];
-					vertex.position[2] = (float)pVertices[iControlPointIndex].mData[2];
-					pOutVertexVector.push_back(vertex);
-				}
-			}
-
-		}
-
-	}
+	LoadMesh(pFbxRootNode);
+	
 	return true;
 }

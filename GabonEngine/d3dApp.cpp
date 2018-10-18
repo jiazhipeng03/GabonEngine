@@ -50,6 +50,7 @@ D3DApp::D3DApp(HINSTANCE hInstance)
 	// Windows messages to the object's window procedure through
 	// the global window procedure.
 	gd3dApp = this;
+	m_InputMan = new InputManager;
 }
 
 D3DApp::~D3DApp()
@@ -65,6 +66,7 @@ D3DApp::~D3DApp()
 
 	ReleaseCOM(md3dImmediateContext);
 	ReleaseCOM(md3dDevice);
+	SafeDelete(m_InputMan);
 }
 
 HINSTANCE D3DApp::AppInst()const
@@ -311,7 +313,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	case WM_LBUTTONDOWN:
 	case WM_MBUTTONDOWN:
-	case WM_RBUTTONDOWN:
+	case WM_RBUTTONDOWN:		
 		OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_LBUTTONUP:
@@ -322,6 +324,21 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
+	case WM_MOUSEWHEEL:
+	{
+		UINT fwKeys = GET_KEYSTATE_WPARAM(wParam);
+		int zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+		int xPos = GET_X_LPARAM(lParam);
+		int yPos = GET_Y_LPARAM(lParam);
+		OnMouseWheel(fwKeys, zDelta, xPos, yPos);
+		return 0;
+	}
+	case WM_KEYDOWN:
+	{		
+		UINT vkey = wParam;
+		OnKeyDown(vkey);
+		return 0;
+	}
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);

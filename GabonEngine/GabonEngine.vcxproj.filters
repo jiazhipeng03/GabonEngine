@@ -90,6 +90,9 @@
     <ClCompile Include="ModelManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="XMLParser\rapidxml_utils.hpp">
       <Filter>XMLParser</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -26,11 +26,8 @@ public:
 	void SetPosition(const Ogre::Vector3& v);
 	
 	// Get camera basis vectors.
-	Ogre::Vector3 GetRightXM()const;
 	Ogre::Vector3 GetRight()const;
-	Ogre::Vector3 GetUpXM()const;
 	Ogre::Vector3 GetUp()const;
-	Ogre::Vector3 GetLookXM()const;
 	Ogre::Vector3 GetLook()const;
 
 	// Get frustum properties.
@@ -58,6 +55,7 @@ public:
 	Ogre::Matrix4 Proj()const;
 	Ogre::Matrix4 ViewProj()const;
 
+	void Move(const Ogre::Vector3& v);
 	// Strafe/Walk the camera a distance d.
 	void Strafe(float d);
 	void Walk(float d);

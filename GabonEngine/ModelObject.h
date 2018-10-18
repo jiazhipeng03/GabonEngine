@@ -4,6 +4,10 @@
 #include "d3dUtil.h"
 #include "Math/OgreMatrix4.h"
 class TextureShader;
+namespace fbxsdk
+{
+	class FbxNode;
+}
 class ModelObject :
 	public Object
 {
@@ -21,8 +25,8 @@ public:
 	ModelObject();
 	~ModelObject();
 
-	bool LoadFBX(std::string file, std::vector<VertexType>& OutVertex);
-	virtual void Init(std::string name, TextureShader* shader);
+	bool LoadFBX(std::string file);
+	virtual void Init(std::string name, TextureShader* shader, std::string fbxName);
 	void Render();
 	
 	Ogre::Matrix4 GetWorldMatrix();
@@ -35,6 +39,7 @@ public:
 private:
 	void BuildGeometryBuffers();
 	void InitTexture(LPCWSTR texName);
+	void LoadMesh(fbxsdk::FbxNode* pFbxRootNode);
 private:
 	TextureShader* m_Shader;
 	std::string m_name;
@@ -42,6 +47,7 @@ private:
 	Material* m_mat;
 	Ogre::Matrix4 m_World;
 
+	std::vector<VertexType> m_Vertex;
 	ID3D11Buffer* m_vertexBuffer;
 	ID3D11Buffer* m_indexBuffer;
 	ID3D11ShaderResourceView* m_DiffuseSRV;

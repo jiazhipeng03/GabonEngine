@@ -14,7 +14,7 @@
 #include "d3dUtil.h"
 #include "GameTimer.h"
 #include <string>
-
+#include "InputManager.h"
 class D3DApp
 {
 public:
@@ -37,9 +37,12 @@ public:
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Convenience overrides for handling mouse input.
+	// TO-DO:转给InputManager处理，不再继承处理。转为发送事件名和数值，可用xml配置事件名
 	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
 	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
+	virtual void OnMouseWheel(UINT key, int zDelta, int x, int y) {}
+	virtual void OnKeyDown(UINT key) {};
 	ID3D11Device* GetDevice() { return md3dDevice; }
 	HWND GetWindowHandle() { return mhMainWnd; }
 	ID3D11DeviceContext* GetDeviceContext() { return md3dImmediateContext; }
@@ -75,6 +78,8 @@ protected:
 	int mClientWidth;
 	int mClientHeight;
 	bool mEnable4xMsaa;
+
+	InputManager* m_InputMan;
 };
 
 #endif // D3DAPP_H

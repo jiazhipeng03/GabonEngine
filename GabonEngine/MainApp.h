@@ -27,10 +27,11 @@ public:
 	void UpdateScene(float dt);
 	void DrawScene();
 
-	void OnMouseDown(WPARAM btnState, int x, int y);
-	void OnMouseUp(WPARAM btnState, int x, int y);
-	void OnMouseMove(WPARAM btnState, int x, int y);
-
+	void OnMouseDown(WPARAM btnState, int x, int y) override;
+	void OnMouseUp(WPARAM btnState, int x, int y) override;
+	void OnMouseMove(WPARAM btnState, int x, int y) override;
+	void OnMouseWheel(UINT key, int zDelta, int x, int y) override;
+	virtual void OnKeyDown(UINT key) override;
 	ShaderManager* GetShaderMan() { return m_ShaderMan; }
 	Camera* GetCamera() { return m_Camera; }
 	
