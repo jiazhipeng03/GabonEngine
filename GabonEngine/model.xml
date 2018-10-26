@@ -1,7 +1,13 @@
 <?xml version="1.0" ?>
 <model_root>
+<!--
 	<model name = "square">
-		<fbx value = "D:\资源\Leather outfit Girl_FBX.fbx"/>
+		<mesh value = "D:\资源\Leather outfit Girl_FBX.fbx"/>
+		<shader value = "default"/>
+	</model>
+	-->
+	<model name = "cube">
+		<mesh value = "D:\CProjects\GabonEngine\GabonEngine\Textures\cube.txt"/>
 		<shader value = "default"/>
 	</model>
 </model_root>

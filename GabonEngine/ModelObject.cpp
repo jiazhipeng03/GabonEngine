@@ -24,11 +24,25 @@ ModelObject::~ModelObject()
 	ReleaseCOM(m_DiffuseSRV);
 }
 
+bool ModelObject::LoadGeometryBuffers(std::string meshName)
+{
+	if (meshName.find(".fbx") != std::string::npos)
+	{
+		return LoadMeshFromFBX(meshName);
+	}
+	else if (meshName.find(".txt") != std::string::npos)
+	{
+		return LoadMeshFromTxt(meshName);
+	}
+	return false;
+}
+
 void ModelObject::Init(std::string name, TextureShader* shader, std::string fbxName)
 {
 	m_name = name;
 	m_Shader = shader;
-	LoadFBX(fbxName);
+	
+	LoadGeometryBuffers(fbxName);
 	BuildGeometryBuffers();
 // 	if (name == "wall" || name == "floor" || name == "square")
 // 	{
@@ -73,17 +87,16 @@ Ogre::Matrix4 ModelObject::GetWorldMatrix()
 
 void ModelObject::BuildGeometryBuffers()
 {
-// 	m_VertexCount = 6;
- 	m_StartVertexIndex = 0;
-// 
-// 	VertexType v[6];
+	m_StartVertexIndex = 0;
+// 	m_VertexCount = 6; 	
+//  VertexType v[6];
 // 	v[0] = VertexType(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
 // 	v[1] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
 // 	v[2] = VertexType(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
 // 	v[3] = VertexType(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
 // 	v[4] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
 // 	v[5] = VertexType(1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f);
-
+// 	m_Vertex.assign(&v[0], &v[5]);
 	m_VertexCount = (int)m_Vertex.size();
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -104,7 +117,7 @@ void ModelObject::InitTexture(LPCWSTR texName)
 	ReleaseCOM(texture);
 }
 
-void ModelObject::LoadMesh(fbxsdk::FbxNode* pFbxRootNode)
+void ModelObject::LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode)
 {
 	// temp store
 	Ogre::Vector3 vertex[3];
@@ -119,7 +132,7 @@ void ModelObject::LoadMesh(fbxsdk::FbxNode* pFbxRootNode)
 		{
 			fbxsdk::FbxNode* pFbxChildNode = pFbxRootNode->GetChild(i);
 			std::string name = pFbxChildNode->GetName();
-			LoadMesh(pFbxChildNode);			
+			LoadFbxMesh(pFbxChildNode);			
 			if (pFbxChildNode->GetNodeAttribute() == NULL)
 				continue;
 
@@ -130,7 +143,7 @@ void ModelObject::LoadMesh(fbxsdk::FbxNode* pFbxRootNode)
 
 			FbxMesh* pMesh = (FbxMesh*)pFbxChildNode->GetNodeAttribute();
 
-			//FbxVector4* pVertices = pMesh->GetControlPoints();
+			FbxVector4* pVertices = pMesh->GetControlPoints();
 			
 			for (int j = 0; j < pMesh->GetPolygonCount(); j++)
 			{
@@ -141,19 +154,19 @@ void ModelObject::LoadMesh(fbxsdk::FbxNode* pFbxRootNode)
 				{
 					int iControlPointIndex = pMesh->GetPolygonVertex(j, k);
 
-					ReadVertex(pMesh, iControlPointIndex, &vertex);
-					ReadColor(pMesh, iControlPointIndex, vertexCounter, &color);
-					for (int layer = 0; layer < 2; ++layer)
-					{
-
-						ReadUV()
-					}
-// 					VertexType vertex(0, 0, 0, 0, 0, -1.0, 0.0, 0.0);
-// 					vertex.position[0] = (float)pVertices[iControlPointIndex].mData[0];
-// 					vertex.position[1] = (float)pVertices[iControlPointIndex].mData[1];
-// 					vertex.position[2] = (float)pVertices[iControlPointIndex].mData[2];
-// 					
-// 					m_Vertex.push_back(vertex);
+// 					ReadVertex(pMesh, iControlPointIndex, &vertex);
+// 					ReadColor(pMesh, iControlPointIndex, vertexCounter, &color);
+// 					for (int layer = 0; layer < 2; ++layer)
+// 					{
+// 
+// 						ReadUV()
+// 					}
+					VertexType vertex(0, 0, 0, 0, 0, -1.0, 0.0, 0.0);
+					vertex.position[0] = (float)pVertices[iControlPointIndex].mData[0];
+					vertex.position[1] = (float)pVertices[iControlPointIndex].mData[1];
+					vertex.position[2] = (float)pVertices[iControlPointIndex].mData[2];
+					
+					m_Vertex.push_back(vertex);
 				}
 			}
 
@@ -174,7 +187,7 @@ int ModelObject::GetStartVertexIndex()
 
 FbxManager* g_pFbxSdkManager = nullptr;
 
-bool ModelObject::LoadFBX(std::string fileName)
+bool ModelObject::LoadMeshFromFBX(const std::string& fileName)
 {
 	if (g_pFbxSdkManager == nullptr)
 	{
@@ -196,7 +209,68 @@ bool ModelObject::LoadFBX(std::string fileName)
 	pImporter->Destroy();
 
 	FbxNode* pFbxRootNode = pFbxScene->GetRootNode();
-	LoadMesh(pFbxRootNode);
+	LoadFbxMesh(pFbxRootNode);
 	
+	return true;
+}
+
+bool ModelObject::LoadMeshFromTxt(const std::string& file)
+{
+	std::ifstream fin;
+	char input;
+	int i;
+
+
+	// Open the model file.
+	fin.open(file);
+
+	// If it could not open the file then exit.
+	if (fin.fail())
+	{
+		return false;
+	}
+
+	// Read up to the value of vertex count.
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+
+	// Read in the vertex count.
+	fin >> m_VertexCount;
+
+	// Set the number of indices to be the same as the vertex count.
+	m_IndexCount = m_VertexCount;
+
+	// Create the model using the vertex count that was read in.
+// 	m_model = new ModelType[m_vertexCount];
+// 	if (!m_model)
+// 	{
+// 		return false;
+// 	}
+
+	// Read up to the beginning of the data.
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+	fin.get(input);
+	fin.get(input);
+
+	// Read in the vertex data.
+	for (i = 0; i < m_VertexCount; i++)
+	{
+		VertexType v;
+		fin >> v.position.x >> v.position.y >> v.position.z;
+		fin >> v.texture.x >> v.texture.y;
+		fin >> v.normal.x >> v.normal.y >> v.normal.z;
+		m_Vertex.push_back(v);
+	}
+
+	// Close the model file.
+	fin.close();
+
 	return true;
 }

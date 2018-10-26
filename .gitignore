@@ -1,7 +1,7 @@
-
+*.db
 GabonEngine.VC.VC.opendb
 Debug/*
 GabonEngine/Debug/*
 .vs/*
-.vs/GabonEngine/v14/.suo
+*.suo
 GabonEngine/shader-error.txt

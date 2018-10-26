@@ -29,10 +29,10 @@ bool ModelManager::Init(std::string fileName)
 	{
 		ModelObject* obj = new ModelObject;
 		std::string modelName = modelNode->first_attribute()->value();
-		std::string fbxName = modelNode->first_node("fbx")->first_attribute()->value();
+		std::string meshName = modelNode->first_node("mesh")->first_attribute()->value();
 		std::string shaderName = modelNode->first_node("shader")->first_attribute()->value();
 		TextureShader* shader = g_App->GetShaderMan()->GetShader(shaderName);
-		obj->Init(modelName, shader, fbxName);
+		obj->Init(modelName, shader, meshName);
 		m_ModelList.push_back(obj);
 		modelNode = modelNode->next_sibling("model");
 	}

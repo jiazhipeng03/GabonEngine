@@ -25,8 +25,8 @@ public:
 	ModelObject();
 	~ModelObject();
 
-	bool LoadFBX(std::string file);
 	virtual void Init(std::string name, TextureShader* shader, std::string fbxName);
+	bool LoadGeometryBuffers(std::string meshName);
 	void Render();
 	
 	Ogre::Matrix4 GetWorldMatrix();
@@ -39,7 +39,9 @@ public:
 private:
 	void BuildGeometryBuffers();
 	void InitTexture(LPCWSTR texName);
-	void LoadMesh(fbxsdk::FbxNode* pFbxRootNode);
+	bool LoadMeshFromFBX(const std::string& file);
+	bool LoadMeshFromTxt(const std::string& file);
+	void LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode);
 private:
 	TextureShader* m_Shader;
 	std::string m_name;
