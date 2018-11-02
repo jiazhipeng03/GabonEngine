@@ -47,7 +47,7 @@ void ModelObject::Init(std::string name, TextureShader* shader, std::string fbxN
 // 	if (name == "wall" || name == "floor" || name == "square")
 // 	{
 // 		BuildGeometryBuffers();
- 		InitTexture(L"Textures/checkboard.dds");
+ 		InitTexture(L"Textures/seafloor.dds");
 // 	}
 }
 
@@ -67,7 +67,7 @@ void ModelObject::Render()
 
 	// no ib
 // 	// Set the index buffer to active in the input assembler so it can be rendered.
-// 	g_App->GetDeviceContext()->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+ 	g_App->GetDeviceContext()->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	g_App->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -97,16 +97,40 @@ void ModelObject::BuildGeometryBuffers()
 // 	v[4] = VertexType(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
 // 	v[5] = VertexType(1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f);
 // 	m_Vertex.assign(&v[0], &v[5]);
+	unsigned long* m_Indices = new unsigned long[m_IndexCount];
+	for (int i = 0; i < m_VertexCount; ++i)
+	{
+		m_Indices[i] = i;
+	}
 	m_VertexCount = (int)m_Vertex.size();
+	
 	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.Usage = D3D11_USAGE_DEFAULT;
 	vbd.ByteWidth = sizeof(VertexType) * m_VertexCount;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
+	vbd.StructureByteStride = 0;
 	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &m_Vertex[0];
+	vinitData.pSysMem = m_Vertex.data();
+	vinitData.SysMemPitch = 0;
+	vinitData.SysMemSlicePitch = 0;
 	HR(g_App->GetDevice()->CreateBuffer(&vbd, &vinitData, &m_vertexBuffer));
+
+	D3D11_BUFFER_DESC ibd;
+	ibd.Usage = D3D11_USAGE_DEFAULT;
+	ibd.ByteWidth = sizeof(unsigned long) * m_IndexCount;
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	ibd.StructureByteStride = 0;
+	D3D11_SUBRESOURCE_DATA indexData;
+	indexData.pSysMem = m_Indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+	HR(g_App->GetDevice()->CreateBuffer(&ibd, &indexData, &m_indexBuffer));
+
+	delete[] m_Indices;
 }
 
 void ModelObject::InitTexture(LPCWSTR texName)

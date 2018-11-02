@@ -15,8 +15,18 @@
 #include "GameTimer.h"
 #include <string>
 #include "InputManager.h"
-class D3DApp
+enum MOUSE_STATE
 {
+	NONE,
+	L_DOWN,
+	L_UP,
+	R_DOWN,
+	R_UP,
+	M_DOWN,
+	M_UP,
+};
+class D3DApp
+{	
 public:
 	D3DApp(HINSTANCE hInstance);
 	virtual ~D3DApp();
@@ -80,6 +90,7 @@ protected:
 	bool mEnable4xMsaa;
 
 	InputManager* m_InputMan;
+	MOUSE_STATE m_MouseState;
 };
 
 #endif // D3DAPP_H

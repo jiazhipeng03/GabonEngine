@@ -39,12 +39,15 @@ private:
 	
 //	RenderOptions mRenderOptions;
 	
-	POINT mLastMousePos;
+//	POINT mLastMousePos;
 	// get eye, view, proj
 	Camera* m_Camera;
 
 	ModelManager* m_ModelMan;
 	ShaderManager* m_ShaderMan;
+
+	Ogre::Vector2 m_CurPos;
+	Ogre::Vector2 m_LastPos;
 };
 
 extern MainApp* g_App;

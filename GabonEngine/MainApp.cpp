@@ -6,12 +6,15 @@ MainApp::MainApp(HINSTANCE hInstance)
 	mMainWndCaption = L"Main Demo";
 	mEnable4xMsaa = false;
 
-	mLastMousePos.x = 0;
-	mLastMousePos.y = 0;
+// 	mLastMousePos.x = 0;
+// 	mLastMousePos.y = 0;
 
 	m_ShaderMan = new ShaderManager;
 	m_ModelMan = new ModelManager;
 	m_Camera = new Camera;
+
+	m_CurPos = Ogre::Vector2::ZERO;
+	m_LastPos = Ogre::Vector2::ZERO;
 }
 
 MainApp::~MainApp()
@@ -68,7 +71,7 @@ void MainApp::DrawScene()
 
 void MainApp::OnMouseDown(WPARAM btnState, int x, int y)
 {
-
+	
 }
 
 void MainApp::OnMouseUp(WPARAM btnState, int x, int y)
@@ -77,8 +80,24 @@ void MainApp::OnMouseUp(WPARAM btnState, int x, int y)
 }
 
 void MainApp::OnMouseMove(WPARAM btnState, int x, int y)
-{
-
+{	
+	m_CurPos = Ogre::Vector2(x, y);
+	Ogre::Vector2 delta = m_CurPos - m_LastPos;
+	float speed = 0.003f;
+	if (m_MouseState == MOUSE_STATE::L_DOWN)
+	{
+		if(delta.y)
+		{
+			speed = delta.y < 0 ? speed : -speed;
+			m_Camera->Pitch(speed);
+		}
+		else if(delta.x)
+		{
+			speed = delta.x < 0 ? speed : -speed;
+			m_Camera->Yaw(speed);
+		}
+	}
+	m_LastPos = m_CurPos;
 }
 
 void MainApp::OnMouseWheel(UINT key, int zDelta, int x, int y)

@@ -199,6 +199,20 @@ void Camera::Pitch(float angle)
 // 
 // 	XMStoreFloat3(&mUp,   XMVector3TransformNormal(XMLoadFloat3(&mUp), R));
 // 	XMStoreFloat3(&mLook, XMVector3TransformNormal(XMLoadFloat3(&mLook), R));
+	Ogre::Matrix3 rot;
+	rot.FromAngleAxis(mRight, angle);
+	//mUp = mUp * rot;
+	mLook = mLook * rot;
+	UpdateViewMatrix();
+}
+
+void Camera::Yaw(float angle)
+{
+	Ogre::Matrix3 rot;
+	rot.FromAngleAxis(mUp, angle);
+	mRight = mRight * rot;
+	mLook = mLook * rot;
+	UpdateViewMatrix();
 }
 
 void Camera::RotateY(float angle)

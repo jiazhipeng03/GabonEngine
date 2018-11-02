@@ -50,6 +50,7 @@ private:
 	Ogre::Matrix4 m_World;
 
 	std::vector<VertexType> m_Vertex;
+	//std::vector<unsigned long> m_Indices;
 	ID3D11Buffer* m_vertexBuffer;
 	ID3D11Buffer* m_indexBuffer;
 	ID3D11ShaderResourceView* m_DiffuseSRV;

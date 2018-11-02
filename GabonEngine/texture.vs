@@ -41,7 +41,7 @@ PixelInputType TextureVertexShader(VertexInputType input)
 
 	// Change the position vector to be 4 units for proper matrix calculations.
     //input.position.w = 1.0f;
-
+	//output.position = mul(input.position, worldMatrix);
 	// Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = mul(float4(input.position, 1.0f), worldMatrix);
     output.position = mul(output.position, viewMatrix);
