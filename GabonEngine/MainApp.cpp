@@ -1,4 +1,5 @@
 #include "MainApp.h"
+
 MainApp* g_App = NULL;
 MainApp::MainApp(HINSTANCE hInstance)
 	:D3DApp(hInstance)
@@ -12,9 +13,10 @@ MainApp::MainApp(HINSTANCE hInstance)
 	m_ShaderMan = new ShaderManager;
 	m_ModelMan = new ModelManager;
 	m_Camera = new Camera;
-
+	m_Light = new DirectionalLight;
 	m_CurPos = Ogre::Vector2::ZERO;
 	m_LastPos = Ogre::Vector2::ZERO;
+
 }
 
 MainApp::~MainApp()
@@ -23,6 +25,7 @@ MainApp::~MainApp()
 	SafeDelete(m_ModelMan);
 	
 	SafeDelete(m_Camera);
+	SafeDelete(m_Light);
 }
 
 bool MainApp::Init()
@@ -33,6 +36,7 @@ bool MainApp::Init()
 
 	m_Camera->LookAt(Vector3(-8.5f, 3.0f, -8.0f), Vector3::ZERO, Vector3::UNIT_Y);
 	m_Camera->UpdateViewMatrix();
+	m_Camera->InitBuffer();
 
 	if (!m_ShaderMan->Init("shader.xml"))
 	{
@@ -42,6 +46,8 @@ bool MainApp::Init()
 	{
 		return false;
 	}
+	if (!m_Light->Init())
+		return false;
 	return true;
 }
 
@@ -54,6 +60,7 @@ void MainApp::OnResize()
 void MainApp::UpdateScene(float dt)
 {
 	// Update
+	m_Camera->UpdateBuffer();
 	m_Camera->UpdateViewMatrix();
 }
 
@@ -64,6 +71,7 @@ void MainApp::DrawScene()
 
 	// 以后需要将model按shader分类
 	// 暂时先按Model来绘制
+	m_Light->Render();
 	m_ModelMan->Render();	
 
 	HR(mSwapChain->Present(0, 0));
@@ -81,7 +89,7 @@ void MainApp::OnMouseUp(WPARAM btnState, int x, int y)
 
 void MainApp::OnMouseMove(WPARAM btnState, int x, int y)
 {	
-	m_CurPos = Ogre::Vector2(x, y);
+	m_CurPos = Ogre::Vector2(float(x), float(y));
 	Ogre::Vector2 delta = m_CurPos - m_LastPos;
 	float speed = 0.003f;
 	if (m_MouseState == MOUSE_STATE::L_DOWN)

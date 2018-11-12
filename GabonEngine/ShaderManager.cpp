@@ -34,7 +34,6 @@ bool ShaderManager::Init(std::string filename)
 		std::string psFile = shaderNode->first_node("ps")->first_attribute()->value();
 		if (!shader->Initialize(vsFile, psFile))
 		{
-			assert(0);
 			return false;
 		}
 		m_mapShader["default"] = shader;

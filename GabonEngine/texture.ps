@@ -7,15 +7,23 @@
 // GLOBALS //
 /////////////
 Texture2D shaderTexture;
-SamplerState SampleType;
-/*SamplerState SampleType
+SamplerState SampleType
 {
 	Filter = ANISOTROPIC;
 	MaxAnisotropy = 4;
 
 	AddressU = WRAP;
 	AddressV = WRAP;
-};*/
+};
+
+cbuffer DirLightBufferType
+{
+	float4 ambientColor;	
+	float4 diffuseColor;
+	float4 specularColor;
+	float3 lightDirection;
+	float specularPower;
+};
 
 //////////////
 // TYPEDEFS //
@@ -24,6 +32,8 @@ struct PixelInputType
 {
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
+	float3 normal : NORMAL;
+	float3 viewDir : TEXCOORD1;
 };
 
 
@@ -34,10 +44,37 @@ float4 TexturePixelShader(PixelInputType input) : SV_TARGET
 {
 	float4 textureColor;
 
+    // Sample the pixel color from the texture using the sampler at this texture coordinate location.
+    textureColor = shaderTexture.Sample(SampleType, input.tex);
+
+    return textureColor;	
+}
+float4 LightShader(PixelInputType input) : SV_TARGET
+{
+	float4 textureColor;
+	float3 lightDir;
+	float lightIntensity;
+	float4 color;
+	float4 specular;
+	float3 reflectDir;
+
+	specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	color = ambientColor;
 
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColor = shaderTexture.Sample(SampleType, input.tex);
+	lightDir = -lightDirection;
+	lightIntensity = saturate(dot(input.normal, lightDir));
+
+	if(lightIntensity > 0.0f)
+	{
+		color += diffuseColor * lightIntensity;
+		reflectDir = normalize(2*lightIntensity*input.normal - lightDir);
+		specular = pow(saturate(dot(reflectDir,input.viewDir)), specularPower);
+	}
 	
-    return textureColor;
-	//return float4(1.0, 1.0, 1.0, 1.0);
+	color = color * textureColor;
+	
+	color = saturate(color + specular);
+    return color;	
 }

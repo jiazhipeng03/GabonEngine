@@ -38,7 +38,7 @@ public:
 private:	
 	
 //	RenderOptions mRenderOptions;
-	
+	Light* m_Light;
 //	POINT mLastMousePos;
 	// get eye, view, proj
 	Camera* m_Camera;

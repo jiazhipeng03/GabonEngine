@@ -129,7 +129,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	}
 
 	// Compile the pixel shader code.
-	result = D3DCompileFromFile(psFilename, NULL, NULL, "TexturePixelShader", "ps_5_0", 
+	result = D3DCompileFromFile(psFilename, NULL, NULL, "LightShader", "ps_5_0", 
 		D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
 		&pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
@@ -279,7 +279,6 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	{
 		return false;
 	}
-
 	return true;
 }
 

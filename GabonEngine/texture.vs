@@ -13,6 +13,11 @@ cbuffer MatrixBuffer
 	float4x4 projectionMatrix;
 };
 
+cbuffer CameraBuffer
+{
+	float3 eyePosition;
+	float padding;
+};
 
 //////////////
 // TYPEDEFS //
@@ -28,6 +33,8 @@ struct PixelInputType
 {
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
+	float3 normal : NORMAL;
+	float3 viewDir : TEXCOORD1;
 };
 
 
@@ -49,6 +56,9 @@ PixelInputType TextureVertexShader(VertexInputType input)
     
 	// Store the texture coordinates for the pixel shader.
 	output.tex = input.tex;
-    
+    output.normal = mul(input.normal, (float3x3)worldMatrix);
+	output.normal = normalize(output.normal);
+
+	output.viewDir = normalize(eyePosition - input.position);
     return output;
 }

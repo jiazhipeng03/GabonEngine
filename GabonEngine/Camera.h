@@ -16,9 +16,16 @@
 class Camera
 {
 public:
+	struct CameraBuffer
+	{
+		Ogre::Vector3 eyePosition;
+		float padding;
+	};
 	Camera();
 	~Camera();
 
+	void InitBuffer();
+	void UpdateBuffer();
 	// Get/Set world camera position.
 	Ogre::Vector3 GetPositionXM()const;
 	Ogre::Vector3 GetPosition()const;
@@ -64,6 +71,7 @@ public:
 	void Pitch(float angle);
 	void Yaw(float angle);
 	void RotateY(float angle);
+	void RotateAboutCenter(float angle);
 
 	// After modifying camera position/orientation, call to rebuild the view matrix.
 	void UpdateViewMatrix();
@@ -84,9 +92,14 @@ private:
 	float mNearWindowHeight;
 	float mFarWindowHeight;
 
+	float m_YawAngle;
+	float m_PitchAngle;
+
 	// Cache View/Proj matrices.
 	Ogre::Matrix4 mView;
 	Ogre::Matrix4 mProj;
+
+	ID3D11Buffer* m_CameraBuffer;
 };
 
 #endif // CAMERA_H

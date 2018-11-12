@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "MathHelper.h"
+#include "MainApp.h"
 using namespace DirectX;
 Camera::Camera()
 	: mPosition(0.0f, 0.0f, 0.0f), 
@@ -22,6 +23,36 @@ Camera::Camera()
 
 Camera::~Camera()
 {
+}
+
+void Camera::InitBuffer()
+{
+	D3D11_BUFFER_DESC bd;
+	bd.Usage = D3D11_USAGE_DYNAMIC;
+	bd.ByteWidth = sizeof(CameraBuffer);
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bd.MiscFlags = 0;
+	bd.StructureByteStride = 0;
+	HRESULT hr = g_App->GetDevice()->CreateBuffer(&bd, nullptr, &m_CameraBuffer);
+	if (FAILED(hr))
+	{
+		return;
+	}
+}
+
+void Camera::UpdateBuffer()
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = g_App->GetDeviceContext()->Map(m_CameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return;
+	}
+	CameraBuffer* buf = (CameraBuffer*)(mappedResource.pData);
+	buf->eyePosition = mPosition;
+	g_App->GetDeviceContext()->Unmap(m_CameraBuffer, 0);
+	g_App->GetDeviceContext()->VSSetConstantBuffers(1, 1, &m_CameraBuffer);
 }
 
 Ogre::Vector3 Camera::GetPositionXM()const
@@ -194,15 +225,13 @@ void Camera::Walk(float d)
 void Camera::Pitch(float angle)
 {
 // 	// Rotate up and look vector about the right vector.
-// 
-// 	XMMATRIX R = XMMatrixRotationAxis(XMLoadFloat3(&mRight), angle);
-// 
-// 	XMStoreFloat3(&mUp,   XMVector3TransformNormal(XMLoadFloat3(&mUp), R));
-// 	XMStoreFloat3(&mLook, XMVector3TransformNormal(XMLoadFloat3(&mLook), R));
+
 	Ogre::Matrix3 rot;
 	rot.FromAngleAxis(mRight, angle);
-	//mUp = mUp * rot;
-	mLook = mLook * rot;
+// 	mLook = mLook * rot;
+	
+	mPosition = rot * mPosition;
+	LookAt(mPosition, Ogre::Vector3::ZERO, mUp);
 	UpdateViewMatrix();
 }
 
@@ -210,8 +239,12 @@ void Camera::Yaw(float angle)
 {
 	Ogre::Matrix3 rot;
 	rot.FromAngleAxis(mUp, angle);
-	mRight = mRight * rot;
-	mLook = mLook * rot;
+// 	mRight = mRight * rot;
+// 	mLook = mLook * rot;
+// 	UpdateViewMatrix();
+
+	mPosition = mPosition * rot;
+	LookAt(mPosition, Ogre::Vector3::ZERO, mUp);
 	UpdateViewMatrix();
 }
 
@@ -226,28 +259,26 @@ void Camera::RotateY(float angle)
 // 	XMStoreFloat3(&mLook, XMVector3TransformNormal(XMLoadFloat3(&mLook), R));
 }
 
+void Camera::RotateAboutCenter(float angle)
+{
+	m_YawAngle += angle;
+	m_PitchAngle += angle;
+	
+}
+
 void Camera::UpdateViewMatrix()
 {
  	using namespace Ogre;
-// 	Vector3 z((mPosition - mLook)
 	Vector3 R = mRight;
 	Vector3 U = mUp;
 	Vector3 L = mLook;
 	Vector3 P = mPosition;
-// 	XMVECTOR R = XMLoadFloat3(&mRight);
-// 	XMVECTOR U = XMLoadFloat3(&mUp);
-// 	XMVECTOR L = XMLoadFloat3(&mLook);
-// 	XMVECTOR P = XMLoadFloat3(&mPosition);
-
 	// Keep camera's axes orthogonal to each other and of unit length.
 	L.normalise();
 	U = L.crossProduct(R);
-// 	L = XMVector3Normalize(L);
-// 	U = XMVector3Normalize(XMVector3Cross(L, R));
 
 	// U, L already ortho-normal, so no need to normalize cross product.
 	R = U.crossProduct(L);
-	//R = XMVector3Cross(U, L); 
 
 	// Fill in the view matrix entries.
 	float x = -(P.dotProduct(R));// -XMVectorGetX(XMVector3Dot(P, R));
@@ -257,9 +288,6 @@ void Camera::UpdateViewMatrix()
 	mRight = R;
 	mUp = U;
 	mLook = L;
-// 	XMStoreFloat3(&mRight, R);
-// 	XMStoreFloat3(&mUp, U);
-// 	XMStoreFloat3(&mLook, L);
 
 	mView[0][0] = mRight.x; 
 	mView[1][0] = mRight.y; 
