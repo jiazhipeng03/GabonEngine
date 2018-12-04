@@ -8,6 +8,7 @@
 //#include "ModelObject.h"
 #include "DDSTextureLoader.h"
 #include "ModelManager.h"
+#include "BitmapManager.h"
 
 class MainApp : public D3DApp
 {
@@ -35,6 +36,7 @@ public:
 	ShaderManager* GetShaderMan() { return m_ShaderMan; }
 	Camera* GetCamera() { return m_Camera; }
 	
+	
 private:	
 	
 //	RenderOptions mRenderOptions;
@@ -44,7 +46,9 @@ private:
 	Camera* m_Camera;
 
 	ModelManager* m_ModelMan;
+	BitmapManager* m_BitmapMan;
 	ShaderManager* m_ShaderMan;
+	Bitmap* m_Bitmap;// BitmapManager
 
 	Ogre::Vector2 m_CurPos;
 	Ogre::Vector2 m_LastPos;

@@ -4,4 +4,8 @@
 		<vs value = "texture.vs"/>
 		<ps value = "texture.ps"/>
 	</shader>
+  <shader name ="bitmap">
+    <vs value ="bitmap.vs"/>
+    <ps value ="bitmap.ps"/>
+  </shader>
 </shader_root>

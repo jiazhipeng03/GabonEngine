@@ -15,6 +15,7 @@
 #include "GameTimer.h"
 #include <string>
 #include "InputManager.h"
+#include "MathHeader.h"
 enum MOUSE_STATE
 {
 	NONE,
@@ -56,6 +57,9 @@ public:
 	ID3D11Device* GetDevice() { return md3dDevice; }
 	HWND GetWindowHandle() { return mhMainWnd; }
 	ID3D11DeviceContext* GetDeviceContext() { return md3dImmediateContext; }
+
+	void EnableZBuffer(bool bEnable);
+	Vector2 GetScreenSize() { return Vector2((float)mClientWidth, (float)mClientHeight); }
 protected:
 	bool InitMainWindow();
 	bool InitDirect3D();
@@ -80,6 +84,8 @@ protected:
 	ID3D11Texture2D* mDepthStencilBuffer;
 	ID3D11RenderTargetView* mRenderTargetView;
 	ID3D11DepthStencilView* mDepthStencilView;
+	ID3D11DepthStencilState* mDepthStencilState;
+	ID3D11DepthStencilState* mDepthDisabledStencilState;
 	D3D11_VIEWPORT mScreenViewport;
 
 	// Derived class should set these in derived constructor to customize starting values.

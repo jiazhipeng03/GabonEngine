@@ -12,18 +12,19 @@ MainApp::MainApp(HINSTANCE hInstance)
 
 	m_ShaderMan = new ShaderManager;
 	m_ModelMan = new ModelManager;
+	m_BitmapMan = new BitmapManager;
 	m_Camera = new Camera;
 	m_Light = new DirectionalLight;
 	m_CurPos = Ogre::Vector2::ZERO;
 	m_LastPos = Ogre::Vector2::ZERO;
-
 }
 
 MainApp::~MainApp()
 {
 	SafeDelete(m_ShaderMan);
 	SafeDelete(m_ModelMan);
-	
+	SafeDelete(m_BitmapMan);
+
 	SafeDelete(m_Camera);
 	SafeDelete(m_Light);
 }
@@ -48,6 +49,9 @@ bool MainApp::Init()
 	}
 	if (!m_Light->Init())
 		return false;
+
+	if (!m_BitmapMan->Init("model.xml"))
+		return false;
 	return true;
 }
 
@@ -62,6 +66,8 @@ void MainApp::UpdateScene(float dt)
 	// Update
 	m_Camera->UpdateBuffer();
 	m_Camera->UpdateViewMatrix();
+	//m_Bitmap->SetPosition(m_CurPos);
+	//m_Bitmap->UpdateBuffer();
 }
 
 void MainApp::DrawScene()
@@ -72,8 +78,11 @@ void MainApp::DrawScene()
 	// 以后需要将model按shader分类
 	// 暂时先按Model来绘制
 	m_Light->Render();
-	m_ModelMan->Render();	
-
+	m_ModelMan->Render();
+	
+	EnableZBuffer(false);
+	m_BitmapMan->Render();
+	EnableZBuffer(true);
 	HR(mSwapChain->Present(0, 0));
 }
 

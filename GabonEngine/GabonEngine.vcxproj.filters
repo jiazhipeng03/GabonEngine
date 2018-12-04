@@ -24,6 +24,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{d6e2a190-dad3-40a6-8874-655a5f0937f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{8a85d72d-cf3b-476b-80c2-dc5c293d5d4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -92,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XMLParserHelper.cpp">
+      <Filter>XMLParser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +191,15 @@
     <ClInclude Include="InputManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLParserHelper.h">
+      <Filter>XMLParser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="texture.ps">
@@ -187,5 +208,19 @@
     <None Include="texture.vs">
       <Filter>Shader</Filter>
     </None>
+    <None Include="bitmap.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="bitmap.ps">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="model.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="shader.xml">
+      <Filter>XML</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

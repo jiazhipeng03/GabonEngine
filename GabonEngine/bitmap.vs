@@ -25,7 +25,6 @@ cbuffer CameraBuffer
 struct VertexInputType
 {
     float3 position : POSITION;
-	float3 normal : NORMAL;
     float2 tex : TEXCOORD0;
 };
 
@@ -33,8 +32,6 @@ struct PixelInputType
 {
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
-	float3 normal : NORMAL;
-	float3 viewDir : TEXCOORD1;
 };
 
 
@@ -47,8 +44,6 @@ PixelInputType main(VertexInputType input)
     
 
 	// Change the position vector to be 4 units for proper matrix calculations.
-    //input.position.w = 1.0f;
-	//output.position = mul(input.position, worldMatrix);
 	// Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = mul(float4(input.position, 1.0f), worldMatrix);
     output.position = mul(output.position, viewMatrix);
@@ -56,9 +51,6 @@ PixelInputType main(VertexInputType input)
     
 	// Store the texture coordinates for the pixel shader.
 	output.tex = input.tex;
-    output.normal = mul(input.normal, (float3x3)worldMatrix);
-	output.normal = normalize(output.normal);
 
-	output.viewDir = normalize(eyePosition - input.position);
     return output;
 }

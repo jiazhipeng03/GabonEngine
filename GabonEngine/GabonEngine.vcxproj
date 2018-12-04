@@ -150,11 +150,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BitmapManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -173,13 +175,16 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="TextureShader.cpp" />
+    <ClCompile Include="XMLParserHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BitmapManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="Bitmap.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MainApp.h" />
@@ -199,14 +204,21 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="TextureShader.h" />
+    <ClInclude Include="XMLParserHelper.h" />
     <ClInclude Include="XMLParser\rapidxml.hpp" />
     <ClInclude Include="XMLParser\rapidxml_iterators.hpp" />
     <ClInclude Include="XMLParser\rapidxml_print.hpp" />
     <ClInclude Include="XMLParser\rapidxml_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bitmap.ps" />
+    <None Include="bitmap.vs" />
     <None Include="texture.ps" />
     <None Include="texture.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="model.xml" />
+    <Xml Include="shader.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

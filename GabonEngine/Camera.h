@@ -12,7 +12,7 @@
 #define CAMERA_H
 
 #include "d3dUtil.h"
-#include "Math/OgreMatrix4.h"
+#include "MathHeader.h"
 class Camera
 {
 public:
@@ -61,6 +61,9 @@ public:
 	Ogre::Matrix4 View()const;
 	Ogre::Matrix4 Proj()const;
 	Ogre::Matrix4 ViewProj()const;
+	Matrix4 GetOrthoFromCamera();
+	static Ogre::Matrix4 OrthoLH(float w, float h, float zn, float zf);
+	static Matrix4 OrthoOffCenterLH(float left, float right, float top, float bottom, float near, float far);
 
 	void Move(const Ogre::Vector3& v);
 	// Strafe/Walk the camera a distance d.

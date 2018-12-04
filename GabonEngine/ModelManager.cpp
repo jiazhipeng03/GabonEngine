@@ -47,6 +47,6 @@ void ModelManager::Render()
 		m->Render();
 		
 		m->GetShader()->Render(g_App->GetDeviceContext(), m->GetVertexCount(), m->GetStartVertexIndex(),
-			m->GetWorldMatrix(), m->GetDiffuseSRV());
+			m->GetWorldMatrix(), g_App->GetCamera()->Proj(), m->GetDiffuseSRV());
 	}
 }

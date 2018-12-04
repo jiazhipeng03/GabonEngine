@@ -24,6 +24,7 @@
 #include <vector>
 
 #include "Math/OgreMath.h"
+#include "DDSTextureLoader.h"
 //#include "MathHelper.h"
 //#include "LightHelper.h"
 //#pragma comment ( lib, "D3D11.lib")
@@ -66,7 +67,7 @@
 // Utility classes.
 //---------------------------------------------------------------------------------------
 
-class d3dHelper
+class D3DHelper
 {
 public:
 	///<summary>
@@ -74,6 +75,7 @@ public:
 	/// Does not work with compressed formats.
 	///</summary>
 	//static ID3D11ShaderResourceView* CreateRandomTexture1DSRV(ID3D11Device* device);
+	static void InitTexture(ID3D11Device* device, std::string texName, ID3D11ShaderResourceView*& targetSRV);
 };
 
 class TextHelper

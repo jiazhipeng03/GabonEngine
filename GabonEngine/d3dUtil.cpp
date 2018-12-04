@@ -228,3 +228,14 @@ void ExtractFrustumPlanes(Ogre::Vector4 planes[6], DirectX::CXMMATRIX M)
 		XMStoreFloat4(&planes[i], v);
 	}
 }*/
+
+void D3DHelper::InitTexture(ID3D11Device* device, std::string texName, ID3D11ShaderResourceView*& targetSRV)
+{
+	const size_t cSize = texName.size() + 1;
+	wchar_t* wc = new wchar_t[cSize];
+	size_t numConvert;
+	mbstowcs_s(&numConvert, wc, cSize, texName.c_str(), cSize);
+	ID3D11Resource* texture = nullptr;
+	DirectX::CreateDDSTextureFromFile(device, wc, &texture, &targetSRV);
+	ReleaseCOM(texture);
+}

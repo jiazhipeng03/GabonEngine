@@ -67,6 +67,8 @@ D3DApp::~D3DApp()
 	ReleaseCOM(md3dImmediateContext);
 	ReleaseCOM(md3dDevice);
 	SafeDelete(m_InputMan);
+	ReleaseCOM(mDepthStencilState);
+	ReleaseCOM(mDepthDisabledStencilState);
 }
 
 HINSTANCE D3DApp::AppInst()const
@@ -360,6 +362,18 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
+void D3DApp::EnableZBuffer(bool bEnable)
+{
+	if (bEnable)
+	{
+		md3dImmediateContext->OMSetDepthStencilState(mDepthStencilState, 1);
+	}
+	else
+	{
+		md3dImmediateContext->OMSetDepthStencilState(mDepthDisabledStencilState, 1);
+	}
+}
+
 bool D3DApp::InitMainWindow()
 {
 	WNDCLASS wc;
@@ -498,6 +512,38 @@ bool D3DApp::InitDirect3D()
 	
 	OnResize();
 
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	depthStencilDesc.DepthEnable = true;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depthStencilDesc.StencilEnable = true;
+	depthStencilDesc.StencilReadMask = 0xFF;
+	depthStencilDesc.StencilWriteMask = 0xFF;
+
+	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	HRESULT result = md3dDevice->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState);
+	if (FAILED(result))
+	{
+		return false;
+	}
+	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc = depthStencilDesc;
+	depthDisabledStencilDesc.DepthEnable = false;
+
+	result = md3dDevice->CreateDepthStencilState(&depthStencilDesc, &mDepthDisabledStencilState);
+	if (FAILED(result))
+	{
+		return false;
+	}
 	return true;
 }
 

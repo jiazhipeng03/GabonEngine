@@ -36,7 +36,7 @@ bool ShaderManager::Init(std::string filename)
 		{
 			return false;
 		}
-		m_mapShader["default"] = shader;
+		m_mapShader[shaderName] = shader;
 		shaderNode = shaderNode->next_sibling("shader");
 	}
 

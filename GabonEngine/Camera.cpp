@@ -199,6 +199,33 @@ Ogre::Matrix4 Camera::ViewProj()const
 	return mView * mProj;
 }
 
+Ogre::Matrix4 Camera::GetOrthoFromCamera()
+{
+	float w = g_App->GetScreenSize().x;
+	float h = g_App->GetScreenSize().y;
+	return OrthoLH(w, h, GetNearZ(), GetFarZ());
+}
+
+Ogre::Matrix4 Camera::OrthoLH(float w, float h, float zn, float zf)
+{
+	float halfW = w / 2.0f;
+	float halfH = h / 2.0f;
+	return OrthoOffCenterLH(-halfW, halfW, -halfH, halfH, zn, zf);
+}
+
+Ogre::Matrix4 Camera::OrthoOffCenterLH(float l, float r, float t, float b, float n, float f)
+{
+	float w = 1.f / (r - l);
+	float h = 1.f / (t - b);
+	float q = 1.f / (n - f);
+	Matrix4 m;
+	m[0][0] = 2.f * w;	m[0][1] = 0.0f;		m[0][2] = 0.0f;		m[0][3] = 0.0f;
+	m[1][0] = 0.0f;		m[1][1] = 2.f * h;	m[1][2] = 0.0f;		m[1][3] = 0.0f;
+	m[2][0] = 0.0f;		m[2][1] = 0;		m[2][2] = -q;		m[2][3] = 0.0f;
+	m[3][0] = -(l+r)*w;	m[3][1] = -(t+b)*h;	m[3][2] = n*q;		m[3][3] = 1.0f;
+	return m;
+}
+
 void Camera::Move(const Ogre::Vector3& v)
 {
 	mPosition += v;

@@ -52,12 +52,12 @@ void TextureShader::Shutdown()
 }
 
 
-bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, ID3D11ShaderResourceView* texture)
+bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	bool result;
 
 	Ogre::Matrix4 viewMatrix = g_App->GetCamera()->View();
-	Ogre::Matrix4 projectionMatrix = g_App->GetCamera()->Proj();
+	//Ogre::Matrix4 projectionMatrix = g_App->GetCamera()->Proj();
 	// Set the shader parameters that it will use for rendering.
 	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture);
 	if (!result)
@@ -109,7 +109,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	pixelShaderBuffer = 0;
 
 	// Compile the vertex shader code.
-	result = D3DCompileFromFile(vsFilename, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "TextureVertexShader", "vs_5_0",
+	result = D3DCompileFromFile(vsFilename, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_5_0",
 		D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
 		&vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
@@ -129,7 +129,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	}
 
 	// Compile the pixel shader code.
-	result = D3DCompileFromFile(psFilename, NULL, NULL, "LightShader", "ps_5_0", 
+	result = D3DCompileFromFile(psFilename, NULL, NULL, "main", "ps_5_0", 
 		D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
 		&pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
@@ -185,7 +185,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 		inputDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		inputDesc.InstanceDataStepRate = 0;
 		inputlayout.push_back(inputDesc);
-		offset += stride * 4;
+		offset += stride;
 	}
 	for (unsigned int i = 0; i < VSShaderDesc.ConstantBuffers; ++i)
 	{
@@ -201,29 +201,29 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	}
 	// Create the vertex input layout description.
 	// This setup needs to match the VertexType stucture in the ModelClass and in the shader.
-	inputlayout[0].SemanticName = "POSITION";
-	inputlayout[0].SemanticIndex = 0;
-	inputlayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputlayout[0].InputSlot = 0;
-	inputlayout[0].AlignedByteOffset = 0;
-	inputlayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	inputlayout[0].InstanceDataStepRate = 0;
-
-	inputlayout[1].SemanticName = "NORMAL";
-	inputlayout[1].SemanticIndex = 0;
-	inputlayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputlayout[1].InputSlot = 0;
-	inputlayout[1].AlignedByteOffset = 12;
-	inputlayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	inputlayout[1].InstanceDataStepRate = 0;
-
-	inputlayout[2].SemanticName = "TEXCOORD";
-	inputlayout[2].SemanticIndex = 0;
-	inputlayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputlayout[2].InputSlot = 0;
-	inputlayout[2].AlignedByteOffset = 24;
-	inputlayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	inputlayout[2].InstanceDataStepRate = 0;
+// 	inputlayout[0].SemanticName = "POSITION";
+// 	inputlayout[0].SemanticIndex = 0;
+// 	inputlayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+// 	inputlayout[0].InputSlot = 0;
+// 	inputlayout[0].AlignedByteOffset = 0;
+// 	inputlayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+// 	inputlayout[0].InstanceDataStepRate = 0;
+// 
+// 	inputlayout[1].SemanticName = "NORMAL";
+// 	inputlayout[1].SemanticIndex = 0;
+// 	inputlayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+// 	inputlayout[1].InputSlot = 0;
+// 	inputlayout[1].AlignedByteOffset = 12;
+// 	inputlayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+// 	inputlayout[1].InstanceDataStepRate = 0;
+// 
+// 	inputlayout[2].SemanticName = "TEXCOORD";
+// 	inputlayout[2].SemanticIndex = 0;
+// 	inputlayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+// 	inputlayout[2].InputSlot = 0;
+// 	inputlayout[2].AlignedByteOffset = 24;
+// 	inputlayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+// 	inputlayout[2].InstanceDataStepRate = 0;
 
 	// Get a count of the elements in the layout.
 	numElements = (int)inputlayout.size();
@@ -324,7 +324,7 @@ void TextureShader::ShutdownShader()
 }
 
 
-void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
+void TextureShader::OutputShaderErrorMessage(ID3DBlob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -449,6 +449,7 @@ DXGI_FORMAT TextureShader::GetFormatFromDesc(D3D11_SIGNATURE_PARAMETER_DESC inpu
 			return false;
 		}
 	};
+	
 	std::map<FormatPair, DXGI_FORMAT> mapFormat = {
 		{ FormatPair(2, D3D_REGISTER_COMPONENT_FLOAT32), DXGI_FORMAT_R32G32_FLOAT},
 		{ FormatPair(2, D3D_REGISTER_COMPONENT_UINT32), DXGI_FORMAT_R32G32_UINT },
@@ -462,5 +463,8 @@ DXGI_FORMAT TextureShader::GetFormatFromDesc(D3D11_SIGNATURE_PARAMETER_DESC inpu
 		ComponentNum++;
 		Mask >>= 1;
 	}
+	// 32bit
+	// to-do : 16bit component
+	OutStride = 4 * ComponentNum;
 	return mapFormat[FormatPair(ComponentNum, inputDesc.ComponentType)];
 }

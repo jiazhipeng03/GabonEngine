@@ -21,7 +21,7 @@ public:
 
 	bool Initialize(std::string vsFileName, std::string psFileName);
 	void Shutdown();
-	bool Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, ID3D11ShaderResourceView* texture);
+	bool Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture);
 private:
 	// PS, VS, input layout, buffer param, sampler state
 	bool InitializeShader(ID3D11Device*, HWND, WCHAR*, WCHAR*);

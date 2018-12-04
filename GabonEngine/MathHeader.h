@@ -6,3 +6,4 @@
 #include "Math/OgreVector4.h"
 #include "Math/OgreMatrix3.h"
 #include "Math/OgreMatrix4.h"
+using namespace Ogre;
