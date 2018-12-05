@@ -35,7 +35,7 @@ bool MainApp::Init()
 	if (!D3DApp::Init())
 		return false;
 
-	m_Camera->LookAt(Vector3(-8.5f, 3.0f, -8.0f), Vector3::ZERO, Vector3::UNIT_Y);
+	//m_Camera->LookAt(Vector3(-8.5f, 3.0f, -8.0f), Vector3::ZERO, Vector3::UNIT_Y);
 	m_Camera->UpdateViewMatrix();
 	m_Camera->InitBuffer();
 

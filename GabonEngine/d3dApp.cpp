@@ -542,7 +542,7 @@ bool D3DApp::InitDirect3D()
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc = depthStencilDesc;
 	depthDisabledStencilDesc.DepthEnable = false;
 
-	result = md3dDevice->CreateDepthStencilState(&depthStencilDesc, &mDepthDisabledStencilState);
+	result = md3dDevice->CreateDepthStencilState(&depthDisabledStencilDesc, &mDepthDisabledStencilState);
 	if (FAILED(result))
 	{
 		return false;

@@ -43,7 +43,7 @@ bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 s
 		return false;
 	}
 
-	unsigned long indices[6] = { 0,2,1,3,5,4 };
+	unsigned long indices[6] = { 0,1,2,3,4,5 };
 	D3D11_BUFFER_DESC ib;
 	ib.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ib.ByteWidth = sizeof(unsigned long) * m_IndexCount;

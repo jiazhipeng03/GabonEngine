@@ -16,7 +16,7 @@ Camera::Camera()
 // 	XMVECTOR pos = XMVectorSet(0, 0, 1, 1.0f);
 // 	XMVECTOR target = XMVectorZero();
 // 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	Ogre::Vector3 pos(0, 0, 1), target(0,0,0), up(0,1,0);
+	Ogre::Vector3 pos(0, 0, -10), target(0,0,0), up(0,1,0);
 	LookAt(pos, target, up);
 	UpdateViewMatrix();
 }
@@ -201,7 +201,7 @@ Ogre::Matrix4 Camera::OrthoLH(float w, float h, float zn, float zf)
 	return OrthoOffCenterLH(-halfW, halfW, -halfH, halfH, zn, zf);
 }
 
-Ogre::Matrix4 Camera::OrthoOffCenterLH(float l, float r, float t, float b, float n, float f)
+Ogre::Matrix4 Camera::OrthoOffCenterLH(float l, float r, float b, float t, float n, float f)
 {
 	float w = 1.f / (r - l);
 	float h = 1.f / (t - b);
