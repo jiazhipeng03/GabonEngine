@@ -159,18 +159,6 @@ void Camera::SetLens(float fovY, float aspect, float zn, float zf)
 // 	XMStoreFloat4x4(&mProj, P);
 }
 
-void Camera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp)
-{
-// 	Ogre::Vector3 L = XMVector3Normalize(XMVectorSubtract(target, pos));
-// 	Ogre::Vector3 R = XMVector3Normalize(XMVector3Cross(worldUp, L));
-// 	Ogre::Vector3 U = XMVector3Cross(L, R);
-// 
-// 	XMStoreFloat3(&mPosition, pos);
-// 	XMStoreFloat3(&mLook, L);
-// 	XMStoreFloat3(&mRight, R);
-// 	XMStoreFloat3(&mUp, U);
-}
-
 void Camera::LookAt(const Ogre::Vector3& pos, const Ogre::Vector3& target, const Ogre::Vector3& up)
 {
 	mPosition = pos;

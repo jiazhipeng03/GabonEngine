@@ -43,7 +43,7 @@ bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 s
 		return false;
 	}
 
-	unsigned long indices[6] = { 0,1,2,3,4,5 };
+	unsigned long indices[6] = { 0,2,1,3,5,4 };
 	D3D11_BUFFER_DESC ib;
 	ib.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ib.ByteWidth = sizeof(unsigned long) * m_IndexCount;
@@ -118,17 +118,18 @@ void Bitmap::UpdateBuffer()
 	right = left + m_ImageSize.x;
 	top = m_ScreenSize.y / 2.f - m_Position.y;
 	bottom = top - m_ImageSize.y;
-	m_Vertices[0].position = Vector3(left, top, 0.0f);
+	float z = 100;// g_App->GetCamera()->GetNearZ();
+	m_Vertices[0].position = Vector3(left, top, z);
 	m_Vertices[0].texture = Vector2(0.0f, 0.0f);
-	m_Vertices[1].position = Vector3(right, bottom, 0.0f);
+	m_Vertices[1].position = Vector3(right, bottom, z);
 	m_Vertices[1].texture = Vector2(1.0f, 1.0f);
-	m_Vertices[2].position = Vector3(left, bottom, 0.0f);
+	m_Vertices[2].position = Vector3(left, bottom, z);
 	m_Vertices[2].texture = Vector2(0.0f, 1.0f);
-	m_Vertices[3].position = Vector3(left, top, 0.0f);
+	m_Vertices[3].position = Vector3(left, top, z);
 	m_Vertices[3].texture = Vector2(0.0f, 0.0f);
-	m_Vertices[4].position = Vector3(right, top, 0.0f);
+	m_Vertices[4].position = Vector3(right, top, z);
 	m_Vertices[4].texture = Vector2(1.0f, 0.0f);
-	m_Vertices[5].position = Vector3(right, bottom, 0.0f);
+	m_Vertices[5].position = Vector3(right, bottom, z);
 	m_Vertices[5].texture = Vector2(1.0f, 1.0f);
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	g_App->GetDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

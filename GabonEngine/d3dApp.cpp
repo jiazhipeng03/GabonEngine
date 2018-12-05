@@ -513,6 +513,8 @@ bool D3DApp::InitDirect3D()
 	OnResize();
 
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+
 	depthStencilDesc.DepthEnable = true;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
@@ -536,6 +538,7 @@ bool D3DApp::InitDirect3D()
 	{
 		return false;
 	}
+	md3dImmediateContext->OMSetDepthStencilState(mDepthStencilState, 1);
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc = depthStencilDesc;
 	depthDisabledStencilDesc.DepthEnable = false;
 
