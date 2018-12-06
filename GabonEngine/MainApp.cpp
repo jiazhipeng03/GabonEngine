@@ -66,8 +66,9 @@ void MainApp::UpdateScene(float dt)
 	// Update
 	m_Camera->UpdateBuffer();
 	m_Camera->UpdateViewMatrix();
-	//m_Bitmap->SetPosition(m_CurPos);
-	//m_Bitmap->UpdateBuffer();
+// 	static float t = 0;
+// 	t += dt * Math::PI;
+// 	m_BitmapMan->GetBitmap(0)->SetPosition(Vector2((sin(t)+1) * 400.f, (sin(t) + 1) * 300.f));
 }
 
 void MainApp::DrawScene()

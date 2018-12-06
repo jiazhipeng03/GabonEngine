@@ -32,12 +32,12 @@ bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 s
 	vb.MiscFlags = 0;
 	vb.StructureByteStride = 0;
 	vb.Usage = D3D11_USAGE_DYNAMIC;
-	D3D11_SUBRESOURCE_DATA vertexData;
-	vertexData.pSysMem = &m_Vertices[0];
-	vertexData.SysMemPitch = 0;
-	vertexData.SysMemSlicePitch = 0;
+// 	D3D11_SUBRESOURCE_DATA vertexData;
+// 	vertexData.pSysMem = &m_Vertices[0];
+// 	vertexData.SysMemPitch = 0;
+// 	vertexData.SysMemSlicePitch = 0;
 
-	HRESULT result = g_App->GetDevice()->CreateBuffer(&vb, &vertexData, &m_VertexBuffer);
+	HRESULT result = g_App->GetDevice()->CreateBuffer(&vb, nullptr, &m_VertexBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -118,7 +118,7 @@ void Bitmap::UpdateBuffer()
 	right = left + m_ImageSize.x;
 	top = m_ScreenSize.y / 2.f - m_Position.y;
 	bottom = top - m_ImageSize.y;
-	float z = 100;// g_App->GetCamera()->GetNearZ();
+	float z = g_App->GetCamera()->GetNearZ();
 	m_Vertices[0].position = Vector3(left, top, z);
 	m_Vertices[0].texture = Vector2(0.0f, 0.0f);
 	m_Vertices[1].position = Vector3(right, bottom, z);

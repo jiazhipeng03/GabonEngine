@@ -16,7 +16,7 @@ Camera::Camera()
 // 	XMVECTOR pos = XMVectorSet(0, 0, 1, 1.0f);
 // 	XMVECTOR target = XMVectorZero();
 // 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	Ogre::Vector3 pos(0, 0, -10), target(0,0,0), up(0,1,0);
+	Ogre::Vector3 pos(-8.5, 3, -10), target(0,0,0), up(0,1,0);
 	LookAt(pos, target, up);
 	UpdateViewMatrix();
 }

@@ -55,3 +55,12 @@ void BitmapManager::Render()
 		b->Render();
 	}
 }
+
+Bitmap* BitmapManager::GetBitmap(int i)
+{
+	if (i >= 0 && i < m_ModelList.size())
+	{
+		return m_ModelList[i];
+	}
+	return nullptr;
+}
