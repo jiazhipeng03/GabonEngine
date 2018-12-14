@@ -155,6 +155,8 @@
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -183,6 +185,8 @@
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="InputManager.h" />

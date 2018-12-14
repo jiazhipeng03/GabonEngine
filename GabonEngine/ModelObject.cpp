@@ -21,7 +21,7 @@ ModelObject::ModelObject()
 
 ModelObject::~ModelObject()
 {
-	ReleaseCOM(m_DiffuseSRV);
+	SafeRelease(m_DiffuseSRV);
 }
 
 bool ModelObject::LoadGeometryBuffers(std::string meshName)
@@ -138,7 +138,7 @@ void ModelObject::InitTexture(LPCWSTR texName)
 	ID3D11Resource* texture = nullptr;
 	
 	DirectX::CreateDDSTextureFromFile(g_App->GetDevice(), texName, &texture, &m_DiffuseSRV);
-	ReleaseCOM(texture);
+	SafeRelease(texture);
 }
 
 void ModelObject::LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode)

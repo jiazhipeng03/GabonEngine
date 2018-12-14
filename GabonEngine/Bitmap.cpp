@@ -9,9 +9,9 @@ Bitmap::Bitmap()
 
 Bitmap::~Bitmap()
 {
-	ReleaseCOM(m_Tex);
-	ReleaseCOM(m_VertexBuffer);
-	ReleaseCOM(m_IndexBuffer);
+	SafeRelease(m_Tex);
+	SafeRelease(m_VertexBuffer);
+	SafeRelease(m_IndexBuffer);
 }
 
 bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::string texName, TextureShader* shader)

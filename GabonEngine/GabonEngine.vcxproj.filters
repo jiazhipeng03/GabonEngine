@@ -27,6 +27,9 @@
     <Filter Include="XML">
       <UniqueIdentifier>{8a85d72d-cf3b-476b-80c2-dc5c293d5d4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Font">
+      <UniqueIdentifier>{d310b736-7eea-4e61-9221-afac2bada79b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -104,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="XMLParserHelper.cpp">
       <Filter>XMLParser</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Font</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="XMLParserHelper.h">
       <Filter>XMLParser</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Font</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>Font</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

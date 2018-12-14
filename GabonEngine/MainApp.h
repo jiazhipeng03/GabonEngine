@@ -5,10 +5,10 @@
 #include "Light.h"
 #include "Camera.h"
 #include "ShaderManager.h"
-//#include "ModelObject.h"
 #include "DDSTextureLoader.h"
 #include "ModelManager.h"
 #include "BitmapManager.h"
+#include "FontManager.h"
 
 class MainApp : public D3DApp
 {
@@ -19,7 +19,6 @@ public:
 	// 		Textures = 1,
 	// 		TexturesAndFog = 2
 	// 	};
-
 	MainApp(HINSTANCE hInstance);
 	~MainApp();
 
@@ -35,10 +34,8 @@ public:
 	virtual void OnKeyDown(UINT key) override;
 	ShaderManager* GetShaderMan() { return m_ShaderMan; }
 	Camera* GetCamera() { return m_Camera; }
-	
-	
+
 private:	
-	
 //	RenderOptions mRenderOptions;
 	Light* m_Light;
 //	POINT mLastMousePos;
@@ -48,8 +45,8 @@ private:
 	ModelManager* m_ModelMan;
 	BitmapManager* m_BitmapMan;
 	ShaderManager* m_ShaderMan;
-	Bitmap* m_Bitmap;// BitmapManager
-
+	FontManager* m_FontMan;
+	
 	Ogre::Vector2 m_CurPos;
 	Ogre::Vector2 m_LastPos;
 };

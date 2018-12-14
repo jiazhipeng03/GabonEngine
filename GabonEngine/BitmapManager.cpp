@@ -56,7 +56,7 @@ void BitmapManager::Render()
 	}
 }
 
-Bitmap* BitmapManager::GetBitmap(int i)
+Bitmap* BitmapManager::GetBitmap(ui32 i)
 {
 	if (i >= 0 && i < m_ModelList.size())
 	{

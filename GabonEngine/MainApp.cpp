@@ -17,6 +17,7 @@ MainApp::MainApp(HINSTANCE hInstance)
 	m_Light = new DirectionalLight;
 	m_CurPos = Ogre::Vector2::ZERO;
 	m_LastPos = Ogre::Vector2::ZERO;
+	m_FontMan = new FontManager;
 }
 
 MainApp::~MainApp()
@@ -24,6 +25,7 @@ MainApp::~MainApp()
 	SafeDelete(m_ShaderMan);
 	SafeDelete(m_ModelMan);
 	SafeDelete(m_BitmapMan);
+	SafeDelete(m_FontMan);
 
 	SafeDelete(m_Camera);
 	SafeDelete(m_Light);
@@ -52,6 +54,11 @@ bool MainApp::Init()
 
 	if (!m_BitmapMan->Init("model.xml"))
 		return false;
+
+	if (!m_FontMan->Init())
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -66,6 +73,8 @@ void MainApp::UpdateScene(float dt)
 	// Update
 	m_Camera->UpdateBuffer();
 	m_Camera->UpdateViewMatrix();
+	m_FontMan->Print("test", Vector2(0, 0), Vector2(1, 1));
+	// test bitmap UpdateBuffer
 // 	static float t = 0;
 // 	t += dt * Math::PI;
 // 	m_BitmapMan->GetBitmap(0)->SetPosition(Vector2((sin(t)+1) * 400.f, (sin(t) + 1) * 300.f));
@@ -83,6 +92,9 @@ void MainApp::DrawScene()
 	
 	EnableZBuffer(false);
 	m_BitmapMan->Render();
+	//EnableAlphaTest(false);
+	m_FontMan->Render();
+	//EnableAlphaTest(true);
 	EnableZBuffer(true);
 	HR(mSwapChain->Present(0, 0));
 }

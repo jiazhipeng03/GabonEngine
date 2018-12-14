@@ -55,20 +55,20 @@ D3DApp::D3DApp(HINSTANCE hInstance)
 
 D3DApp::~D3DApp()
 {
-	ReleaseCOM(mRenderTargetView);
-	ReleaseCOM(mDepthStencilView);
-	ReleaseCOM(mSwapChain);
-	ReleaseCOM(mDepthStencilBuffer);
+	SafeRelease(mRenderTargetView);
+	SafeRelease(mDepthStencilView);
+	SafeRelease(mSwapChain);
+	SafeRelease(mDepthStencilBuffer);
 
 	// Restore all default settings.
 	if( md3dImmediateContext )
 		md3dImmediateContext->ClearState();
 
-	ReleaseCOM(md3dImmediateContext);
-	ReleaseCOM(md3dDevice);
+	SafeRelease(md3dImmediateContext);
+	SafeRelease(md3dDevice);
 	SafeDelete(m_InputMan);
-	ReleaseCOM(mDepthStencilState);
-	ReleaseCOM(mDepthDisabledStencilState);
+	SafeRelease(mDepthStencilState);
+	SafeRelease(mDepthDisabledStencilState);
 }
 
 HINSTANCE D3DApp::AppInst()const
@@ -141,9 +141,9 @@ void D3DApp::OnResize()
 	// Release the old views, as they hold references to the buffers we
 	// will be destroying.  Also release the old depth/stencil buffer.
 
-	ReleaseCOM(mRenderTargetView);
-	ReleaseCOM(mDepthStencilView);
-	ReleaseCOM(mDepthStencilBuffer);
+	SafeRelease(mRenderTargetView);
+	SafeRelease(mDepthStencilView);
+	SafeRelease(mDepthStencilBuffer);
 
 
 	// Resize the swap chain and recreate the render target view.
@@ -152,7 +152,7 @@ void D3DApp::OnResize()
 	ID3D11Texture2D* backBuffer;
 	HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
 	HR(md3dDevice->CreateRenderTargetView(backBuffer, 0, &mRenderTargetView));
-	ReleaseCOM(backBuffer);
+	SafeRelease(backBuffer);
 
 	// Create the depth/stencil buffer and view.
 
@@ -374,6 +374,11 @@ void D3DApp::EnableZBuffer(bool bEnable)
 	}
 }
 
+void D3DApp::EnableAlphaTest(bool bEnable)
+{
+
+}
+
 bool D3DApp::InitMainWindow()
 {
 	WNDCLASS wc;
@@ -502,9 +507,9 @@ bool D3DApp::InitDirect3D()
 
 	HR(dxgiFactory->CreateSwapChain(md3dDevice, &sd, &mSwapChain));
 	
-	ReleaseCOM(dxgiDevice);
-	ReleaseCOM(dxgiAdapter);
-	ReleaseCOM(dxgiFactory);
+	SafeRelease(dxgiDevice);
+	SafeRelease(dxgiAdapter);
+	SafeRelease(dxgiFactory);
 
 	// The remaining steps that need to be carried out for d3d creation
 	// also need to be executed every time the window is resized.  So
@@ -512,6 +517,7 @@ bool D3DApp::InitDirect3D()
 	
 	OnResize();
 
+	// init DepthStencilState
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 
@@ -547,6 +553,10 @@ bool D3DApp::InitDirect3D()
 	{
 		return false;
 	}
+	// init alpha blend state
+	D3D11_BLEND_DESC bd;
+	md3dDevice->CreateBlendState(&bd, &mBlendEnabledState);
+	md3dDevice->CreateBlendState(&bd, &mBlendDisabledState);
 	return true;
 }
 

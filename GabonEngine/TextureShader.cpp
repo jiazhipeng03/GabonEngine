@@ -15,11 +15,11 @@ TextureShader::TextureShader()
 
 TextureShader::~TextureShader()
 {
-	ReleaseCOM(m_vertexShader);
-	ReleaseCOM(m_pixelShader);
-	ReleaseCOM(m_layout);
-	ReleaseCOM(m_matrixBuffer);
-	ReleaseCOM(m_sampleState);
+	SafeRelease(m_vertexShader);
+	SafeRelease(m_pixelShader);
+	SafeRelease(m_layout);
+	SafeRelease(m_matrixBuffer);
+	SafeRelease(m_sampleState);
 }
 
 

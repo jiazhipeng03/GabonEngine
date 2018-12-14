@@ -59,6 +59,7 @@ public:
 	ID3D11DeviceContext* GetDeviceContext() { return md3dImmediateContext; }
 
 	void EnableZBuffer(bool bEnable);
+	void EnableAlphaTest(bool bEnable);
 	Vector2 GetScreenSize() { return Vector2((float)mClientWidth, (float)mClientHeight); }
 protected:
 	bool InitMainWindow();
@@ -86,6 +87,8 @@ protected:
 	ID3D11DepthStencilView* mDepthStencilView;
 	ID3D11DepthStencilState* mDepthStencilState;
 	ID3D11DepthStencilState* mDepthDisabledStencilState;
+	ID3D11BlendState* mBlendEnabledState;
+	ID3D11BlendState* mBlendDisabledState;
 	D3D11_VIEWPORT mScreenViewport;
 
 	// Derived class should set these in derived constructor to customize starting values.

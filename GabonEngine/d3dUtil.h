@@ -55,7 +55,7 @@
 // Convenience macro for releasing COM objects.
 //---------------------------------------------------------------------------------------
 
-#define ReleaseCOM(x) { if(x){ x->Release(); x = 0; } }
+#define SafeRelease(x) { if(x){ x->Release(); x = 0; } }
 
 //---------------------------------------------------------------------------------------
 // Convenience macro for deleting objects.
@@ -67,6 +67,8 @@
 // Utility classes.
 //---------------------------------------------------------------------------------------
 
+typedef unsigned int ui32;
+
 class D3DHelper
 {
 public:
@@ -75,7 +77,7 @@ public:
 	/// Does not work with compressed formats.
 	///</summary>
 	//static ID3D11ShaderResourceView* CreateRandomTexture1DSRV(ID3D11Device* device);
-	static void InitTexture(ID3D11Device* device, std::string texName, ID3D11ShaderResourceView*& targetSRV);
+	static bool InitTexture(ID3D11Device* device, std::string texName, ID3D11ShaderResourceView*& targetSRV);
 };
 
 class TextHelper
