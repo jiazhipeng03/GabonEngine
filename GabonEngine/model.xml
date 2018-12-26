@@ -7,7 +7,7 @@
 	</model>
 	-->
 	<model name = "cube">
-		<mesh value = "D:\CProjects\GabonEngine\GabonEngine\Textures\cube.txt"/>
+		<mesh value = "..\GabonEngine\Textures\cube.txt"/>
 		<shader value = "default"/>
 	</model>
 	<bitmap name = "test">

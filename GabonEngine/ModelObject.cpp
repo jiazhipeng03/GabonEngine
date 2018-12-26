@@ -115,7 +115,11 @@ void ModelObject::BuildGeometryBuffers()
 	vinitData.pSysMem = m_Vertex.data();
 	vinitData.SysMemPitch = 0;
 	vinitData.SysMemSlicePitch = 0;
-	HR(g_App->GetDevice()->CreateBuffer(&vbd, &vinitData, &m_vertexBuffer));
+	HRESULT hr = (g_App->GetDevice()->CreateBuffer(&vbd, &vinitData, &m_vertexBuffer));
+	if (FAILED(hr))
+	{
+		return;
+	}
 
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_DEFAULT;
@@ -243,7 +247,6 @@ bool ModelObject::LoadMeshFromTxt(const std::string& file)
 	std::ifstream fin;
 	char input;
 	int i;
-
 
 	// Open the model file.
 	fin.open(file);
