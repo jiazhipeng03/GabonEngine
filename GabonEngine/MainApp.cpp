@@ -92,7 +92,9 @@ void MainApp::DrawScene()
 	
 	EnableZBuffer(false);
 	m_BitmapMan->Render();
+	EnableAlphaBlending(true);
 	m_FontMan->Render();
+	EnableAlphaBlending(false);
 	EnableZBuffer(true);
 	HR(mSwapChain->Present(0, 0));
 }
