@@ -374,9 +374,17 @@ void D3DApp::EnableZBuffer(bool bEnable)
 	}
 }
 
-void D3DApp::EnableAlphaTest(bool bEnable)
+void D3DApp::EnableAlphaBlending(bool bEnable)
 {
-
+	float blendFactor[4] = { 0 };
+	if (bEnable)
+	{
+		md3dImmediateContext->OMSetBlendState(mBlendEnabledState, blendFactor, 0xffffffff);
+	}
+	else
+	{
+		md3dImmediateContext->OMSetBlendState(mBlendDisabledState, blendFactor, 0xffffffff);
+	}
 }
 
 bool D3DApp::InitMainWindow()
@@ -553,10 +561,27 @@ bool D3DApp::InitDirect3D()
 	{
 		return false;
 	}
+	
 	// init alpha blend state
-	D3D11_BLEND_DESC bd;
-	md3dDevice->CreateBlendState(&bd, &mBlendEnabledState);
-	md3dDevice->CreateBlendState(&bd, &mBlendDisabledState);
+	
+	D3D11_BLEND_DESC blendStateDescription;
+	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
+	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+	md3dDevice->CreateBlendState(&blendStateDescription, &mBlendEnabledState);
+	// Modify the description to create an alpha disabled blend state description.
+	blendStateDescription.RenderTarget[0].BlendEnable = FALSE;
+	// Create the blend state using the description.
+	result = md3dDevice->CreateBlendState(&blendStateDescription, &mBlendDisabledState);
+	if (FAILED(result))
+		return false;
+
 	return true;
 }
 

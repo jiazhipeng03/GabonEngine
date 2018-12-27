@@ -59,7 +59,7 @@ public:
 	ID3D11DeviceContext* GetDeviceContext() { return md3dImmediateContext; }
 
 	void EnableZBuffer(bool bEnable);
-	void EnableAlphaTest(bool bEnable);
+	void EnableAlphaBlending(bool bEnable);
 	Vector2 GetScreenSize() { return Vector2((float)mClientWidth, (float)mClientHeight); }
 protected:
 	bool InitMainWindow();
