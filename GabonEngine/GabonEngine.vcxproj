@@ -157,6 +157,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="OgreFrustum.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Math\OgreMath.cpp" />
     <ClCompile Include="Math\OgreMatrix3.cpp" />
     <ClCompile Include="Math\OgreMatrix4.cpp" />
+    <ClCompile Include="Math\OgrePlane.cpp" />
     <ClCompile Include="Math\OgreQuaternion.cpp" />
     <ClCompile Include="Math\OgreVector2.cpp" />
     <ClCompile Include="Math\OgreVector3.cpp" />
@@ -187,6 +189,7 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FontManager.h" />
+    <ClInclude Include="OgreFrustum.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="InputManager.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="Math\OgreMath.h" />
     <ClInclude Include="Math\OgreMatrix3.h" />
     <ClInclude Include="Math\OgreMatrix4.h" />
+    <ClInclude Include="Math\OgrePlane.h" />
     <ClInclude Include="Math\OgrePrerequisites.h" />
     <ClInclude Include="Math\OgreQuaternion.h" />
     <ClInclude Include="Math\OgreVector2.h" />

@@ -79,11 +79,15 @@ void Font::UpdateVertices(const std::string& sentence, Vector2 screenPos, Vector
 	{
 		m_Vertices[i] = temp[i];
 	}
+	const float fontHeight = 16;
+	screenPos.x -= g_App->GetScreenSize().x / 2.f;
+	screenPos.y = -screenPos.y + g_App->GetScreenSize().y / 2.f ;
+	
 	float drawX = screenPos.x;
 	float drawY = screenPos.y;
 	int index = (int)temp.size();
 	// build vertex buffer
-	float fontHeight = 16;
+
 	for (ui32 i = 0; i < sentence.size(); i++)
 	{
 		int letter = ((int)sentence[i]) - 32;
