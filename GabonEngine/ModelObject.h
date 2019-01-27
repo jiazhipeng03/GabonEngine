@@ -36,6 +36,8 @@ public:
 	int GetVertexCount();
 	int GetIndexCount();
 	int GetStartVertexIndex();
+	//包围盒可视性，需要查找快速的算法，简单方法就是根据vertexPosition找到最大最小值生成Cube
+	//Cube GetConvex();
 private:
 	void BuildGeometryBuffers();
 	void InitTexture(LPCWSTR texName);

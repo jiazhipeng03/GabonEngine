@@ -6,7 +6,7 @@ public:
 	ModelManager();
 	~ModelManager();
 	bool Init(std::string fileName);
-	void Render();
+	void Render(class Frustum* frustum);
 private:
 	std::vector<ModelObject*> m_ModelList;
 };

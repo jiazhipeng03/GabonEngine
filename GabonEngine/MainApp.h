@@ -49,6 +49,8 @@ private:
 	
 	Ogre::Vector2 m_CurPos;
 	Ogre::Vector2 m_LastPos;
+
+	Frustum* m_Frustum;
 };
 
 extern MainApp* g_App;

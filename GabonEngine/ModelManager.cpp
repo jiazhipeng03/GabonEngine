@@ -40,13 +40,19 @@ bool ModelManager::Init(std::string fileName)
 	return true;
 }
 
-void ModelManager::Render()
+void ModelManager::Render(class Frustum* frustum)
 {
 	for (auto m : m_ModelList)
 	{
-		m->Render();
-		
-		m->GetShader()->Render(g_App->GetDeviceContext(), m->GetVertexCount(), m->GetStartVertexIndex(),
-			m->GetWorldMatrix(), g_App->GetCamera()->Proj(), m->GetDiffuseSRV());
+		// check in frustum
+		//Vector3 pos = m->GetWorldMatrix().getTrans();
+		//bool bNeedRender = frustum->CheckSphere(pos);
+		//if(bNeedRender)
+		{
+			m->Render();
+
+			m->GetShader()->Render(g_App->GetDeviceContext(), m->GetVertexCount(), m->GetStartVertexIndex(),
+				m->GetWorldMatrix(), g_App->GetCamera()->Proj(), m->GetDiffuseSRV());
+		}
 	}
 }

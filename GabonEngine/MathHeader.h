@@ -7,4 +7,5 @@
 #include "Math/OgreMatrix3.h"
 #include "Math/OgreMatrix4.h"
 #include "Math/OgrePlane.h"
+#include "Math/OgreFrustum.h"
 using namespace Ogre;

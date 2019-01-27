@@ -157,7 +157,6 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontManager.cpp" />
-    <ClCompile Include="OgreFrustum.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -166,6 +165,7 @@
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathHelper.cpp" />
+    <ClCompile Include="Math\OgreFrustum.cpp" />
     <ClCompile Include="Math\OgreMath.cpp" />
     <ClCompile Include="Math\OgreMatrix3.cpp" />
     <ClCompile Include="Math\OgreMatrix4.cpp" />
@@ -189,7 +189,6 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FontManager.h" />
-    <ClInclude Include="OgreFrustum.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="InputManager.h" />
@@ -198,6 +197,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="MathHelper.h" />
+    <ClInclude Include="Math\OgreFrustum.h" />
     <ClInclude Include="Math\OgreMath.h" />
     <ClInclude Include="Math\OgreMatrix3.h" />
     <ClInclude Include="Math\OgreMatrix4.h" />

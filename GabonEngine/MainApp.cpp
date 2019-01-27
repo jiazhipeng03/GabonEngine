@@ -85,10 +85,11 @@ void MainApp::DrawScene()
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	// 以后需要将model按shader分类
-	// 暂时先按Model来绘制
+	// 以后需要将model按shader分类?
 	m_Light->Render();
-	m_ModelMan->Render();
+	m_Frustum = new Frustum;
+	m_Frustum->ConstructFrustum(1000.f, m_Camera->Proj(), m_Camera->View());
+	m_ModelMan->Render(m_Frustum);
 	
 	EnableZBuffer(false);
 	m_BitmapMan->Render();

@@ -114,10 +114,10 @@
     <ClCompile Include="FontManager.cpp">
       <Filter>Font</Filter>
     </ClCompile>
-    <ClCompile Include="OgreFrustum.cpp">
+    <ClCompile Include="Math\OgrePlane.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\OgrePlane.cpp">
+    <ClCompile Include="Math\OgreFrustum.cpp">
       <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,10 +221,10 @@
     <ClInclude Include="FontManager.h">
       <Filter>Font</Filter>
     </ClInclude>
-    <ClInclude Include="OgreFrustum.h">
+    <ClInclude Include="Math\OgrePlane.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\OgrePlane.h">
+    <ClInclude Include="Math\OgreFrustum.h">
       <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>

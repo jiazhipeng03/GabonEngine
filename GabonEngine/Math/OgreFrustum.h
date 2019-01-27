@@ -1,5 +1,6 @@
 #pragma once
-#include "MathHeader.h"
+#include "OgreMatrix4.h"
+#include "OgrePlane.h"
 class Frustum
 {
 public:
@@ -7,7 +8,7 @@ public:
 	Frustum(const Frustum&);
 	~Frustum();
 
-	void ConstructFrustum(float, Matrix4, Matrix4);
+	void ConstructFrustum(float screenDepth, Ogre::Matrix4 projectionMatrix, Ogre::Matrix4 viewMatrix);
 
 	bool CheckPoint(float, float, float);
 	bool CheckCube(float, float, float, float);
@@ -15,5 +16,5 @@ public:
 	bool CheckRectangle(float, float, float, float, float, float);
 
 private:
-	Plane m_planes[6];
+	Ogre::Plane m_planes[6];
 };

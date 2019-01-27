@@ -99,7 +99,7 @@ protected:
 	bool mEnable4xMsaa;
 
 	InputManager* m_InputMan;
-	MOUSE_STATE m_MouseState;
+	MOUSE_STATE m_MouseState;	
 };
 
 #endif // D3DAPP_H
