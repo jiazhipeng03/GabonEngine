@@ -8,4 +8,8 @@
     <vs value ="bitmap.vs"/>
     <ps value ="bitmap.ps"/>
   </shader>
+  <shader name ="multi_tex">
+    <vs value ="multi_tex.vs"/>
+    <ps value ="multi_tex.ps"/>
+  </shader>
 </shader_root>

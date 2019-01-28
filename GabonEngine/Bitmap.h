@@ -12,7 +12,10 @@ class Bitmap
 public:
 	Bitmap();
 	~Bitmap();
-	bool Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::string texName, TextureShader* shader);	
+	// SingleTex <obseleted>
+	//bool Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::string texName, TextureShader* shader);	
+	// Multitexturing
+	bool Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::vector<std::string> texNames, TextureShader* shader);
 	void SetPosition(Ogre::Vector2 position);
 	void SetScreenSize(Ogre::Vector2 screenSize);
 	void Render();
@@ -20,11 +23,12 @@ public:
 	void RenderShader();
 	void UpdateBuffer();
 
+	bool IsMultiTex();
 private:	
 	TextureShader* m_Shader;
 	ID3D11Buffer* m_IndexBuffer;
 	ID3D11Buffer* m_VertexBuffer;
-	ID3D11ShaderResourceView* m_Tex;
+	std::vector<ID3D11ShaderResourceView*> m_Tex;
 	Ogre::Vector2 m_Position;
 	Ogre::Vector2 m_ImageSize;
 	Ogre::Vector2 m_ScreenSize;

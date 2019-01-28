@@ -10,10 +10,17 @@
 		<mesh value = "..\GabonEngine\Textures\cube.txt"/>
 		<shader value = "default"/>
 	</model>
-	<bitmap name = "test">
+	<bitmap name = "single">
 		<shader value = "bitmap"/>
 		<texture value = "Textures/seafloor.dds"/>
 		<position value = "0,0"/>
 		<size value = "100,100"/>
 	</bitmap>
+  <bitmap name = "multi">
+    <shader value = "multi_tex"/>
+    <texture value = "Textures/dirt01.dds"/>
+    <texture value = "Textures/stone01.dds"/>
+    <position value = "0,100"/>
+    <size value = "100,100"/>
+  </bitmap>
 </model_root>

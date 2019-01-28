@@ -45,7 +45,6 @@ void ModelManager::Render()
 	for (auto m : m_ModelList)
 	{
 		m->Render();
-		
 		m->GetShader()->Render(g_App->GetDeviceContext(), m->GetVertexCount(), m->GetStartVertexIndex(),
 			m->GetWorldMatrix(), g_App->GetCamera()->Proj(), m->GetDiffuseSRV());
 	}

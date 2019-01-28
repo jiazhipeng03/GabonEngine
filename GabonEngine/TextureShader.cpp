@@ -52,7 +52,8 @@ void TextureShader::Shutdown()
 }
 
 
-bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
+bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, 
+	Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture)
 {
 	bool result;
 
@@ -72,24 +73,12 @@ bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, 
 }
 
 
-// bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int IndexCount, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& viewMatrix,
-// 	Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
-// {
-// 	bool result;
-// 
-// 
-// 	// Set the shader parameters that it will use for rendering.
-// 	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture);
-// 	if (!result)
-// 	{
-// 		return false;
-// 	}
-// 
-// 	// Now render the prepared buffers with the shader.
-// 	RenderShader(deviceContext, IndexCount);
-// 
-// 	return true;
-// }
+bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
+{
+	std::vector<ID3D11ShaderResourceView*> srv;
+	srv.push_back(texture);
+	return Render(deviceContext, vertexCount, startVertexIndex, worldMatrix, projectionMatrix, srv);
+}
 
 bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
@@ -361,7 +350,7 @@ void TextureShader::OutputShaderErrorMessage(ID3DBlob* errorMessage, HWND hwnd, 
 
 
 bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& viewMatrix,
-	Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
+	Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -405,7 +394,7 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ogre
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 	
 	// Set shader texture resource in the pixel shader.
-	deviceContext->PSSetShaderResources(0, 1, &texture);
+	deviceContext->PSSetShaderResources(0, texture.size(), &texture[0]);
 
 	return true;
 }

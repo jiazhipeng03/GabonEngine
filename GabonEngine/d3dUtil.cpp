@@ -237,6 +237,13 @@ bool D3DHelper::InitTexture(ID3D11Device* device, std::string texName, ID3D11Sha
 	mbstowcs_s(&numConvert, wc, cSize, texName.c_str(), cSize);
 	ID3D11Resource* texture = nullptr;
 	HRESULT result = DirectX::CreateDDSTextureFromFile(device, wc, &texture, &targetSRV);
+	if (result != S_OK)
+	{
+		const int MAX_BUFFER = 8192;
+		static char szBuffer[MAX_BUFFER];
+		sprintf_s(szBuffer, "%s : %s not exist\n", __FUNCTION__, texName.c_str());
+		OutputDebugStringA(szBuffer);
+	}
 	SafeRelease(texture);
 	SafeDelete(wc);
 	return result == S_OK;

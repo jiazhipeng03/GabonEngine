@@ -32,14 +32,21 @@ bool BitmapManager::Init(std::string fileName)
 		std::string modelName = modelNode->first_attribute()->value();
 		//std::string meshName = modelNode->first_node("mesh")->first_attribute()->value();
 		std::string shaderName = modelNode->first_node("shader")->first_attribute()->value();
-		std::string texName = modelNode->first_node("texture")->first_attribute()->value();
+		xml_node<>* texNode = modelNode->first_node("texture");
+		std::vector<std::string> texNames;
+		while (texNode)
+		{
+			std::string texName = texNode->first_attribute()->value();
+			texNames.push_back(texName);
+			texNode = texNode->next_sibling("texture");
+		}		
 		std::string texPos = modelNode->first_node("position")->first_attribute()->value();
 		Vector2 pos = XMLParserHelper::ParseVec2(texPos);
 		std::string texSize = modelNode->first_node("size")->first_attribute()->value();
 		Vector2 size = XMLParserHelper::ParseVec2(texSize);
 		TextureShader* shader = g_App->GetShaderMan()->GetShader(shaderName);
 		assert(shader);
-		obj->Init(pos, size, g_App->GetScreenSize(), texName/*"Texture/seafloor.dds"*/, shader);
+		obj->Init(pos, size, g_App->GetScreenSize(), texNames/*"Texture/seafloor.dds"*/, shader);
 		m_ModelList.push_back(obj);
 		modelNode = modelNode->next_sibling("bitmap");
 	}

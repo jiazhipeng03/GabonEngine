@@ -9,15 +9,25 @@ Bitmap::Bitmap()
 
 Bitmap::~Bitmap()
 {
-	SafeRelease(m_Tex);
+	for(auto tex : m_Tex)
+		SafeRelease(tex);
 	SafeRelease(m_VertexBuffer);
 	SafeRelease(m_IndexBuffer);
 }
 
-bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::string texName, TextureShader* shader)
-{	
+// bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::string texName, TextureShader* shader)
+// {
+// 	std::vector<std::string> names;
+// 	names.push_back(texName);
+// 	Init(position, imgSize, screenSize, names, shader);
+// }
+
+bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::vector<std::string> texNames, TextureShader* shader)
+{
+	m_Tex.resize(texNames.size(), NULL);
 	m_Shader = shader;
-	D3DHelper::InitTexture(g_App->GetDevice(), texName, m_Tex);
+	for(int i=0; i<(int)texNames.size(); ++i)
+		D3DHelper::InitTexture(g_App->GetDevice(), texNames[i], m_Tex[i]);
 	m_ImageSize = imgSize;
 	SetPosition(position);
 	SetScreenSize(screenSize);
@@ -32,10 +42,6 @@ bool Bitmap::Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 s
 	vb.MiscFlags = 0;
 	vb.StructureByteStride = 0;
 	vb.Usage = D3D11_USAGE_DYNAMIC;
-// 	D3D11_SUBRESOURCE_DATA vertexData;
-// 	vertexData.pSysMem = &m_Vertices[0];
-// 	vertexData.SysMemPitch = 0;
-// 	vertexData.SysMemSlicePitch = 0;
 
 	HRESULT result = g_App->GetDevice()->CreateBuffer(&vb, nullptr, &m_VertexBuffer);
 	if (FAILED(result))
