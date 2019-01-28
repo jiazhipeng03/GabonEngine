@@ -241,6 +241,12 @@
     <None Include="bitmap.ps">
       <Filter>Shader</Filter>
     </None>
+    <None Include="multi_tex.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="multi_tex.vs">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="model.xml">
