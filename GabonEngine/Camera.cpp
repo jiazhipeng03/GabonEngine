@@ -23,6 +23,7 @@ Camera::Camera()
 
 Camera::~Camera()
 {
+	SafeRelease(m_CameraBuffer);
 }
 
 void Camera::InitBuffer()

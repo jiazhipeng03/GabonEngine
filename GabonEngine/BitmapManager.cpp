@@ -15,6 +15,7 @@ BitmapManager::~BitmapManager()
 	{
 		SafeDelete(m);
 	}
+	m_ModelList.clear();
 }
 
 bool BitmapManager::Init(std::string fileName)

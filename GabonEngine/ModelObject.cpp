@@ -12,7 +12,7 @@ ModelObject::ModelObject()
 	, m_name("")
 	, m_mat(nullptr)
 	, m_World(Ogre::Matrix4::IDENTITY)
-	, m_DiffuseSRV(NULL)
+	//, m_DiffuseSRV(NULL)
 	, m_VertexCount(0)
 	, m_StartVertexIndex(0)
 {
@@ -21,7 +21,9 @@ ModelObject::ModelObject()
 
 ModelObject::~ModelObject()
 {
-	SafeRelease(m_DiffuseSRV);
+	for(auto tex : m_TexArray)
+		SafeRelease(tex);
+	m_TexArray.clear();
 }
 
 bool ModelObject::LoadGeometryBuffers(std::string meshName)
@@ -37,18 +39,16 @@ bool ModelObject::LoadGeometryBuffers(std::string meshName)
 	return false;
 }
 
-void ModelObject::Init(std::string name, TextureShader* shader, std::string fbxName)
+void ModelObject::Init(std::string name, TextureShader* shader, std::string meshName, std::vector<std::string> texNames)
 {
 	m_name = name;
 	m_Shader = shader;
 	
-	LoadGeometryBuffers(fbxName);
+	LoadGeometryBuffers(meshName);
 	BuildGeometryBuffers();
-// 	if (name == "wall" || name == "floor" || name == "square")
-// 	{
-// 		BuildGeometryBuffers();
- 		InitTexture(L"Textures/seafloor.dds");
-// 	}
+	m_TexArray.resize(texNames.size(), NULL);
+	for(int i=0; i<(int)texNames.size(); ++i)
+		D3DHelper::InitTexture(g_App->GetDevice(), texNames[i], m_TexArray[i]);
 }
 
 void ModelObject::Render()
@@ -135,14 +135,6 @@ void ModelObject::BuildGeometryBuffers()
 	HR(g_App->GetDevice()->CreateBuffer(&ibd, &indexData, &m_indexBuffer));
 
 	delete[] m_Indices;
-}
-
-void ModelObject::InitTexture(LPCWSTR texName)
-{
-	ID3D11Resource* texture = nullptr;
-	
-	DirectX::CreateDDSTextureFromFile(g_App->GetDevice(), texName, &texture, &m_DiffuseSRV);
-	SafeRelease(texture);
 }
 
 void ModelObject::LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode)

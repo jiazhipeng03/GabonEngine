@@ -65,10 +65,19 @@ D3DApp::~D3DApp()
 		md3dImmediateContext->ClearState();
 
 	SafeRelease(md3dImmediateContext);
-	SafeRelease(md3dDevice);
 	SafeDelete(m_InputMan);
 	SafeRelease(mDepthStencilState);
 	SafeRelease(mDepthDisabledStencilState);
+#if defined(DEBUG) || defined(_DEBUG)
+	ID3D11Debug *d3dDebug;
+	HRESULT hr = md3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
+	if (SUCCEEDED(hr))
+	{
+		hr = d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+	}
+	if (d3dDebug != nullptr)			d3dDebug->Release();
+#endif
+	SafeRelease(md3dDevice);
 }
 
 HINSTANCE D3DApp::AppInst()const

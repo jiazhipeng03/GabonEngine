@@ -15,6 +15,7 @@ ShaderManager::~ShaderManager()
 	{
 		SafeDelete(shader.second);
 	}
+	m_mapShader.clear();
 }
 
 bool ShaderManager::Init(std::string filename)
@@ -39,6 +40,6 @@ bool ShaderManager::Init(std::string filename)
 		m_mapShader[shaderName] = shader;
 		shaderNode = shaderNode->next_sibling("shader");
 	}
-
+	doc.clear();
 	return true;
 }

@@ -4,6 +4,8 @@ MainApp* g_App = NULL;
 MainApp::MainApp(HINSTANCE hInstance)
 	:D3DApp(hInstance)
 {
+	//_CrtSetBreakAlloc(4283);
+	
 	mMainWndCaption = L"Main Demo";
 	mEnable4xMsaa = false;
 
@@ -29,6 +31,7 @@ MainApp::~MainApp()
 
 	SafeDelete(m_Camera);
 	SafeDelete(m_Light);
+	SafeDelete(m_Frustum);
 }
 
 bool MainApp::Init()

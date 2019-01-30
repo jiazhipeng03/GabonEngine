@@ -14,6 +14,7 @@ ModelManager::~ModelManager()
 	{
 		SafeDelete(m);
 	}
+	m_ModelList.clear();
 }
 
 bool ModelManager::Init(std::string fileName)
@@ -32,10 +33,19 @@ bool ModelManager::Init(std::string fileName)
 		std::string meshName = modelNode->first_node("mesh")->first_attribute()->value();
 		std::string shaderName = modelNode->first_node("shader")->first_attribute()->value();
 		TextureShader* shader = g_App->GetShaderMan()->GetShader(shaderName);
-		obj->Init(modelName, shader, meshName);
+		xml_node<>* texNode = modelNode->first_node("texture");
+		std::vector<std::string> texNames;
+		while (texNode)
+		{
+			std::string texName = texNode->first_attribute()->value();
+			texNames.push_back(texName);
+			texNode = texNode->next_sibling("texture");
+		}
+		obj->Init(modelName, shader, meshName, texNames);
 		m_ModelList.push_back(obj);
 		modelNode = modelNode->next_sibling("model");
 	}
+	doc.clear();
 	
 	return true;
 }
@@ -52,7 +62,7 @@ void ModelManager::Render(class Frustum* frustum)
 			m->Render();
 
 			m->GetShader()->Render(g_App->GetDeviceContext(), m->GetVertexCount(), m->GetStartVertexIndex(),
-				m->GetWorldMatrix(), g_App->GetCamera()->Proj(), m->GetDiffuseSRV());
+				m->GetWorldMatrix(), g_App->GetCamera()->Proj(), m->GetTexArray());
 		}
 	}
 }

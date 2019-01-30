@@ -25,12 +25,12 @@ public:
 	ModelObject();
 	~ModelObject();
 
-	virtual void Init(std::string name, TextureShader* shader, std::string fbxName);
+	virtual void Init(std::string name, TextureShader* shader, std::string meshName, std::vector<std::string> texNames);
 	bool LoadGeometryBuffers(std::string meshName);
 	void Render();
 	
 	Ogre::Matrix4 GetWorldMatrix();
-	ID3D11ShaderResourceView* GetDiffuseSRV() { return m_DiffuseSRV; }
+	std::vector<ID3D11ShaderResourceView*> GetTexArray() { return m_TexArray; }
 	TextureShader* GetShader() { return m_Shader; }
 	
 	int GetVertexCount();
@@ -40,7 +40,7 @@ public:
 	//Cube GetConvex();
 private:
 	void BuildGeometryBuffers();
-	void InitTexture(LPCWSTR texName);
+	
 	bool LoadMeshFromFBX(const std::string& file);
 	bool LoadMeshFromTxt(const std::string& file);
 	void LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode);
@@ -55,7 +55,7 @@ private:
 	//std::vector<unsigned long> m_Indices;
 	ID3D11Buffer* m_vertexBuffer;
 	ID3D11Buffer* m_indexBuffer;
-	ID3D11ShaderResourceView* m_DiffuseSRV;
+	std::vector<ID3D11ShaderResourceView*> m_TexArray;
 	int m_VertexCount;
 	int m_IndexCount;
 	int m_StartVertexIndex;

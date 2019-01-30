@@ -245,6 +245,6 @@ bool D3DHelper::InitTexture(ID3D11Device* device, std::string texName, ID3D11Sha
 		OutputDebugStringA(szBuffer);
 	}
 	SafeRelease(texture);
-	SafeDelete(wc);
+	delete[] wc;
 	return result == S_OK;
 }

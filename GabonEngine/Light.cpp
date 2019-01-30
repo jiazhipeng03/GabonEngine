@@ -8,6 +8,7 @@ Light::Light()
 
 Light::~Light()
 {
+	SafeRelease(m_LightBuffer);
 }
 
 bool DirectionalLight::Init()

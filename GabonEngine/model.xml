@@ -1,26 +1,22 @@
 <?xml version="1.0" ?>
 <model_root>
-<!--
-	<model name = "square">
-		<mesh value = "D:\资源\Leather outfit Girl_FBX.fbx"/>
-		<shader value = "default"/>
-	</model>
-	-->
+  <!--
 	<model name = "cube">
 		<mesh value = "..\GabonEngine\Textures\cube.txt"/>
 		<shader value = "default"/>
+    <texture value = "Textures/seafloor.dds"/>
 	</model>
+  -->
 	<bitmap name = "single">
 		<shader value = "bitmap"/>
 		<texture value = "Textures/seafloor.dds"/>
 		<position value = "0,0"/>
 		<size value = "100,100"/>
 	</bitmap>
-  <bitmap name = "multi">
+  <model name = "multitex">
+    <mesh value = "..\GabonEngine\Textures\square.txt"/>
     <shader value = "multi_tex"/>
     <texture value = "Textures/dirt01.dds"/>
     <texture value = "Textures/stone01.dds"/>
-    <position value = "0,100"/>
-    <size value = "100,100"/>
-  </bitmap>
+  </model>
 </model_root>
