@@ -2,9 +2,8 @@
 #include "MainApp.h"
 
 #include <fbxsdk.h>
-#include <vector>
 
-
+const std::vector<std::string> ModelObject::s_VertexInputNames = {"position", "normal", "texture"};
 ModelObject::ModelObject()
 	: m_indexBuffer(NULL)
 	, m_vertexBuffer(nullptr)
@@ -59,7 +58,7 @@ void ModelObject::Render()
 
 	// Set vertex buffer stride and offset.
 	//m_Shader->GetVertexStride();
-	stride = sizeof(VertexType);
+	stride = m_Shader->GetVertexStride();// sizeof(VertexType);
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
@@ -103,16 +102,20 @@ void ModelObject::BuildGeometryBuffers()
 		m_Indices[i] = i;
 	}
 	m_VertexCount = (int)m_Vertex.size();
-	
+
+	void* data;
+	int size;
+	RebuildVertexData(data, size);
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_DEFAULT;
-	vbd.ByteWidth = sizeof(VertexType) * m_VertexCount;
+	vbd.ByteWidth = size;// sizeof(VertexType) * m_VertexCount;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
 	vbd.StructureByteStride = 0;
+	
 	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = m_Vertex.data();
+	vinitData.pSysMem = data;// m_Vertex.data();
 	vinitData.SysMemPitch = 0;
 	vinitData.SysMemSlicePitch = 0;
 	HRESULT hr = (g_App->GetDevice()->CreateBuffer(&vbd, &vinitData, &m_vertexBuffer));
@@ -135,6 +138,58 @@ void ModelObject::BuildGeometryBuffers()
 	HR(g_App->GetDevice()->CreateBuffer(&ibd, &indexData, &m_indexBuffer));
 
 	delete[] m_Indices;
+	free(data);
+}
+
+void ModelObject::RebuildVertexData(void*& OutDataBuffer, int& OutDataSize)
+{
+	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layout = m_Shader->GetVertexLayoutFromShader();
+	std::vector<VertexInputType> outLayout;
+	ui32 index = 0;
+// 	for (auto ele : layout)
+// 	{
+// 		std::string name = ele.SemanticName;
+// 		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+// 		// index 不用重置，找到后总是从当前继续找
+// 		for (; index < s_VertexInputNames.size(); ++index)
+// 		{
+// 			if (s_VertexInputNames[index] == name)
+// 				break;
+// 		}
+// 		assert(index == s_VertexInputNames.size());
+// 		outLayout.push_back((VertexInputType)index);
+// 	}
+	ui32 vertexStride = layout.back().AlignedByteOffset + TextureShader::GetStride(layout.back().Format);
+	OutDataSize = vertexStride * m_Vertex.size();
+	OutDataBuffer = malloc(sizeof(BYTE) * OutDataSize);
+	// 判断layout中需要输出的属性
+	BYTE* pDest = (BYTE*)OutDataBuffer;
+	for (auto vertexInput : layout)
+	{
+		ui32 offset = vertexInput.AlignedByteOffset;
+		ui32 stride = TextureShader::GetStride(vertexInput.Format);
+		for (int i = 0; i < m_VertexCount; ++i)
+		{
+			pDest = (BYTE*)OutDataBuffer + i * vertexStride + offset;
+			if (strcmp(vertexInput.SemanticName, "POSITION") == 0)
+			{
+				memcpy_s(pDest, stride, &m_Vertex[i].position, stride);
+			}
+			else if(strcmp(vertexInput.SemanticName, "NORMAL") == 0)
+			{
+				memcpy_s(pDest, stride, &m_Vertex[i].normal, stride);
+			}
+			else if(strcmp(vertexInput.SemanticName, "TEXCOORD") == 0)
+			{
+				memcpy_s(pDest, stride, &m_Vertex[i].texture, stride);
+			}
+			else
+			{
+				assert(0);
+			}
+		}
+			
+	}
 }
 
 void ModelObject::LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode)

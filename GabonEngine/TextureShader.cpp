@@ -80,13 +80,25 @@ bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, 
 	return Render(deviceContext, vertexCount, startVertexIndex, worldMatrix, projectionMatrix, srv);
 }
 
+ui32 TextureShader::GetStride(DXGI_FORMAT format)
+{
+	static std::map<DXGI_FORMAT, ui32> mapStride = {
+	{DXGI_FORMAT_R32G32_FLOAT, 8 },
+	{DXGI_FORMAT_R32G32_UINT, 8 },
+	{DXGI_FORMAT_R32G32B32_FLOAT, 12 },
+	{DXGI_FORMAT_R32G32B32_UINT, 12 },
+	};
+	return mapStride[format];
+}
+
 bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
 	ID3D10Blob* vertexShaderBuffer;
 	ID3D10Blob* pixelShaderBuffer;
-	std::vector<D3D11_INPUT_ELEMENT_DESC> inputlayout;
+	// save to class
+	//std::vector<D3D11_INPUT_ELEMENT_DESC> m_ReflectLayout;
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -173,7 +185,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 		inputDesc.AlignedByteOffset = offset;
 		inputDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		inputDesc.InstanceDataStepRate = 0;
-		inputlayout.push_back(inputDesc);
+		m_ReflectLayout.push_back(inputDesc);
 		offset += stride;
 	}
 	for (unsigned int i = 0; i < VSShaderDesc.ConstantBuffers; ++i)
@@ -188,6 +200,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 			pVar->GetDesc(&vDesc);
 		}
 	}
+	m_vertexStride = offset;
 	// Create the vertex input layout description.
 	// This setup needs to match the VertexType stucture in the ModelClass and in the shader.
 // 	inputlayout[0].SemanticName = "POSITION";
@@ -215,10 +228,10 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 // 	inputlayout[2].InstanceDataStepRate = 0;
 
 	// Get a count of the elements in the layout.
-	numElements = (int)inputlayout.size();
+	numElements = (int)m_ReflectLayout.size();
 
 	// Create the vertex input layout.
-	result = device->CreateInputLayout(&inputlayout[0], numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
+	result = device->CreateInputLayout(&m_ReflectLayout[0], numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
 		&m_layout);
 	if (FAILED(result))
 	{

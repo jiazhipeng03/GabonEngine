@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "Material.h"
 #include "d3dUtil.h"
-#include "Math/OgreMatrix4.h"
+#include "MathHeader.h"
 class TextureShader;
 namespace fbxsdk
 {
@@ -12,6 +12,7 @@ class ModelObject :
 	public Object
 {
 	// should be defined by vertex shader
+	// 定义全部属性，解析文件存储到该类型data中，渲染时根据vs所需格式重新组织传入vertex buffer
 	struct VertexType
 	{
 		Ogre::Vector3 position;
@@ -21,6 +22,18 @@ class ModelObject :
 		VertexType(float px, float py, float pz, float nx, float ny, float nz, float u, float v)
 			: position(px, py, pz), normal(nx, ny, nz), texture(u, v) {}
 	};
+	enum VertexInputType
+	{
+		VI_POSITION,
+		VI_NORMAL,
+		VI_TEXTURE,
+	};
+	const static std::vector<std::string> s_VertexInputNames;
+// 	struct VertexType
+// 	{
+// 		Vector3 position;
+// 		Vector2 texture;
+// 	};
 public:
 	ModelObject();
 	~ModelObject();
@@ -40,7 +53,7 @@ public:
 	//Cube GetConvex();
 private:
 	void BuildGeometryBuffers();
-	
+	void RebuildVertexData(void*& OutDataBuffer, int& OutDataSize);
 	bool LoadMeshFromFBX(const std::string& file);
 	bool LoadMeshFromTxt(const std::string& file);
 	void LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode);

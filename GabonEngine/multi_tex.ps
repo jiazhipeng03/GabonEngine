@@ -46,5 +46,6 @@ float4 main(PixelInputType input) : SV_TARGET
     color1 = shaderTexture[0].Sample(SampleType, input.tex);
 	color2 = shaderTexture[1].Sample(SampleType, input.tex);
 	color = color1 * color2 * 2.0f;
-    return color;	
+	color = saturate(color);
+    return color2;	
 }

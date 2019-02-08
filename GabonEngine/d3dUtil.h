@@ -22,6 +22,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <set>
 
 #include "Math/OgreMath.h"
 #include "DDSTextureLoader.h"

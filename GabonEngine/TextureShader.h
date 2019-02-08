@@ -27,6 +27,10 @@ public:
 	// multitex
 	bool Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, 
 		Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture);
+
+	const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetVertexLayoutFromShader() { return m_ReflectLayout; }
+	static ui32 GetStride(DXGI_FORMAT format);
+	ui32 GetVertexStride() { return m_vertexStride; }
 private:
 	// PS, VS, input layout, buffer param, sampler state
 	bool InitializeShader(ID3D11Device*, HWND, WCHAR*, WCHAR*);
@@ -44,4 +48,7 @@ private:
 	ID3D11InputLayout* m_layout;
 	ID3D11Buffer* m_matrixBuffer;
 	ID3D11SamplerState* m_sampleState;
+	// vertex shader params reflect
+	std::vector<D3D11_INPUT_ELEMENT_DESC> m_ReflectLayout;
+	ui32 m_vertexStride;
 };
