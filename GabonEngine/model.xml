@@ -14,9 +14,17 @@
 		<size value = "100,100"/>
 	</bitmap>
   <model name = "multitex">
+    <position value = "0, 0, 0"/>
     <mesh value = "..\GabonEngine\Textures\square.txt"/>
     <shader value = "multi_tex"/>
     <texture value = "Textures/dirt01.dds"/>
+    <texture value = "Textures/stone01.dds"/>
+  </model>
+  <model name = "lightmap">
+    <position value = "2, 0, 0"/>
+    <mesh value = "..\GabonEngine\Textures\square.txt"/>
+    <shader value = "lightmap"/>
+    <texture value = "Textures/light01.dds"/>
     <texture value = "Textures/stone01.dds"/>
   </model>
 </model_root>

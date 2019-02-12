@@ -221,6 +221,8 @@
   <ItemGroup>
     <None Include="bitmap.ps" />
     <None Include="bitmap.vs" />
+    <None Include="lightmap.ps" />
+    <None Include="lightmap.vs" />
     <None Include="multi_tex.ps" />
     <None Include="multi_tex.vs" />
     <None Include="texture.ps" />

@@ -81,7 +81,7 @@ int ModelObject::GetIndexCount()
 
 Ogre::Matrix4 ModelObject::GetWorldMatrix()
 {
-	return Ogre::Matrix4::IDENTITY;
+	return m_World;
 }
 
 void ModelObject::BuildGeometryBuffers()

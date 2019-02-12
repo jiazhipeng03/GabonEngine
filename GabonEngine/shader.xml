@@ -12,4 +12,8 @@
     <vs value ="multi_tex.vs"/>
     <ps value ="multi_tex.ps"/>
   </shader>
+  <shader name = "lightmap">
+    <vs value = "lightmap.vs"/>
+    <ps value = "lightmap.ps"/>
+  </shader>
 </shader_root>

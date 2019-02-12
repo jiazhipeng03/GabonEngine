@@ -77,6 +77,7 @@ namespace Ogre
                 [ m[3][0]  m[3][1]  m[3][2]  m[3][3] ]   {1}
             </pre>
     */
+	// 用到时改成directx的左乘矩阵, trans, rot, scale都相反，不考虑兼容
     class _OgreExport TransformBase
     {
     protected:
@@ -119,14 +120,14 @@ namespace Ogre
         /// Sets the translation transformation part of the matrix.
         void setTrans( const Vector3& v )
         {
-            m[0][3] = v.x;
-            m[1][3] = v.y;
-            m[2][3] = v.z;
+            m[3][0] = v.x;
+            m[3][1] = v.y;
+            m[3][2] = v.z;
         }
         /// Extracts the translation transformation part of the matrix.
         Vector3 getTrans() const
         {
-          return Vector3(m[0][3], m[1][3], m[2][3]);
+          return Vector3(m[3][0], m[3][1], m[3][2]);
         }
         /// Sets the scale part of the matrix.
         void setScale( const Vector3& v )
@@ -145,10 +146,10 @@ namespace Ogre
 
         void makeTrans( float tx, float ty, float tz )
         {
-            m[0][0] = 1.0; m[0][1] = 0.0; m[0][2] = 0.0; m[0][3] = tx;
-            m[1][0] = 0.0; m[1][1] = 1.0; m[1][2] = 0.0; m[1][3] = ty;
-            m[2][0] = 0.0; m[2][1] = 0.0; m[2][2] = 1.0; m[2][3] = tz;
-            m[3][0] = 0.0; m[3][1] = 0.0; m[3][2] = 0.0; m[3][3] = 1.0;
+            m[0][0] = 1.0; m[0][1] = 0.0; m[0][2] = 0.0; m[0][3] = 0.0;
+            m[1][0] = 0.0; m[1][1] = 1.0; m[1][2] = 0.0; m[1][3] = 0.0;
+            m[2][0] = 0.0; m[2][1] = 0.0; m[2][2] = 1.0; m[2][3] = 0.0;
+            m[3][0] = tx; m[3][1] = ty; m[3][2] = tz; m[3][3] = 1.0;
         }
 
         float determinant() const;

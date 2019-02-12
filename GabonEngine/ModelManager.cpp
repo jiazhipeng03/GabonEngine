@@ -2,6 +2,7 @@
 #include "MainApp.h"
 #include "XMLParser/rapidxml.hpp"
 #include "XMLParser/rapidxml_utils.hpp"
+#include "XMLParserHelper.h"
 
 ModelManager::ModelManager()
 {
@@ -30,6 +31,9 @@ bool ModelManager::Init(std::string fileName)
 	{
 		ModelObject* obj = new ModelObject;
 		std::string modelName = modelNode->first_attribute()->value();
+		Vector3 position(0, 0, 0);
+		if(modelNode->first_node("position"))
+			position = XMLParserHelper::ParseVec3(modelNode->first_node("position")->first_attribute()->value());
 		std::string meshName = modelNode->first_node("mesh")->first_attribute()->value();
 		std::string shaderName = modelNode->first_node("shader")->first_attribute()->value();
 		TextureShader* shader = g_App->GetShaderMan()->GetShader(shaderName);
@@ -42,6 +46,7 @@ bool ModelManager::Init(std::string fileName)
 			texNode = texNode->next_sibling("texture");
 		}
 		obj->Init(modelName, shader, meshName, texNames);
+		obj->SetPosition(position);
 		m_ModelList.push_back(obj);
 		modelNode = modelNode->next_sibling("model");
 	}

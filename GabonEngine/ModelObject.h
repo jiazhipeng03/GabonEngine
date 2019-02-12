@@ -39,6 +39,7 @@ public:
 	~ModelObject();
 
 	virtual void Init(std::string name, TextureShader* shader, std::string meshName, std::vector<std::string> texNames);
+	void SetPosition(Vector3 pos) { m_World.setTrans(pos); }
 	bool LoadGeometryBuffers(std::string meshName);
 	void Render();
 	
