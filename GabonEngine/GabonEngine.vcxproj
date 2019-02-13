@@ -219,18 +219,22 @@
     <ClInclude Include="XMLParser\rapidxml_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bitmap.ps" />
-    <None Include="bitmap.vs" />
-    <None Include="lightmap.ps" />
-    <None Include="lightmap.vs" />
-    <None Include="multi_tex.ps" />
-    <None Include="multi_tex.vs" />
-    <None Include="texture.ps" />
-    <None Include="texture.vs" />
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="model.xml" />
     <Xml Include="shader.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\alphamapping.ps" />
+    <None Include="Shader\alphamapping.vs" />
+    <None Include="Shader\bitmap.ps" />
+    <None Include="Shader\bitmap.vs" />
+    <None Include="Shader\bumpmapping.ps" />
+    <None Include="Shader\bumpmapping.vs" />
+    <None Include="Shader\lightmap.ps" />
+    <None Include="Shader\lightmap.vs" />
+    <None Include="Shader\multi_tex.ps" />
+    <None Include="Shader\multi_tex.vs" />
+    <None Include="Shader\texture.ps" />
+    <None Include="Shader\texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

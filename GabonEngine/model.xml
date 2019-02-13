@@ -27,4 +27,19 @@
     <texture value = "Textures/light01.dds"/>
     <texture value = "Textures/stone01.dds"/>
   </model>
+  <model name = "alphamap">
+    <position value ="4,0,0"/>
+    <mesh value = "..\GabonEngine\Textures\square.txt"/>
+    <shader value = "alphamapping"/>
+    <texture value = "Textures/stone01.dds"/>
+    <texture value = "Textures/dirt01.dds"/>
+    <texture value = "Textures/alpha01.dds"/>
+  </model>
+  <model name = "bumpmap">
+    <position value = "6, 0, 0"/>
+    <mesh value = "..\GabonEngine\Textures\cube.txt"/>
+    <shader value = "bumpmapping"/>
+    <texture value = "Textures/stone01.dds"/>
+    <texture value = "Textures/bump01.dds"/>
+  </model>
 </model_root>

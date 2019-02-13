@@ -16,4 +16,12 @@
     <vs value = "lightmap.vs"/>
     <ps value = "lightmap.ps"/>
   </shader>
+  <shader name = "alphamapping">
+    <vs value = "alphamapping.vs"/>
+    <ps value = "alphamapping.ps"/>
+  </shader>
+  <shader name = "bumpmapping">
+    <vs value = "bumpmapping.vs"/>
+    <ps value = "bumpmapping.ps"/>
+  </shader>
 </shader_root>

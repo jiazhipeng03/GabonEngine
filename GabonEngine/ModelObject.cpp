@@ -44,6 +44,7 @@ void ModelObject::Init(std::string name, TextureShader* shader, std::string mesh
 	m_Shader = shader;
 	
 	LoadGeometryBuffers(meshName);
+	CalculateModelVectors();
 	BuildGeometryBuffers();
 	m_TexArray.resize(texNames.size(), NULL);
 	for(int i=0; i<(int)texNames.size(); ++i)
@@ -183,6 +184,18 @@ void ModelObject::RebuildVertexData(void*& OutDataBuffer, int& OutDataSize)
 			{
 				memcpy_s(pDest, stride, &m_Vertex[i].texture, stride);
 			}
+			else if (strcmp(vertexInput.SemanticName, "TANGENT") == 0)
+			{
+				memcpy_s(pDest, stride, &m_Vertex[i].tangent, stride);
+			}
+			else if (strcmp(vertexInput.SemanticName, "BINORMAL") == 0)
+			{
+				memcpy_s(pDest, stride, &m_Vertex[i].binormal, stride);
+			}
+			else if (strcmp(vertexInput.SemanticName, "NORMAL") == 0)
+			{
+				memcpy_s(pDest, stride, &m_Vertex[i].normal, stride);
+			}
 			else
 			{
 				assert(0);
@@ -248,6 +261,11 @@ void ModelObject::LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode)
 		}
 
 	}
+}
+
+void ModelObject::CalculateModelVectors()
+{
+
 }
 
 int ModelObject::GetVertexCount()

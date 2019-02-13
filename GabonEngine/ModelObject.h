@@ -18,6 +18,8 @@ class ModelObject :
 		Ogre::Vector3 position;
 		Ogre::Vector3 normal;
 		Ogre::Vector2 texture;
+		Ogre::Vector3 tangent;
+		Ogre::Vector3 binormal;
 		VertexType() : position(0.0f, 0.0f, 0.0f), normal(0.0f, 0.0f, 0.0f), texture(0.0f, 0.0f) {}
 		VertexType(float px, float py, float pz, float nx, float ny, float nz, float u, float v)
 			: position(px, py, pz), normal(nx, ny, nz), texture(u, v) {}
@@ -51,13 +53,19 @@ public:
 	int GetIndexCount();
 	int GetStartVertexIndex();
 	//视锥剔除，需要查找快速的算法，简单方法就是根据vertexPosition找到最大最小值生成Cube
-	//Cube GetConvex();
+	//Cube GetBound();
 private:
+	// build vertex/index buffers
 	void BuildGeometryBuffers();
+	// render data
 	void RebuildVertexData(void*& OutDataBuffer, int& OutDataSize);
+	// Load
 	bool LoadMeshFromFBX(const std::string& file);
 	bool LoadMeshFromTxt(const std::string& file);
 	void LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode);
+	// TBN calculate
+	void CalculateModelVectors();
+
 private:
 	TextureShader* m_Shader;
 	std::string m_name;

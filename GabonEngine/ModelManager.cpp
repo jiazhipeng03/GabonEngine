@@ -45,6 +45,14 @@ bool ModelManager::Init(std::string fileName)
 			texNames.push_back(texName);
 			texNode = texNode->next_sibling("texture");
 		}
+		if (!shader)
+		{
+			char str[256];
+			sprintf_s(str, "ModelManager::Init obj %s shader %s not exists", meshName.c_str(), shaderName.c_str());
+			OutputDebugStringA(str);
+			modelNode = modelNode->next_sibling("model");
+			continue;
+		}
 		obj->Init(modelName, shader, meshName, texNames);
 		obj->SetPosition(position);
 		m_ModelList.push_back(obj);

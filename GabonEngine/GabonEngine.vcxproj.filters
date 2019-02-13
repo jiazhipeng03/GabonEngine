@@ -229,37 +229,49 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="texture.ps">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="texture.vs">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="bitmap.vs">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="bitmap.ps">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="multi_tex.ps">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="multi_tex.vs">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="lightmap.vs">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="lightmap.ps">
-      <Filter>Shader</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="model.xml">
       <Filter>XML</Filter>
     </Xml>
     <Xml Include="shader.xml">
       <Filter>XML</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\bitmap.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\bitmap.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\lightmap.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\lightmap.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\multi_tex.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\multi_tex.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\texture.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\texture.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\alphamapping.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\alphamapping.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\bumpmapping.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\bumpmapping.vs">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

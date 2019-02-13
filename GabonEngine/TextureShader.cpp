@@ -25,6 +25,8 @@ TextureShader::~TextureShader()
 
 bool TextureShader::Initialize(/*ID3D11Device* device, HWND hwnd,*/ std::string vsFileName, std::string psFileName)
 {
+	vsFileName = "Shader/" + vsFileName;
+	psFileName = "Shader/" + psFileName;
 	bool result;
 	wchar_t vsBuf[256], psBuf[256];
 	size_t outNum;
