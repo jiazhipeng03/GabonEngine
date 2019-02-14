@@ -65,6 +65,8 @@ private:
 	void LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode);
 	// TBN calculate
 	void CalculateModelVectors();
+	void CalculateTangentBinormal(VertexType v1, VertexType v2, VertexType v3, Vector3& OutTangent, Vector3& OutBinormal);
+	void CalculateNormal(Vector3 tangent, Vector3 binormal, Vector3& OutNormal);
 
 private:
 	TextureShader* m_Shader;

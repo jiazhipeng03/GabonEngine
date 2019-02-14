@@ -265,7 +265,169 @@ void ModelObject::LoadFbxMesh(fbxsdk::FbxNode* pFbxRootNode)
 
 void ModelObject::CalculateModelVectors()
 {
+	int faceCount, i, index;
+	VertexType vertex1, vertex2, vertex3;
+	Vector3 tangent, binormal, normal;
 
+
+	// Calculate the number of faces in the model.
+	faceCount = m_VertexCount / 3;
+
+	// Initialize the index to the model data.
+	index = 0;
+
+	// Go through all the faces and calculate the the tangent, binormal, and normal vectors.
+	for (i = 0; i < faceCount; i++)
+	{
+		// Get the three vertices for this face from the model.
+		vertex1.position = m_Vertex[index].position;
+		vertex1.texture = m_Vertex[index].texture;
+		vertex1.normal = m_Vertex[index].normal;
+
+		index++;
+
+		vertex2.position = m_Vertex[index].position;
+		vertex2.texture = m_Vertex[index].texture;
+		vertex2.normal = m_Vertex[index].normal;
+		index++;
+
+		vertex3.position = m_Vertex[index].position;
+		vertex3.texture = m_Vertex[index].texture;
+		vertex3.normal = m_Vertex[index].normal;
+		index++;
+
+		// Calculate the tangent and binormal of that face.
+		CalculateTangentBinormal(vertex1, vertex2, vertex3, tangent, binormal);
+
+		// Calculate the new normal using the tangent and binormal.
+		CalculateNormal(tangent, binormal, normal);
+
+		// Store the normal, tangent, and binormal for this face back in the model structure.
+		for (int i = 1; i <= 3; ++i)
+		{
+			m_Vertex[index - i].normal = normal;
+			m_Vertex[index - i].tangent = tangent;
+			m_Vertex[index - i].binormal = binormal;
+		}		
+// 		m_model[index - 1].ny = normal.y;
+// 		m_model[index - 1].nz = normal.z;
+// 		m_model[index - 1].tx = tangent.x;
+// 		m_model[index - 1].ty = tangent.y;
+// 		m_model[index - 1].tz = tangent.z;
+// 		m_model[index - 1].bx = binormal.x;
+// 		m_model[index - 1].by = binormal.y;
+// 		m_model[index - 1].bz = binormal.z;
+
+// 		m_model[index - 2].nx = normal.x;
+// 		m_model[index - 2].ny = normal.y;
+// 		m_model[index - 2].nz = normal.z;
+// 		m_model[index - 2].tx = tangent.x;
+// 		m_model[index - 2].ty = tangent.y;
+// 		m_model[index - 2].tz = tangent.z;
+// 		m_model[index - 2].bx = binormal.x;
+// 		m_model[index - 2].by = binormal.y;
+// 		m_model[index - 2].bz = binormal.z;
+// 
+// 		m_model[index - 3].nx = normal.x;
+// 		m_model[index - 3].ny = normal.y;
+// 		m_model[index - 3].nz = normal.z;
+// 		m_model[index - 3].tx = tangent.x;
+// 		m_model[index - 3].ty = tangent.y;
+// 		m_model[index - 3].tz = tangent.z;
+// 		m_model[index - 3].bx = binormal.x;
+// 		m_model[index - 3].by = binormal.y;
+// 		m_model[index - 3].bz = binormal.z;
+	}
+
+	return;
+}
+
+void ModelObject::CalculateTangentBinormal(VertexType v1, VertexType v2, VertexType v3, Vector3& OutTangent, Vector3& OutBinormal)
+{
+	Vector3 vec1, vec2;
+	Vector2 texVec1, texVec2;
+// 	float vector1[3], vector2[3];
+// 	float tuVector[2], tvVector[2];
+ 	float den;
+ 	float length;
+
+
+	// Calculate the two vectors for this face.
+	vec1 = v2.position - v1.position;
+// 	vector1[0] = vertex2.x - v1.position.x;
+// 	vector1[1] = vertex2.y - vertex1.y;
+// 	vector1[2] = vertex2.z - vertex1.z;
+
+	vec2 = v3.position - v1.position;
+// 	vector2[1] = vertex3.y - vertex1.y;
+// 	vector2[2] = vertex3.z - vertex1.z;
+
+	// Calculate the tu and tv texture space vectors.
+	
+	texVec1 = v2.texture - v1.texture;
+// 	tuVector[0] = vertex2.tu - vertex1.tu;
+// 	tvVector[0] = vertex2.tv - vertex1.tv;
+
+	texVec2 = v3.texture - v1.texture;
+// 	tuVector[1] = vertex3.tu - vertex1.tu;
+// 	tvVector[1] = vertex3.tv - vertex1.tv;
+
+	// Calculate the denominator of the tangent/binormal equation.
+	den = 1.0f / (texVec1.x * texVec2.y - texVec2.x * texVec2.y);
+	//den = 1.0f / (tuVector[0] * tvVector[1] - tuVector[1] * tvVector[0]);
+
+	// Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
+	OutTangent = (texVec2.y * vec1 - texVec1.y * vec2) * den;
+// 	OutTangent.x = (texVec2.y * vec1.x - texVec1.y * vec2.x) * den;
+// 	OutTangent.y = (texVec2.y * vec1.y - texVec1.y * vec2.y) * den;
+// 	OutTangent.z = (texVec2.y * vec1.z - texVec1.y * vec2.z) * den;
+
+	OutBinormal = (texVec1.x * vec2 - texVec2.x * vec1) * den;
+// 	OutBinormal.x = (texVec1.x * vec2.x - texVec2.x * vec1.x) * den;
+// 	OutBinormal.y = (texVec1.x * vec2.y - texVec2.x * vec1.y) * den;
+// 	OutBinormal.z = (texVec1.x * vec2.z - texVec2.x * vec1.z) * den;
+
+	// Calculate the length of this normal.
+	//length = OutTangent.length();
+	//length = sqrt((OutTangent.x * OutTangent.x) + (OutTangent.y * OutTangent.y) + (OutTangent.z * OutTangent.z));
+
+	// Normalize the normal and then store it
+	OutTangent.normalise();
+// 	tangent.x = tangent.x / length;
+// 	tangent.y = tangent.y / length;
+// 	tangent.z = tangent.z / length;
+
+// 	// Calculate the length of this normal.
+// 	length = sqrt((binormal.x * binormal.x) + (binormal.y * binormal.y) + (binormal.z * binormal.z));
+// 
+// 	// Normalize the normal and then store it
+// 	binormal.x = binormal.x / length;
+// 	binormal.y = binormal.y / length;
+// 	binormal.z = binormal.z / length;
+	OutBinormal.normalise();
+	return;
+}
+
+void ModelObject::CalculateNormal(Vector3 tangent, Vector3 binormal, Vector3& OutNormal)
+{
+	//float length;
+
+	// Calculate the cross product of the tangent and binormal which will give the normal vector.
+	OutNormal = tangent.crossProduct(binormal);
+	OutNormal.normalise();
+// 	normal.x = (tangent.y * binormal.z) - (tangent.z * binormal.y);
+// 	normal.y = (tangent.z * binormal.x) - (tangent.x * binormal.z);
+// 	normal.z = (tangent.x * binormal.y) - (tangent.y * binormal.x);
+// 
+// 	// Calculate the length of the normal.
+// 	length = sqrt((normal.x * normal.x) + (normal.y * normal.y) + (normal.z * normal.z));
+// 
+// 	// Normalize the normal.
+// 	normal.x = normal.x / length;
+// 	normal.y = normal.y / length;
+// 	normal.z = normal.z / length;
+
+	return;
 }
 
 int ModelObject::GetVertexCount()
