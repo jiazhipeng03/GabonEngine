@@ -29,7 +29,7 @@ bool DirectionalLight::Init()
 	m_LightData.Ambient = Ogre::Vector4(0.5f);
 	m_LightData.Diffuse = Ogre::Vector4(0.4f);
 	m_LightData.Specular = Ogre::Vector4(0.2f);
-	m_LightData.Direction = Ogre::Vector3(1.0f);
+	m_LightData.Direction = Ogre::Vector3(1,-1,1);
 	m_LightData.SpecularPower = 0.7f;
 	return true;
 }

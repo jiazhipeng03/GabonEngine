@@ -373,7 +373,7 @@ void ModelObject::CalculateTangentBinormal(VertexType v1, VertexType v2, VertexT
 // 	tvVector[1] = vertex3.tv - vertex1.tv;
 
 	// Calculate the denominator of the tangent/binormal equation.
-	den = 1.0f / (texVec1.x * texVec2.y - texVec2.x * texVec2.y);
+	den = 1.0f / (texVec1.x * texVec2.y - texVec1.y * texVec2.x);
 	//den = 1.0f / (tuVector[0] * tvVector[1] - tuVector[1] * tvVector[0]);
 
 	// Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
