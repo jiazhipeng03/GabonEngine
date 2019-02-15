@@ -24,4 +24,8 @@
     <vs value = "bumpmapping.vs"/>
     <ps value = "bumpmapping.ps"/>
   </shader>
+  <shader name = "specularmapping">
+    <vs value = "specularmapping.vs"/>
+    <ps value = "specularmapping.ps"/>
+  </shader>
 </shader_root>

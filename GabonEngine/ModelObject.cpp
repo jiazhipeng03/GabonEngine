@@ -198,7 +198,8 @@ void ModelObject::RebuildVertexData(void*& OutDataBuffer, int& OutDataSize)
 			}
 			else
 			{
-				assert(0);
+				memset(pDest, 0, stride);
+				//assert(0);
 			}
 		}
 			
@@ -349,8 +350,6 @@ void ModelObject::CalculateTangentBinormal(VertexType v1, VertexType v2, VertexT
 // 	float vector1[3], vector2[3];
 // 	float tuVector[2], tvVector[2];
  	float den;
- 	float length;
-
 
 	// Calculate the two vectors for this face.
 	vec1 = v2.position - v1.position;

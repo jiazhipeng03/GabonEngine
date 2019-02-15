@@ -42,4 +42,12 @@
     <texture value = "Textures/stone01.dds"/>
     <texture value = "Textures/bump01.dds"/>
   </model>
+  <model name = "specmap">
+    <position value = "-2, 0, 0"/>
+    <mesh value = "..\GabonEngine\Textures\cube.txt"/>
+    <shader value = "specularmapping"/>
+    <texture value = "Textures/stone02.dds"/>
+    <texture value = "Textures/bump02.dds"/>
+    <texture value = "Textures/spec02.dds"/>
+  </model>
 </model_root>

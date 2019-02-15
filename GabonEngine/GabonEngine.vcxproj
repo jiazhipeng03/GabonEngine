@@ -233,6 +233,8 @@
     <None Include="Shader\lightmap.vs" />
     <None Include="Shader\multi_tex.ps" />
     <None Include="Shader\multi_tex.vs" />
+    <None Include="Shader\specularmapping.ps" />
+    <None Include="Shader\specularmapping.vs" />
     <None Include="Shader\texture.ps" />
     <None Include="Shader\texture.vs" />
   </ItemGroup>
