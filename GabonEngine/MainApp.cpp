@@ -53,7 +53,7 @@ bool MainApp::Init()
 	m_Camera->InitBuffer();
 
 
-	m_RenderTexture->Initialize(100, 100);
+	m_RenderTexture->Initialize();
 	if (!m_ShaderMan->Init("shader.xml"))
 	{
 		return false;

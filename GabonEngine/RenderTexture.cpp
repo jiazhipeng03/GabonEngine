@@ -15,15 +15,15 @@ RenderTexture::~RenderTexture()
 	SafeRelease(m_ShaderResourceView);
 }
 
-bool RenderTexture::Initialize(int width, int height)
+bool RenderTexture::Initialize()
 {
 	D3D11_TEXTURE2D_DESC textureDesc;
 	HRESULT result;
 	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
 
-	textureDesc.Width = g_App->GetScreenSize().x;
-	textureDesc.Height = g_App->GetScreenSize().y;
+	textureDesc.Width = (UINT)g_App->GetScreenSize().x;
+	textureDesc.Height = (UINT)g_App->GetScreenSize().y;
 	textureDesc.MipLevels = 1;
 	textureDesc.ArraySize = 1;
 	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;

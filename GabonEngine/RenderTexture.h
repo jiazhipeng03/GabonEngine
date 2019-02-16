@@ -6,7 +6,7 @@ public:
 	RenderTexture();
 	~RenderTexture();
 
-	bool Initialize(int width, int height);
+	bool Initialize();
 	void SetRenderTarget(ID3D11DeviceContext* deviceContext, ID3D11DepthStencilView* depthStencilView);
 	void ClearRenderTarget(ID3D11DeviceContext* deviceContext, ID3D11DepthStencilView* depthStencilView,
 		float red, float green, float blue, float alpha);
