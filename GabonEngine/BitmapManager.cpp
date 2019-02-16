@@ -72,3 +72,10 @@ Bitmap* BitmapManager::GetBitmap(ui32 i)
 	}
 	return nullptr;
 }
+
+Bitmap* BitmapManager::CreateBitmap()
+{
+	Bitmap* bitmap = new Bitmap;
+	m_ModelList.push_back(bitmap);
+	return bitmap;
+}

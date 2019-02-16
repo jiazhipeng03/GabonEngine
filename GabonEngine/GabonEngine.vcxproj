@@ -177,6 +177,7 @@
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="ModelObject.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="XMLParserHelper.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ModelObject.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="XMLParserHelper.h" />

@@ -120,6 +120,9 @@
     <ClCompile Include="Math\OgreFrustum.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="RenderTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Math\OgreFrustum.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTexture.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

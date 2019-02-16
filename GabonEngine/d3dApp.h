@@ -57,6 +57,7 @@ public:
 	ID3D11Device* GetDevice() { return md3dDevice; }
 	HWND GetWindowHandle() { return mhMainWnd; }
 	ID3D11DeviceContext* GetDeviceContext() { return md3dImmediateContext; }
+	ID3D11DepthStencilView* GetDepthStencilView() { return mDepthStencilView; }
 
 	void EnableZBuffer(bool bEnable);
 	void EnableAlphaBlending(bool bEnable);

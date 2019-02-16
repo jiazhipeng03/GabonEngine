@@ -80,6 +80,12 @@ void Bitmap::SetScreenSize(Ogre::Vector2 screenSize)
 	m_ScreenSize = screenSize;
 }
 
+void Bitmap::SetTextureResource(ID3D11ShaderResourceView* srv)
+{
+	m_Tex.clear();
+	m_Tex.push_back(srv);
+}
+
 void Bitmap::Render()
 {
 	RenderBuffer();

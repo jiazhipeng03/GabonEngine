@@ -1,5 +1,12 @@
 #include "MainApp.h"
-
+#include "RenderTexture.h"
+#include "Light.h"
+#include "Camera.h"
+#include "ShaderManager.h"
+#include "DDSTextureLoader.h"
+#include "ModelManager.h"
+#include "BitmapManager.h"
+#include "FontManager.h"
 MainApp* g_App = NULL;
 MainApp::MainApp(HINSTANCE hInstance)
 	:D3DApp(hInstance)
@@ -20,6 +27,7 @@ MainApp::MainApp(HINSTANCE hInstance)
 	m_CurPos = Ogre::Vector2::ZERO;
 	m_LastPos = Ogre::Vector2::ZERO;
 	m_FontMan = new FontManager;
+	m_RenderTexture = new RenderTexture;
 }
 
 MainApp::~MainApp()
@@ -44,6 +52,8 @@ bool MainApp::Init()
 	m_Camera->UpdateViewMatrix();
 	m_Camera->InitBuffer();
 
+
+	m_RenderTexture->Initialize(100, 100);
 	if (!m_ShaderMan->Init("shader.xml"))
 	{
 		return false;
@@ -85,6 +95,7 @@ void MainApp::UpdateScene(float dt)
 
 void MainApp::DrawScene()
 {
+	RenderToTexture();
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -161,4 +172,74 @@ void MainApp::OnKeyDown(UINT key)
 	{
 		m_Camera->Move(speed * m_Camera->GetRight());
 	}
+}
+
+ShaderManager* MainApp::GetShaderMan()
+{
+	return m_ShaderMan;
+}
+
+void MainApp::RenderToTexture()
+{
+	bool result;
+
+	// Set the render target to be the render to texture.
+	m_RenderTexture->SetRenderTarget(md3dImmediateContext, GetDepthStencilView());
+
+	// Clear the render to texture.
+	m_RenderTexture->ClearRenderTarget(md3dImmediateContext, GetDepthStencilView(), 0.0f, 0.0f, 1.0f, 1.0f);
+
+	// Render the scene now and it will draw to the render to texture instead of the back buffer.
+	result = RenderScene();
+	if (!result)
+	{
+		return;
+	}
+
+	// Reset the render target back to the original back buffer and not the render to texture anymore.
+	SetBackBufferRenderTarget();
+
+	Bitmap* renderTexture = m_BitmapMan->CreateBitmap();
+	std::vector<std::string> texNames;
+	TextureShader* shader = m_ShaderMan->GetShader("bitmap");
+	
+	renderTexture->Init(Vector2(0, 100), Vector2(100.0f), g_App->GetScreenSize(), texNames, shader);
+	renderTexture->SetTextureResource(m_RenderTexture->GetSRV());
+	return;
+}
+
+bool MainApp::RenderScene()
+{
+	//Matrix4 worldMatrix, viewMatrix, projectionMatrix;
+	//bool result;
+	static float rotation = 0.0f;
+
+
+	// Generate the view matrix based on the camera's position.
+	//m_Camera->Render();
+
+	// Get the world, view, and projection matrices from the camera and d3d objects.
+	
+	// Update the rotation variable each frame.
+	rotation += (float)Math::PI * 0.005f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+	
+	//D3DXMatrixRotationY(&worldMatrix, rotation);
+	m_Light->Render();
+	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	m_ModelMan->Render(NULL);
+
+	// Render the model using the light shader.
+// 	result = m_Light->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+// 		m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+
+	return true;
+}
+
+void MainApp::SetBackBufferRenderTarget()
+{
+	md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, GetDepthStencilView());
 }

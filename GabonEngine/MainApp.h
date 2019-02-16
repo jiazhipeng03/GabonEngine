@@ -2,6 +2,16 @@
 #include <windows.h>
 #include "d3dApp.h"
 #include "Object.h"
+/*
+class Light;
+class Camera;
+class ModelManager;
+class BitmapManager;
+class ShaderManager;
+class FontManager;
+class Frustum;
+class RenderTexture;*/
+#include "RenderTexture.h"
 #include "Light.h"
 #include "Camera.h"
 #include "ShaderManager.h"
@@ -9,7 +19,6 @@
 #include "ModelManager.h"
 #include "BitmapManager.h"
 #include "FontManager.h"
-
 class MainApp : public D3DApp
 {
 public:
@@ -32,8 +41,13 @@ public:
 	void OnMouseMove(WPARAM btnState, int x, int y) override;
 	void OnMouseWheel(UINT key, int zDelta, int x, int y) override;
 	virtual void OnKeyDown(UINT key) override;
-	ShaderManager* GetShaderMan() { return m_ShaderMan; }
+	ShaderManager* GetShaderMan();
 	Camera* GetCamera() { return m_Camera; }
+
+private:
+	void RenderToTexture();
+	bool RenderScene();
+	void SetBackBufferRenderTarget();
 
 private:	
 //	RenderOptions mRenderOptions;
@@ -51,6 +65,8 @@ private:
 	Ogre::Vector2 m_LastPos;
 
 	Frustum* m_Frustum;
+
+	RenderTexture* m_RenderTexture;
 };
 
 extern MainApp* g_App;

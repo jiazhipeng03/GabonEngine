@@ -18,12 +18,13 @@ public:
 	bool Init(Ogre::Vector2 position, Ogre::Vector2 imgSize, Ogre::Vector2 screenSize, std::vector<std::string> texNames, TextureShader* shader);
 	void SetPosition(Ogre::Vector2 position);
 	void SetScreenSize(Ogre::Vector2 screenSize);
+	void SetTextureResource(ID3D11ShaderResourceView* srv);
 	void Render();
 	void RenderBuffer();
 	void RenderShader();
 	void UpdateBuffer();
 
-	bool IsMultiTex();
+	//bool IsMultiTex();
 private:	
 	TextureShader* m_Shader;
 	ID3D11Buffer* m_IndexBuffer;
