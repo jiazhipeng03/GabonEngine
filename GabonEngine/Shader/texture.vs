@@ -59,6 +59,6 @@ PixelInputType main(VertexInputType input)
     output.normal = mul(input.normal, (float3x3)worldMatrix);
 	output.normal = normalize(output.normal);
 
-	output.viewDir = normalize(eyePosition - input.position);
+	output.viewDir = (eyePosition - input.position);
     return output;
 }

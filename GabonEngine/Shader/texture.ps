@@ -25,6 +25,14 @@ cbuffer DirLightBufferType
 	float specularPower;
 };
 
+cbuffer GeneralBuffer
+{
+	float  gFogStart;
+	float  gFogRange;
+	float gFogEnable;
+	float padding;
+	float4 gFogColor;
+}
 //////////////
 // TYPEDEFS //
 //////////////
@@ -57,7 +65,7 @@ float4 main(PixelInputType input) : SV_TARGET
 	float4 color;
 	float4 specular;
 	float3 reflectDir;
-
+	
 	specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	color = ambientColor;
 
@@ -68,13 +76,23 @@ float4 main(PixelInputType input) : SV_TARGET
 
 	if(lightIntensity > 0.0f)
 	{
+		float3 viewDir = normalize(input.viewDir);
 		color += diffuseColor * lightIntensity;
 		reflectDir = normalize(2*lightIntensity*input.normal - lightDir);
-		specular = pow(saturate(dot(reflectDir,input.viewDir)), specularPower);
+		specular = pow(saturate(dot(reflectDir, viewDir)), specularPower);
 	}
 	
 	color = color * textureColor;
 	
 	color = saturate(color + specular);
+
+	if(gFogEnable == 1.0f)
+	{
+		float3 distToEye = length(input.viewDir);
+		float fogLerp = saturate( (distToEye - gFogStart) / gFogRange ); 
+
+		// Blend the fog color and the lit color.
+		color = lerp(color, gFogColor, fogLerp);
+	}
     return color;	
 }

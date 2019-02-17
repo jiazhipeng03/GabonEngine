@@ -1,12 +1,13 @@
 <?xml version="1.0" ?>
 <model_root>
-  <!--
+  
 	<model name = "cube">
+    <position value = "-4,0,0 "/>
 		<mesh value = "..\GabonEngine\Textures\cube.txt"/>
 		<shader value = "default"/>
     <texture value = "Textures/seafloor.dds"/>
 	</model>
-  -->
+  
 	<bitmap name = "single">
 		<shader value = "bitmap"/>
 		<texture value = "Textures/seafloor.dds"/>

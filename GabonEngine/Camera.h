@@ -21,6 +21,14 @@ public:
 		Ogre::Vector3 eyePosition;
 		float padding;
 	};
+	struct PSGenearlBuffer
+	{
+		float  gFogStart;
+		float  gFogRange;
+		float gFogEnable;
+		float padding;
+		Vector4 gFogColor;		
+	};
 	Camera();
 	~Camera();
 
@@ -102,6 +110,9 @@ private:
 	Ogre::Matrix4 mProj;
 
 	ID3D11Buffer* m_CameraBuffer;
+	ID3D11Buffer* m_PSGeneralBuffer;
+
+	PSGenearlBuffer m_PSGeneralBufferData;
 };
 
 #endif // CAMERA_H
