@@ -24,7 +24,7 @@ Camera::Camera()
 Camera::~Camera()
 {
 	SafeRelease(m_CameraBuffer);
-	SafeRelease(m_PSGeneralBuffer);
+	
 }
 
 void Camera::InitBuffer()
@@ -42,27 +42,6 @@ void Camera::InitBuffer()
 		return;
 	}
 
-	D3D11_BUFFER_DESC psbd;
-	psbd.Usage = D3D11_USAGE_DYNAMIC;
-	psbd.ByteWidth = sizeof(PSGenearlBuffer);
-	psbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	psbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	psbd.MiscFlags = 0;
-	psbd.StructureByteStride = 0;
-
-	m_PSGeneralBufferData.gFogColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_PSGeneralBufferData.gFogEnable = 1.f;
-	m_PSGeneralBufferData.gFogStart = 2.f;
-	m_PSGeneralBufferData.gFogRange = 40.0f;
-	D3D11_SUBRESOURCE_DATA bufData;
-	bufData.pSysMem = &m_PSGeneralBufferData;
-	bufData.SysMemPitch = 0;
-	bufData.SysMemSlicePitch = 0;
-	hr = g_App->GetDevice()->CreateBuffer(&psbd, NULL, &m_PSGeneralBuffer);
-	if (FAILED(hr))
-	{
-		return;
-	}
 }
 
 void Camera::UpdateBuffer()
@@ -77,17 +56,8 @@ void Camera::UpdateBuffer()
 	buf->eyePosition = mPosition;
 	g_App->GetDeviceContext()->Unmap(m_CameraBuffer, 0);
 	g_App->GetDeviceContext()->VSSetConstantBuffers(1, 1, &m_CameraBuffer);
-	// ps buffer
-	D3D11_MAPPED_SUBRESOURCE psResource;
-	result = g_App->GetDeviceContext()->Map(m_PSGeneralBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &psResource);
-	if (FAILED(result))
-	{
-		return;
-	}
-	PSGenearlBuffer* buff = (PSGenearlBuffer*)(psResource.pData);
-	memcpy(buff, &m_PSGeneralBufferData, sizeof(PSGenearlBuffer));
-	g_App->GetDeviceContext()->Unmap(m_PSGeneralBuffer, 0);
-	g_App->GetDeviceContext()->PSSetConstantBuffers(1, 1, &m_PSGeneralBuffer);
+
+	return;
 }
 
 Ogre::Vector3 Camera::GetPositionXM()const

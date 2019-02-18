@@ -28,6 +28,7 @@ MainApp::MainApp(HINSTANCE hInstance)
 	m_LastPos = Ogre::Vector2::ZERO;
 	m_FontMan = new FontManager;
 	m_RenderTexture = new RenderTexture;
+	m_ConstantBuffer = new ConstantBuffer;
 }
 
 MainApp::~MainApp()
@@ -40,6 +41,7 @@ MainApp::~MainApp()
 	SafeDelete(m_Camera);
 	SafeDelete(m_Light);
 	SafeDelete(m_Frustum);
+	SafeDelete(m_ConstantBuffer);
 }
 
 bool MainApp::Init()
@@ -52,7 +54,7 @@ bool MainApp::Init()
 	m_Camera->UpdateViewMatrix();
 	m_Camera->InitBuffer();
 
-
+	m_ConstantBuffer->InitBuffer();
 	m_RenderTexture->Initialize();
 	if (!m_ShaderMan->Init("shader.xml"))
 	{
@@ -87,6 +89,8 @@ void MainApp::UpdateScene(float dt)
 	m_Camera->UpdateBuffer();
 	m_Camera->UpdateViewMatrix();
 	m_FontMan->Print("test", Vector2(0, 0), Vector2(1, 1));
+
+	m_ConstantBuffer->UpdateBuffer();
 	// test bitmap UpdateBuffer
 // 	static float t = 0;
 // 	t += dt * Math::PI;

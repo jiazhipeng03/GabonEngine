@@ -29,7 +29,7 @@ cbuffer GeneralBuffer
 {
 	float  gFogStart;
 	float  gFogRange;
-	float gFogEnable;
+	bool gFogEnable;
 	float padding;
 	float4 gFogColor;
 }
@@ -42,6 +42,7 @@ struct PixelInputType
     float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
 	float3 viewDir : TEXCOORD1;
+	float clip : SV_ClipDistance0;
 };
 
 
@@ -86,9 +87,9 @@ float4 main(PixelInputType input) : SV_TARGET
 	
 	color = saturate(color + specular);
 
-	if(gFogEnable == 1.0f)
+	if(gFogEnable)
 	{
-		float3 distToEye = length(input.viewDir);
+		float distToEye = length(input.viewDir);
 		float fogLerp = saturate( (distToEye - gFogStart) / gFogRange ); 
 
 		// Blend the fog color and the lit color.

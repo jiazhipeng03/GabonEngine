@@ -19,6 +19,7 @@ class RenderTexture;*/
 #include "ModelManager.h"
 #include "BitmapManager.h"
 #include "FontManager.h"
+#include "ConstantBuffer.h"
 class MainApp : public D3DApp
 {
 public:
@@ -67,6 +68,8 @@ private:
 	Frustum* m_Frustum;
 
 	RenderTexture* m_RenderTexture;
+
+	ConstantBuffer* m_ConstantBuffer;
 };
 
 extern MainApp* g_App;

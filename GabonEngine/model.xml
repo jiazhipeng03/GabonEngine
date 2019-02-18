@@ -7,7 +7,24 @@
 		<shader value = "default"/>
     <texture value = "Textures/seafloor.dds"/>
 	</model>
-  
+  <model name = "cube">
+    <position value = "-4,0,10 "/>
+    <mesh value = "..\GabonEngine\Textures\cube.txt"/>
+    <shader value = "default"/>
+    <texture value = "Textures/seafloor.dds"/>
+  </model>
+  <model name = "cube">
+    <position value = "-4,0,20 "/>
+    <mesh value = "..\GabonEngine\Textures\cube.txt"/>
+    <shader value = "default"/>
+    <texture value = "Textures/seafloor.dds"/>
+  </model>
+  <model name = "cube">
+    <position value = "-4,0,30 "/>
+    <mesh value = "..\GabonEngine\Textures\cube.txt"/>
+    <shader value = "default"/>
+    <texture value = "Textures/seafloor.dds"/>
+  </model>
 	<bitmap name = "single">
 		<shader value = "bitmap"/>
 		<texture value = "Textures/seafloor.dds"/>
