@@ -56,6 +56,7 @@ bool MainApp::Init()
 
 	m_ConstantBuffer->InitBuffer();
 	m_RenderTexture->Initialize();
+	
 	if (!m_ShaderMan->Init("shader.xml"))
 	{
 		return false;
@@ -74,6 +75,15 @@ bool MainApp::Init()
 	{
 		return false;
 	}
+
+	// RenderTexture init
+	Bitmap* renderTexture = m_BitmapMan->CreateBitmap();
+	std::vector<std::string> texNames;
+	TextureShader* shader = m_ShaderMan->GetShader("bitmap");
+
+	renderTexture->Init(Vector2(0, 100), Vector2(100.0f), g_App->GetScreenSize(), texNames, shader);
+	renderTexture->SetTextureResource(m_RenderTexture->GetSRV());
+
 	return true;
 }
 
@@ -102,7 +112,7 @@ void MainApp::DrawScene()
 	RenderToTexture();
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
+	EnableAlphaBlending(true);
 	// 以后需要将model按shader分类?
 	m_Light->Render();
 	m_Frustum = new Frustum;
@@ -111,7 +121,7 @@ void MainApp::DrawScene()
 	
 	EnableZBuffer(false);
 	m_BitmapMan->Render();
-	EnableAlphaBlending(true);
+	
 	m_FontMan->Render();
 	EnableAlphaBlending(false);
 	EnableZBuffer(true);
@@ -203,12 +213,7 @@ void MainApp::RenderToTexture()
 	// Reset the render target back to the original back buffer and not the render to texture anymore.
 	SetBackBufferRenderTarget();
 
-	Bitmap* renderTexture = m_BitmapMan->CreateBitmap();
-	std::vector<std::string> texNames;
-	TextureShader* shader = m_ShaderMan->GetShader("bitmap");
 	
-	renderTexture->Init(Vector2(0, 100), Vector2(100.0f), g_App->GetScreenSize(), texNames, shader);
-	renderTexture->SetTextureResource(m_RenderTexture->GetSRV());
 	return;
 }
 
