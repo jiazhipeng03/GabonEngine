@@ -40,7 +40,7 @@ struct PixelInputType
     float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
 	float3 viewDir : TEXCOORD1;
-	float clip : SV_ClipDistance0;
+	//float clip : SV_ClipDistance0;
 };
 
 
@@ -67,6 +67,6 @@ PixelInputType main(VertexInputType input)
 
 	output.viewDir = (eyePosition - output.position.xyz);
 
-	output.clip = dot(output.position, clipPlane);
+	//output.clip = dot(output.position, clipPlane);
     return output;
 }

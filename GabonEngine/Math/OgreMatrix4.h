@@ -33,7 +33,7 @@ THE SOFTWARE.
 
 #include "OgreMatrix3.h"
 #include "OgreVector4.h"
-//#include "OgrePlane.h"
+#include "OgrePlane.h"
 namespace Ogre
 {
     /** \addtogroup Core
@@ -281,6 +281,16 @@ namespace Ogre
         
         Matrix4 adjoint() const;
         Matrix4 inverse() const;
+
+		static Matrix4 buildReflectionMatrix(const Plane& p)
+		{
+			return Matrix4(
+				-2 * p.normal.x * p.normal.x + 1, -2 * p.normal.x * p.normal.y, -2 * p.normal.x * p.normal.z, 0,
+				-2 * p.normal.y * p.normal.x, -2 * p.normal.y * p.normal.y + 1, -2 * p.normal.y * p.normal.z, 0,
+				-2 * p.normal.z * p.normal.x, -2 * p.normal.z * p.normal.y, -2 * p.normal.z * p.normal.z + 1, 0,
+				-2 * p.normal.x * p.d, -2 * p.normal.y * p.d, -2 * p.normal.z * p.d, 1
+			);
+		}
     };
 
     /// Transform specialization for 3D Affine - encapsulating a 3x4 Matrix

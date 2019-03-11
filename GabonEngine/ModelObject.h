@@ -43,7 +43,7 @@ public:
 	virtual void Init(std::string name, TextureShader* shader, std::string meshName, std::vector<std::string> texNames);
 	void SetPosition(Vector3 pos) { m_World.setTrans(pos); }
 	bool LoadGeometryBuffers(std::string meshName);
-	void Render();
+	virtual void Render();
 	
 	Ogre::Matrix4 GetWorldMatrix();
 	std::vector<ID3D11ShaderResourceView*> GetTexArray() { return m_TexArray; }
@@ -54,6 +54,8 @@ public:
 	int GetStartVertexIndex();
 	//视锥剔除，需要查找快速的算法，简单方法就是根据vertexPosition找到最大最小值生成Cube
 	//Cube GetBound();
+	std::string GetName() { return m_name; }
+	void SetWorldMatrix(Matrix4 world) { m_World = world; }
 private:
 	// build vertex/index buffers
 	void BuildGeometryBuffers();
@@ -67,8 +69,8 @@ private:
 	void CalculateModelVectors();
 	void CalculateTangentBinormal(VertexType v1, VertexType v2, VertexType v3, Vector3& OutTangent, Vector3& OutBinormal);
 	void CalculateNormal(Vector3 tangent, Vector3 binormal, Vector3& OutNormal);
-
-private:
+	
+protected:
 	TextureShader* m_Shader;
 	std::string m_name;
 	

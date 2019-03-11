@@ -43,12 +43,17 @@ public:
 	void OnMouseWheel(UINT key, int zDelta, int x, int y) override;
 	virtual void OnKeyDown(UINT key) override;
 	ShaderManager* GetShaderMan();
+	ModelManager* GetModelMan();
 	Camera* GetCamera() { return m_Camera; }
 
 private:
+	// RTT
 	void RenderToTexture();
 	bool RenderScene();
 	void SetBackBufferRenderTarget();
+
+	// MirrorReflection
+	
 
 private:	
 //	RenderOptions mRenderOptions;

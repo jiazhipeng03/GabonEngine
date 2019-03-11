@@ -131,7 +131,7 @@ namespace Ogre {
             return &w;
         }
 
-        void FromRotationMatrix (const Matrix3& kRot);
+        static Quaternion FromRotationMatrix (const Matrix3& kRot);
         void ToRotationMatrix (Matrix3& kRot) const;
         /** Setups the quaternion using the supplied vector, and "roll" around
             that vector by the specified floats.

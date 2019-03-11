@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <model_root>
   
-	<model name = "cube">
+	<model name = "cubeMain">
     <position value = "-4,0,0 "/>
 		<mesh value = "..\GabonEngine\Textures\cube.txt"/>
 		<shader value = "default"/>
@@ -67,5 +67,11 @@
     <texture value = "Textures/stone02.dds"/>
     <texture value = "Textures/bump02.dds"/>
     <texture value = "Textures/spec02.dds"/>
+  </model>
+  <model name = "mirror">
+    <position value = "-8,0,0 "/>
+    <mesh value = "..\GabonEngine\Textures\square.txt"/>
+    <shader value = "default"/>
+    <texture value = "Textures/ice.dds"/>
   </model>
 </model_root>

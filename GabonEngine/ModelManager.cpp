@@ -1,5 +1,6 @@
 #include "ModelManager.h"
 #include "MainApp.h"
+#include "Mirror.h"
 #include "XMLParser/rapidxml.hpp"
 #include "XMLParser/rapidxml_utils.hpp"
 #include "XMLParserHelper.h"
@@ -29,8 +30,17 @@ bool ModelManager::Init(std::string fileName)
 	xml_node<>* modelNode = root->first_node("model");
 	while (modelNode)
 	{
-		ModelObject* obj = new ModelObject;
+		ModelObject* obj;
 		std::string modelName = modelNode->first_attribute()->value();
+		//测试mirror，以后需要重构mirror的初始化和渲染流程，破坏了当前渲染结构
+		if (modelName == "mirror")
+		{
+			obj = new Mirror;
+		}
+		else
+		{
+			obj = new ModelObject;
+		}
 		Vector3 position(0, 0, 0);
 		if(modelNode->first_node("position"))
 			position = XMLParserHelper::ParseVec3(modelNode->first_node("position")->first_attribute()->value());
@@ -78,4 +88,16 @@ void ModelManager::Render(class Frustum* frustum)
 				m->GetWorldMatrix(), g_App->GetCamera()->Proj(), m->GetTexArray());
 		}
 	}
+}
+
+ModelObject* ModelManager::GetModel(std::string name)
+{
+	for (auto m : m_ModelList)
+	{
+		if (m->GetName() == name)
+		{
+			return m;
+		}
+	}
+	return NULL;
 }

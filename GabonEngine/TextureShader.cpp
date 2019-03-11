@@ -409,7 +409,8 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ogre
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 	
 	// Set shader texture resource in the pixel shader.
-	deviceContext->PSSetShaderResources(0, texture.size(), &texture[0]);
+	if(texture.size() > 0 && texture[0])
+		deviceContext->PSSetShaderResources(0, texture.size(), &texture[0]);
 
 	return true;
 }

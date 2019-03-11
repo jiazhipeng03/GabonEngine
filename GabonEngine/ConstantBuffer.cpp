@@ -24,7 +24,7 @@ void ConstantBuffer::InitBuffer()
 	bd.StructureByteStride = 0;
 
 	m_FogData.gFogColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_FogData.gFogEnable = true;
+	m_FogData.gFogEnable = false;
 	m_FogData.gFogStart = 2.f;
 	m_FogData.gFogRange = 40.0f;
 	D3D11_SUBRESOURCE_DATA bufData;
@@ -38,7 +38,7 @@ void ConstantBuffer::InitBuffer()
 	}
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(FogBuffer);
+	bd.ByteWidth = sizeof(ClipPlaneBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;

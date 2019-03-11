@@ -193,6 +193,11 @@ ShaderManager* MainApp::GetShaderMan()
 	return m_ShaderMan;
 }
 
+ModelManager* MainApp::GetModelMan()
+{
+	return m_ModelMan;
+}
+
 void MainApp::RenderToTexture()
 {
 	bool result;

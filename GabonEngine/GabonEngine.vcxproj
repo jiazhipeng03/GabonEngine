@@ -175,6 +175,7 @@
     <ClCompile Include="Math\OgreVector2.cpp" />
     <ClCompile Include="Math\OgreVector3.cpp" />
     <ClCompile Include="Math\OgreVector4.cpp" />
+    <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="ModelObject.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Math\OgreVector2.h" />
     <ClInclude Include="Math\OgreVector3.h" />
     <ClInclude Include="Math\OgreVector4.h" />
+    <ClInclude Include="Mirror.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ModelObject.h" />
     <ClInclude Include="Object.h" />

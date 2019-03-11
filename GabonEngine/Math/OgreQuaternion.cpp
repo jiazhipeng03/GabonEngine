@@ -42,11 +42,11 @@ namespace Ogre {
     const Quaternion Quaternion::IDENTITY(1,0,0,0);
 
     //-----------------------------------------------------------------------
-    void Quaternion::FromRotationMatrix (const Matrix3& kRot)
+    Quaternion Quaternion::FromRotationMatrix (const Matrix3& kRot)
     {
         // Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
         // article "Quaternion Calculus and Fast Animation".
-
+		Quaternion q;
         float fTrace = kRot[0][0]+kRot[1][1]+kRot[2][2];
         float fRoot;
 
@@ -54,11 +54,11 @@ namespace Ogre {
         {
             // |w| > 1/2, may as well choose w > 1/2
             fRoot = Math::Sqrt(fTrace + 1.0f);  // 2w
-            w = 0.5f*fRoot;
+            q.w = 0.5f*fRoot;
             fRoot = 0.5f/fRoot;  // 1/(4w)
-            x = (kRot[2][1]-kRot[1][2])*fRoot;
-            y = (kRot[0][2]-kRot[2][0])*fRoot;
-            z = (kRot[1][0]-kRot[0][1])*fRoot;
+            q.x = (kRot[2][1]-kRot[1][2])*fRoot;
+            q.y = (kRot[0][2]-kRot[2][0])*fRoot;
+            q.z = (kRot[1][0]-kRot[0][1])*fRoot;
         }
         else
         {
@@ -73,13 +73,14 @@ namespace Ogre {
             size_t k = s_iNext[j];
 
             fRoot = Math::Sqrt(kRot[i][i]-kRot[j][j]-kRot[k][k] + 1.0f);
-            float* apkQuat[3] = { &x, &y, &z };
+            float* apkQuat[3] = { &q.x, &q.y, &q.z };
             *apkQuat[i] = 0.5f*fRoot;
             fRoot = 0.5f/fRoot;
-            w = (kRot[k][j]-kRot[j][k])*fRoot;
+            q.w = (kRot[k][j]-kRot[j][k])*fRoot;
             *apkQuat[j] = (kRot[j][i]+kRot[i][j])*fRoot;
-            *apkQuat[k] = (kRot[k][i]+kRot[i][k])*fRoot;
+            *apkQuat[k] = (kRot[k][i]+kRot[i][k])*fRoot;			
         }
+		return q;
     }
     //-----------------------------------------------------------------------
     void Quaternion::ToRotationMatrix (Matrix3& kRot) const
