@@ -73,6 +73,7 @@ private:
 	Frustum* m_Frustum;
 
 	RenderTexture* m_RenderTexture;
+	class Mirror* m_pMirror;
 
 	ConstantBuffer* m_ConstantBuffer;
 };

@@ -68,10 +68,10 @@
     <texture value = "Textures/bump02.dds"/>
     <texture value = "Textures/spec02.dds"/>
   </model>
-  <model name = "mirror">
+  <!--<model name = "mirror">
     <position value = "-8,0,0 "/>
     <mesh value = "..\GabonEngine\Textures\square.txt"/>
     <shader value = "default"/>
     <texture value = "Textures/ice.dds"/>
-  </model>
+  </model>-->
 </model_root>

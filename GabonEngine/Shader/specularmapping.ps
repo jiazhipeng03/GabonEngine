@@ -66,9 +66,9 @@ float4 main(PixelInputType input) : SV_TARGET
 	// light
 	lightDir = -lightDirection;
 	lightIntensity = saturate(dot(lightDir, bumpNormal));
-	color = saturate(diffuseColor * lightIntensity);
+	float4 lightColor = saturate(diffuseColor * lightIntensity);
 
-	color = color * textureColor;
+	color = float4(lightColor.xyz * textureColor.xyz, textureColor.w);
 		
 	if(lightIntensity > 0.0f)
 	{

@@ -15,8 +15,9 @@ void Mirror::Init(std::string name, TextureShader* shader, std::string meshName,
 {
 	ModelObject::Init(name, shader, meshName, texNames);
 	Matrix3 rot; 
-	rot.FromAngleAxis(Vector3(0, 1, 0), Math::PI*0.5);
-	m_World.makeTransform(m_World.getTrans(), Vector3(2, 2, 2), Quaternion::FromRotationMatrix(rot));
+	rot.FromAngleAxis(Vector3(0, 1, 0), -Math::PI*0.5);
+	m_World.makeTransform(Vector3(-6,0,0), Vector3(5, 5, 5), Quaternion::FromRotationMatrix(rot));
+	m_World.transpose();
 	// Init blend state
 	D3D11_BLEND_DESC noRenderTargetWritesDesc = { 0 };
 	noRenderTargetWritesDesc.AlphaToCoverageEnable = false;
@@ -64,6 +65,15 @@ void Mirror::Init(std::string name, TextureShader* shader, std::string meshName,
 	cullClockwiseDesc.DepthClipEnable = true;
 
 	HR(g_App->GetDevice()->CreateRasterizerState(&cullClockwiseDesc, &CullClockwiseRS));
+
+	// cull state
+	D3D11_RASTERIZER_DESC cullCounterClockwiseDesc;
+	ZeroMemory(&cullCounterClockwiseDesc, sizeof(D3D11_RASTERIZER_DESC));
+	cullCounterClockwiseDesc.FillMode = D3D11_FILL_SOLID;
+	cullCounterClockwiseDesc.CullMode = D3D11_CULL_FRONT;
+	cullCounterClockwiseDesc.FrontCounterClockwise = true;
+	cullCounterClockwiseDesc.DepthClipEnable = true;
+	HR(g_App->GetDevice()->CreateRasterizerState(&cullCounterClockwiseDesc, &CullCounterClockwiseRS));
 
 	// draw reflection state
 	D3D11_DEPTH_STENCIL_DESC drawReflectionDesc;
@@ -136,11 +146,11 @@ void Mirror::RenderReflectModels()
 	g_App->GetDeviceContext()->OMSetDepthStencilState(DrawReflectionDSS, 1);
 
 	// TODO: reflect every direction
-	Plane mirrorPlane(0,0,1,0); // xy plane
+	Plane mirrorPlane(1,0,0,6); // xy plane
 	// model world * reflect
 	ModelObject* model = g_App->GetModelMan()->GetModel("cubeMain");
 	Matrix4 reflectionMatrix = Matrix4::buildReflectionMatrix(mirrorPlane);
-	Matrix4 worldreflect = model->GetWorldMatrix() *reflectionMatrix;
+	Matrix4 worldreflect = model->GetWorldMatrix() * reflectionMatrix;
 	
 	model->SetWorldMatrix(worldreflect);
 	model->Render();
@@ -149,7 +159,7 @@ void Mirror::RenderReflectModels()
 	// light dir * reflect
 
 	// restore
-	g_App->GetDeviceContext()->RSSetState(0);
+	g_App->GetDeviceContext()->RSSetState(CullCounterClockwiseRS);
 	g_App->GetDeviceContext()->OMSetDepthStencilState(0, 0);
 
 }
@@ -158,6 +168,8 @@ void Mirror::RenderMirror()
 {
 	float blendFactor[4] = { 0,0,0,0 };
 	//g_App->GetDeviceContext()->OMSetBlendState(TransparentBS, blendFactor, 0xffffffff);
-	
+	g_App->EnableZBuffer(true);
+	g_App->EnableAlphaBlending(true);
+	ModelObject::Render();
 	m_Shader->Render(g_App->GetDeviceContext(), m_VertexCount, 0, m_World, g_App->GetCamera()->Proj(), m_TexArray);
 }

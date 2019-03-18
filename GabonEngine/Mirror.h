@@ -24,5 +24,6 @@ private:
 	ID3D11DepthStencilState* MarkMirrorDSS;
 	ID3D11DepthStencilState* DrawReflectionDSS;
 	ID3D11RasterizerState* CullClockwiseRS;
+	ID3D11RasterizerState* CullCounterClockwiseRS;
 };
 

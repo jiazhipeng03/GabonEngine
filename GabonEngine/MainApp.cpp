@@ -7,6 +7,7 @@
 #include "ModelManager.h"
 #include "BitmapManager.h"
 #include "FontManager.h"
+#include "Mirror.h"
 MainApp* g_App = NULL;
 MainApp::MainApp(HINSTANCE hInstance)
 	:D3DApp(hInstance)
@@ -29,6 +30,7 @@ MainApp::MainApp(HINSTANCE hInstance)
 	m_FontMan = new FontManager;
 	m_RenderTexture = new RenderTexture;
 	m_ConstantBuffer = new ConstantBuffer;
+	m_pMirror = new Mirror;
 }
 
 MainApp::~MainApp()
@@ -75,14 +77,16 @@ bool MainApp::Init()
 	{
 		return false;
 	}
+	std::vector<std::string> tex;
+	tex.push_back("Textures/ice.dds");
+	m_pMirror->Init("mirror", m_ShaderMan->GetShader("default"), "..\\GabonEngine\\Textures\\square.txt", tex);
 
 	// RenderTexture init
 	Bitmap* renderTexture = m_BitmapMan->CreateBitmap();
 	std::vector<std::string> texNames;
-	TextureShader* shader = m_ShaderMan->GetShader("bitmap");
-
+	TextureShader* shader = m_ShaderMan->GetShader("bitmap"); 
 	renderTexture->Init(Vector2(0, 100), Vector2(100.0f), g_App->GetScreenSize(), texNames, shader);
-	renderTexture->SetTextureResource(m_RenderTexture->GetSRV());
+	renderTexture->SetTextureResource(m_RenderTexture->GetSRV());	
 
 	return true;
 }
@@ -118,13 +122,16 @@ void MainApp::DrawScene()
 	m_Frustum = new Frustum;
 	m_Frustum->ConstructFrustum(1000.f, m_Camera->Proj(), m_Camera->View());
 	m_ModelMan->Render(m_Frustum);
-	
+	m_pMirror->Render();
+
+
 	EnableZBuffer(false);
 	m_BitmapMan->Render();
 	
 	m_FontMan->Render();
 	EnableAlphaBlending(false);
 	EnableZBuffer(true);
+	
 	HR(mSwapChain->Present(0, 0));
 }
 
