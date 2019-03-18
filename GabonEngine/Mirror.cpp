@@ -148,7 +148,7 @@ void Mirror::RenderReflectModels()
 	// TODO: reflect every direction
 	Plane mirrorPlane(1,0,0,6); // xy plane
 	// model world * reflect
-	ModelObject* model = g_App->GetModelMan()->GetModel("cubeMain");
+	ModelObject* model = g_App->GetModelMan()->CloneModelObj("cubeMain");
 	Matrix4 reflectionMatrix = Matrix4::buildReflectionMatrix(mirrorPlane);
 	Matrix4 worldreflect = model->GetWorldMatrix() * reflectionMatrix;
 	

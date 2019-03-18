@@ -54,8 +54,12 @@ public:
 	int GetStartVertexIndex();
 	//视锥剔除，需要查找快速的算法，简单方法就是根据vertexPosition找到最大最小值生成Cube
 	//Cube GetBound();
-	std::string GetName() { return m_name; }
+	std::string GetName() { return m_Name; }
+	std::string GetMeshName();
+	std::vector<std::string> GetTexNames() { return m_TexNames; }
+
 	void SetWorldMatrix(Matrix4 world) { m_World = world; }
+	
 private:
 	// build vertex/index buffers
 	void BuildGeometryBuffers();
@@ -70,17 +74,19 @@ private:
 	void CalculateTangentBinormal(VertexType v1, VertexType v2, VertexType v3, Vector3& OutTangent, Vector3& OutBinormal);
 	void CalculateNormal(Vector3 tangent, Vector3 binormal, Vector3& OutNormal);
 	
+	
 protected:
 	TextureShader* m_Shader;
-	std::string m_name;
-	
-	Material* m_mat;
+	std::string m_Name;
+	std::string m_MeshName;
+	std::vector<std::string> m_TexNames;
+	Material* m_Mat;
 	Ogre::Matrix4 m_World;
 
 	std::vector<VertexType> m_Vertex;
 	//std::vector<unsigned long> m_Indices;
-	ID3D11Buffer* m_vertexBuffer;
-	ID3D11Buffer* m_indexBuffer;
+	ID3D11Buffer* m_VertexBuffer;
+	ID3D11Buffer* m_IndexBuffer;
 	std::vector<ID3D11ShaderResourceView*> m_TexArray;
 	int m_VertexCount;
 	int m_IndexCount;

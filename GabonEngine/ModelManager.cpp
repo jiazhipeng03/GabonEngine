@@ -101,3 +101,14 @@ ModelObject* ModelManager::GetModel(std::string name)
 	}
 	return NULL;
 }
+
+ModelObject* ModelManager::CloneModelObj(const char* srcName)
+{
+	ModelObject* src = GetModel(srcName);
+	ModelObject* obj = new ModelObject;
+	std::string name;
+	name = srcName + std::string("_clone");
+	obj->Init(name, src->GetShader(), src->GetMeshName(), obj->GetTexNames());
+	m_ModelList.push_back(obj);
+	return obj;
+}

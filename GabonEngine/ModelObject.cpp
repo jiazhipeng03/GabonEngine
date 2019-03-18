@@ -5,11 +5,11 @@
 
 const std::vector<std::string> ModelObject::s_VertexInputNames = {"position", "normal", "texture"};
 ModelObject::ModelObject()
-	: m_indexBuffer(NULL)
-	, m_vertexBuffer(nullptr)
+	: m_IndexBuffer(NULL)
+	, m_VertexBuffer(nullptr)
 	, m_Shader(NULL)
-	, m_name("")
-	, m_mat(nullptr)
+	, m_Name("")
+	, m_Mat(nullptr)
 	, m_World(Ogre::Matrix4::IDENTITY)
 	//, m_DiffuseSRV(NULL)
 	, m_VertexCount(0)
@@ -40,9 +40,11 @@ bool ModelObject::LoadGeometryBuffers(std::string meshName)
 
 void ModelObject::Init(std::string name, TextureShader* shader, std::string meshName, std::vector<std::string> texNames)
 {
-	m_name = name;
+	m_Name = name;
 	m_Shader = shader;
-	
+	m_MeshName = meshName;
+	m_TexNames = texNames;
+
 	LoadGeometryBuffers(meshName);
 	CalculateModelVectors();
 	BuildGeometryBuffers();
@@ -63,11 +65,11 @@ void ModelObject::Render()
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	g_App->GetDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	g_App->GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// no ib
 // 	// Set the index buffer to active in the input assembler so it can be rendered.
- 	g_App->GetDeviceContext()->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+ 	g_App->GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	g_App->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -119,7 +121,7 @@ void ModelObject::BuildGeometryBuffers()
 	vinitData.pSysMem = data;// m_Vertex.data();
 	vinitData.SysMemPitch = 0;
 	vinitData.SysMemSlicePitch = 0;
-	HRESULT hr = (g_App->GetDevice()->CreateBuffer(&vbd, &vinitData, &m_vertexBuffer));
+	HRESULT hr = (g_App->GetDevice()->CreateBuffer(&vbd, &vinitData, &m_VertexBuffer));
 	if (FAILED(hr))
 	{
 		return;
@@ -136,7 +138,7 @@ void ModelObject::BuildGeometryBuffers()
 	indexData.pSysMem = m_Indices;
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
-	HR(g_App->GetDevice()->CreateBuffer(&ibd, &indexData, &m_indexBuffer));
+	HR(g_App->GetDevice()->CreateBuffer(&ibd, &indexData, &m_IndexBuffer));
 
 	delete[] m_Indices;
 	free(data);
@@ -438,6 +440,11 @@ int ModelObject::GetStartVertexIndex()
 {
 	return m_StartVertexIndex;
 };
+
+std::string ModelObject::GetMeshName()
+{
+	return m_MeshName;
+}
 
 FbxManager* g_pFbxSdkManager = nullptr;
 

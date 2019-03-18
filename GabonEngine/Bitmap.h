@@ -26,7 +26,7 @@ public:
 
 	//bool IsMultiTex();
 private:	
-	TextureShader* m_Shader;
+	TextureShader* m_Shader = NULL;
 	ID3D11Buffer* m_IndexBuffer;
 	ID3D11Buffer* m_VertexBuffer;
 	std::vector<ID3D11ShaderResourceView*> m_Tex;
