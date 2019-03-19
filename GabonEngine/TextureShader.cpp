@@ -55,7 +55,7 @@ void TextureShader::Shutdown()
 
 
 bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, 
-	Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture)
+	const Ogre::Matrix4& worldMatrix, const Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture)
 {
 	bool result;
 
@@ -75,7 +75,7 @@ bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, 
 }
 
 
-bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
+bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, const Ogre::Matrix4& worldMatrix, const Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	std::vector<ID3D11ShaderResourceView*> srv;
 	srv.push_back(texture);
@@ -364,8 +364,8 @@ void TextureShader::OutputShaderErrorMessage(ID3DBlob* errorMessage, HWND hwnd, 
 }
 
 
-bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ogre::Matrix4& worldMatrix, Ogre::Matrix4& viewMatrix,
-	Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture)
+bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ogre::Matrix4 worldMatrix, Ogre::Matrix4 viewMatrix,
+	Ogre::Matrix4 projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;

@@ -18,7 +18,7 @@ void Mirror::Init(std::string name, TextureShader* shader, std::string meshName,
 	Matrix3 rot; 
 	rot.FromAngleAxis(Vector3(0, 1, 0), -Math::PI*0.5f);
 	m_World.makeTransform(Vector3(-6,0,0), Vector3(5, 5, 5), Quaternion::FromRotationMatrix(rot));
-	m_World.transpose(); 
+	m_World = m_World.transpose(); 
 
 	m_pReflectModel = g_App->GetModelMan()->CloneModelObj("cubeMain");
 	Plane mirrorPlane(1, 0, 0, 6); // xy plane
@@ -127,7 +127,7 @@ void Mirror::Render()
 {
 	RenderToDepthStencilView();
 	RenderReflectModels();
-	RenderMirror();
+	//RenderMirror();
 }
 
 void Mirror::RenderToDepthStencilView()

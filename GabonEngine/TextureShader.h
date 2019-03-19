@@ -23,10 +23,10 @@ public:
 	void Shutdown();
 	// singletex
 	bool Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex,
-		Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture);
+		const Ogre::Matrix4& worldMatrix, const Ogre::Matrix4& projectionMatrix, ID3D11ShaderResourceView* texture);
 	// multitex
 	bool Render(ID3D11DeviceContext* deviceContext, int vertexCount, int startVertexIndex, 
-		Ogre::Matrix4& worldMatrix, Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture);
+		const Ogre::Matrix4& worldMatrix, const Ogre::Matrix4& projectionMatrix, std::vector<ID3D11ShaderResourceView*> texture);
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetVertexLayoutFromShader() { return m_ReflectLayout; }
 	static ui32 GetStride(DXGI_FORMAT format);
@@ -37,7 +37,7 @@ private:
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3DBlob*, HWND, WCHAR*);
 
-	bool SetShaderParameters(ID3D11DeviceContext*, Ogre::Matrix4&, Ogre::Matrix4&, Ogre::Matrix4&, std::vector<ID3D11ShaderResourceView*>);
+	bool SetShaderParameters(ID3D11DeviceContext*, Ogre::Matrix4, Ogre::Matrix4, Ogre::Matrix4, std::vector<ID3D11ShaderResourceView*>);
 	void RenderShader(ID3D11DeviceContext*, int VertexCount, int StartVertexLocation);
 	// 目前考虑情况太少，是否能根据desc完全创建出来？如果不能的话需要从xml中定义属性和format
 	DXGI_FORMAT GetFormatFromDesc(D3D11_SIGNATURE_PARAMETER_DESC inputDesc, int &OutStride);
