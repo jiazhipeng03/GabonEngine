@@ -127,7 +127,7 @@ void Mirror::Render()
 {
 	RenderToDepthStencilView();
 	RenderReflectModels();
-	//RenderMirror();
+	RenderMirror();
 }
 
 void Mirror::RenderToDepthStencilView()

@@ -95,5 +95,7 @@ float4 main(PixelInputType input) : SV_TARGET
 		// Blend the fog color and the lit color.
 		color = lerp(color, gFogColor, fogLerp);
 	}
+
+	color.a = 0.5f * textureColor.a;
     return color;	
 }
