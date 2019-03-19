@@ -25,5 +25,6 @@ private:
 	ID3D11DepthStencilState* DrawReflectionDSS;
 	ID3D11RasterizerState* CullClockwiseRS;
 	ID3D11RasterizerState* CullCounterClockwiseRS;
+	class ModelObject* m_pReflectModel = NULL;
 };
 
