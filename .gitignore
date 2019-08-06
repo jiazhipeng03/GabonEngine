@@ -5,6 +5,4 @@ GabonEngine/Debug/*
 .vs/*
 *.suo
 GabonEngine/shader-error.txt
-*.vcxproj
-*.suo
 *.db
